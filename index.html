@@ -215,7 +215,7 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
 .viz-controls{padding:14px 16px; border-bottom:1px solid var(--border); background:var(--bg-soft);}
 .canvas-wrap{
   position:relative;
-  flex:1; min-height:280px; display:flex; align-items:center; justify-content:center;
+  flex:1; min-height:360px; display:flex; align-items:stretch; justify-content:center;
   padding:34px 18px 22px; overflow:auto;
   background-image:radial-gradient(circle, #e4e4ea 1px, transparent 1px); background-size:22px 22px; background-color:#fafafa;
 }
@@ -485,171 +485,474 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
   .theory-card{padding:18px;}
 }
 
+/* ---------- basics story classroom ---------- */
+.bstory{max-width:1120px;}
+.bs-intro h2{font-size:28px; margin-bottom:6px;}
+.bs-intro p{font-size:16px; color:var(--muted); line-height:1.7; max-width:720px;}
+.bs-prog{height:4px; background:#e6e6ee; border-radius:99px; margin:4px 0 0; overflow:hidden;}
+.bs-prog i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--purple)); border-radius:99px; transition:width .35s ease;}
+.bs-chapters{
+  display:flex; gap:8px; overflow-x:auto; padding:6px 2px 14px; margin:18px 0 8px; scrollbar-width:none;
+}
+.bs-chapters::-webkit-scrollbar{display:none;}
+.bs-ch{
+  flex:none; display:flex; flex-direction:column; align-items:center; gap:5px; border:none; background:transparent;
+  min-width:76px; color:var(--muted); cursor:pointer;
+}
+.bs-ch .n{
+  width:36px; height:36px; border-radius:50%; border:2px solid var(--border-strong); background:#fff;
+  display:flex; align-items:center; justify-content:center; font-family:var(--disp); font-weight:700; font-size:15px;
+  transition:transform .2s, background .2s, border-color .2s, color .2s;
+}
+.bs-ch .l{font-size:11px; font-weight:600; white-space:nowrap;}
+.bs-ch:hover .n{transform:translateY(-2px);}
+.bs-ch.done .n{background:var(--green-soft); border-color:var(--green); color:var(--green);}
+.bs-ch.on .n{background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.08); box-shadow:0 6px 16px rgba(37,84,224,.28);}
+.bs-ch.on .l{color:var(--accent-dark);}
+.bs-card{background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); overflow:hidden;}
+.bs-head{padding:18px 22px 10px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;}
+.bs-kicker{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:700;}
+.bs-head h3{font-size:24px; margin-top:4px;}
+.bs-stepn{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--accent-dark); background:var(--accent-soft); padding:5px 11px; border-radius:999px;}
+.bs-say{
+  margin:0 22px 12px; padding:14px 16px 14px 18px; border-radius:12px; background:linear-gradient(135deg,#eef3ff,#f4f0ff);
+  border:1px solid #d5e0fb; font-size:17px; font-weight:600; line-height:1.55; color:#1c2748; animation:sayin .35s ease;
+}
+.bs-say em{color:var(--accent-dark); font-style:normal;}
+@keyframes sayin{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+.bs-body{display:grid; grid-template-columns:minmax(320px,420px) minmax(0,1fr); gap:14px; padding:0 14px 6px; align-items:stretch;}
+@media(max-width:980px){.bs-body{grid-template-columns:1fr;}}
+.bs-side{display:flex; flex-direction:column; gap:10px; min-width:0;}
+.bs-kbox{border:1px solid var(--border); border-radius:12px; overflow:hidden; background:#fff; animation:sayin .35s ease;}
+.bs-kbox > .kb-head{
+  display:flex; align-items:center; justify-content:space-between; gap:8px; padding:7px 12px;
+  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+}
+.bs-kbox.k-syntax > .kb-head{background:#f2ecfe; color:#5b21b6; border-bottom:1px solid #ddd0fb;}
+.bs-kbox.k-code > .kb-head{background:var(--code-bg-2); color:#9ecbff; border-bottom:1px solid var(--code-border);}
+.bs-syntax{
+  margin:0; padding:12px 16px; background:#faf7ff; color:#3b2a63;
+  font-family:var(--mono); font-size:16.5px; font-weight:600; line-height:1.75; white-space:pre; overflow-x:auto;
+}
+.bs-syntax .sy-ph{color:var(--purple); background:#efe6ff; border-radius:4px; padding:0 3px;}
+.bs-code{
+  margin:0; background:var(--code-bg); color:#e6edf3; border-radius:0; padding:14px 18px;
+  font-family:var(--mono); font-size:17px; font-weight:500; line-height:1.8; overflow-x:auto; border:none;
+  white-space:pre; min-height:96px;
+}
+.bs-kbox.k-code{background:var(--code-bg); border-color:var(--code-border); flex:1;}
+.bs-code:empty{display:none;}
+.bs-stage{
+  margin:0; min-height:340px; border-radius:14px; padding:16px 14px 12px; overflow:auto;
+  background:
+    linear-gradient(#f7f8fc, #f7f8fc),
+    radial-gradient(circle, #e4e4ea 1.2px, transparent 1.2px);
+  background-size:auto, 20px 20px;
+  background-color:#f7f8fc; border:1px solid var(--border); position:relative;
+}
+.bs-stage.stage-pop{animation:sayin .32s ease;}
+.bs-nav{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:14px 22px 10px;
+}
+.bs-nav .spacer{flex:1;}
+.btn-nextch{background:var(--fg); border-color:var(--fg); color:#fff;}
+.btn-nextch:hover{background:#000;}
+.btn-step{font-size:15.5px; font-weight:700; padding:11px 20px;}
+.bs-example{
+  margin:0; padding:12px 14px; background:#fff8e3; border:1px solid #f0d59a; border-radius:12px;
+  font-size:15.5px; line-height:1.65; color:#5c4308; animation:sayin .4s ease .08s both;
+}
+.bs-example b{color:#9a6b10; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:3px;}
+.bs-example code{background:#fdefc8; border-radius:4px; padding:1px 5px; font-size:14.5px; color:#7a5406;}
+.bs-pills{display:flex; flex-wrap:wrap; gap:7px; justify-content:center; padding:10px 16px 0;}
+.bs-pill{
+  min-width:28px; height:28px; border-radius:999px; border:1.5px solid var(--border-strong); background:#fff;
+  font-family:var(--mono); font-size:11px; font-weight:700; color:var(--muted); padding:0 8px;
+}
+.bs-pill.on{background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.08);}
+.bs-pill.done{background:var(--green-soft); border-color:var(--green); color:var(--green);}
+.bs-foot{padding:0 22px 16px; font-size:12.5px; color:var(--muted-2); text-align:center;}
+.bs-mode-bar{
+  display:flex; gap:8px; margin:14px 0 4px; flex-wrap:wrap;
+}
+.bs-mode{
+  border:2px solid var(--border-strong); background:#fff; border-radius:999px; padding:10px 20px;
+  font-family:var(--disp); font-weight:700; font-size:15px; color:var(--muted); cursor:pointer;
+  transition:transform .2s, background .2s, border-color .2s, color .2s, box-shadow .2s;
+}
+.bs-mode:hover{transform:translateY(-1px);}
+.bs-mode.on{background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:0 6px 16px rgba(37,84,224,.22);}
+.bs-puzzle-wrap{animation:sayin .35s ease;}
+.bs-pz-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+.bs-pz-head h3{font-size:24px; margin:4px 0 0;}
+.bs-pz-score{
+  font-family:var(--mono); font-size:13px; font-weight:700; color:var(--green);
+  background:var(--green-soft); border:1px solid var(--green); padding:6px 14px; border-radius:999px;
+}
+.bs-pz-list{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 12px; margin-bottom:8px; scrollbar-width:none;}
+.bs-pz-list::-webkit-scrollbar{display:none;}
+.bs-pz-pick{
+  flex:none; border:1.5px solid var(--border-strong); background:#fff; border-radius:999px;
+  padding:8px 14px; font-size:12.5px; font-weight:700; color:var(--muted); cursor:pointer; white-space:nowrap;
+}
+.bs-pz-pick.done{background:var(--green-soft); border-color:var(--green); color:var(--green);}
+.bs-pz-pick.on{background:var(--purple); border-color:var(--purple); color:#fff;}
+.bs-pz-card{
+  background:var(--card); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+  padding:20px 22px 18px; margin-bottom:14px;
+}
+.bs-pz-q{font-size:18px; font-weight:700; line-height:1.55; color:#1c2748; margin-bottom:16px;}
+.bs-pz-slots{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:18px;}
+.bs-pz-slot{
+  min-width:140px; min-height:52px; border:2px dashed var(--border-strong); border-radius:12px;
+  padding:10px 14px; background:#fafbfd; display:flex; flex-direction:column; gap:4px; transition:border-color .2s, background .2s;
+}
+.bs-pz-slot .sl-lbl{font-family:var(--mono); font-size:11px; font-weight:700; color:var(--accent-dark); letter-spacing:.06em;}
+.bs-pz-slot .sl-body{min-height:28px; display:flex; align-items:center;}
+.bs-pz-slot.drag-over{border-color:var(--accent); background:var(--accent-soft);}
+.bs-pz-slot.ok{border-style:solid; border-color:var(--green); background:var(--green-soft);}
+.bs-pz-slot.bad{border-style:solid; border-color:var(--red); background:#fff0f0; animation:shake .35s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.bs-pz-order{display:flex; flex-direction:column; gap:10px; margin-bottom:18px;}
+.bs-pz-ordrow{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.bs-pz-ordrow .ord-n{
+  width:32px; height:32px; border-radius:50%; background:var(--accent-soft); color:var(--accent-dark);
+  font-family:var(--mono); font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; flex:none;
+}
+.bs-pz-bank{
+  border:1px solid var(--border); border-radius:14px; padding:14px 16px; background:#f7f8fc;
+}
+.bs-pz-bank > b{display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; font-family:var(--mono);}
+.bs-pz-chips{display:flex; flex-wrap:wrap; gap:8px; min-height:44px;}
+.bs-pz-chip{
+  border:2px solid var(--border-strong); background:#fff; border-radius:10px; padding:10px 14px;
+  font-family:var(--mono); font-size:14px; font-weight:600; color:#1c2748; cursor:grab; user-select:none;
+  transition:transform .15s, box-shadow .15s, opacity .2s;
+}
+.bs-pz-chip:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.bs-pz-chip:active{cursor:grabbing;}
+.bs-pz-chip.used{opacity:.35; pointer-events:none;}
+.bs-pz-chip.dragging{opacity:.55;}
+.bs-pz-feedback{
+  margin-top:14px; padding:12px 16px; border-radius:12px; font-size:16px; font-weight:700; display:none;
+  animation:sayin .3s ease;
+}
+.bs-pz-feedback.show{display:block;}
+.bs-pz-feedback.ok{background:var(--green-soft); border:1px solid var(--green); color:var(--green);}
+.bs-pz-feedback.bad{background:#fff0f0; border:1px solid var(--red); color:var(--red);}
+.bs-pz-feedback.hint{background:#fff8e3; border:1px solid #f0d59a; color:#7a5406; font-weight:600; font-size:15px;}
+.bs-pz-nav{display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding-top:4px;}
+.street .blk:nth-child(1){animation-delay:0s;} .street .blk:nth-child(2){animation-delay:.07s;}
+.street .blk:nth-child(3){animation-delay:.14s;} .street .blk:nth-child(4){animation-delay:.21s;}
+.street .blk:nth-child(5){animation-delay:.28s;} .street .blk:nth-child(6){animation-delay:.35s;}
+.blk{animation-fill-mode:both;}
+.walk-track{position:relative; height:44px; width:min(280px,80%); margin:8px auto 0;}
+.walk-finger{position:absolute; left:0; top:0; font-size:28px; animation:walkx 1.15s cubic-bezier(.2,.8,.2,1) forwards;}
+@keyframes walkx{from{left:0; opacity:.3;} to{left:calc(100% - 28px); opacity:1;}}
+.fly-num{
+  display:inline-flex; align-items:center; justify-content:center; min-width:46px; height:46px; border-radius:12px;
+  background:var(--amber); color:#fff; font-family:var(--disp); font-weight:700; font-size:20px;
+  animation:dropin .55s cubic-bezier(.2,.8,.2,1);
+}
+.step-tag{display:inline-block; font-family:var(--mono); font-size:11px; font-weight:700; color:#fff; background:var(--accent); padding:2px 8px; border-radius:999px; margin-right:6px;}
+.bogie:nth-child(1) .box{animation:housein .35s both;} .bogie:nth-child(2) .box{animation:housein .35s .08s both;}
+.bogie:nth-child(3) .box{animation:housein .35s .16s both;} .bogie:nth-child(4) .box{animation:housein .35s .24s both;}
+.bogie:nth-child(5) .box{animation:housein .35s .32s both;} .bogie:nth-child(6) .box{animation:housein .35s .4s both;}
+
+.street{display:flex; align-items:flex-end; justify-content:center; gap:52px; flex-wrap:wrap; min-height:160px; padding-top:26px;}
+.ram-gap{display:none;}
+.ramchip{
+  background:linear-gradient(180deg,#1c2433 0%, #151b27 100%); border-radius:14px; overflow:hidden;
+  border:1px solid #2a3346; box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+}
+.ramchip-bar{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:8px 12px; background:#121722; border-bottom:1px solid #2a3346;
+  font-family:var(--mono); font-size:11px; color:#8b95a8;
+}
+.ramchip-bar b{color:#9ecbff; letter-spacing:.12em; font-size:11px;}
+.ramchip-pad{position:relative; height:300px; margin:8px; overflow:hidden;}
+.ram-dot{
+  position:absolute; width:10px; height:10px; border-radius:2px; background:#2a3346; opacity:.7;
+}
+.ram-cell{
+  position:absolute; width:92px; border:none; background:transparent; padding:0; text-align:center;
+  cursor:pointer; animation:housein .45s cubic-bezier(.2,.8,.2,1) both; z-index:1;
+}
+.ram-cell .rc-name{
+  display:inline-block; font-family:var(--mono); font-size:11px; font-weight:700; color:#fff;
+  background:var(--accent); padding:2px 8px; border-radius:6px; margin-bottom:4px;
+}
+.ram-cell .rc-name.ghostn{background:#3a4458; color:#9aa3b5; font-weight:600;}
+.ram-cell .rc-body{
+  height:58px; border:2px solid #6d7b95; border-radius:8px; background:#f4f6fb;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--disp); font-weight:700; font-size:22px; color:#17171c;
+}
+.ram-cell .rc-addr{
+  display:inline-block; font-family:var(--mono); font-size:13.5px; font-weight:700; color:#cfe4ff;
+  background:#243044; border:1px solid #33415a; border-radius:6px; padding:1px 7px; margin-top:5px;
+}
+.ram-cell .rc-sz{display:block; font-family:var(--mono); font-size:10px; color:#5c677a; letter-spacing:.04em; margin-top:2px;}
+.ram-cell.on .rc-body, .ram-cell.picked .rc-body{
+  border-color:#7eb6ff; background:#e8f1ff; box-shadow:0 0 0 4px rgba(126,182,255,.28);
+}
+.ram-cell.vacant .rc-body{border-style:dashed; background:#252e40; color:#8b95a8; font-size:16px;}
+.ram-cell.write .rc-body{animation:valpop .5s ease;}
+.ram-cell.ptr .rc-body{border-color:#c4b5fd; background:#f3e8ff;}
+.ram-read{
+  margin:0 10px 10px; padding:8px 10px; border-radius:8px; background:#121722; color:#c9d4e5;
+  font-family:var(--mono); font-size:12px; line-height:1.5;
+}
+.ram-read b{color:#fff;}
+.ram-read .rr-k{color:#7eb6ff; text-transform:uppercase; letter-spacing:.08em; font-size:10px; margin-right:8px;}
+.arr-wrap{text-align:center;}
+.arr-ribbon, .cmp-ribbon{
+  display:inline-block; font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.06em;
+  background:#1c2433; color:#9ecbff; padding:4px 10px; border-radius:999px; margin-bottom:12px;
+}
+.formula{
+  display:flex; flex-wrap:wrap; gap:6px; justify-content:center; align-items:center;
+  font-family:var(--mono); font-size:14px; margin:10px 0 4px; color:#334155;
+}
+.formula span{background:#fff; border:1px solid var(--border); padding:4px 8px; border-radius:6px;}
+.formula b{font-family:var(--disp); font-size:20px; color:var(--accent-dark); animation:valpop .45s ease;}
+.arrow-col{display:flex; flex-direction:column; align-items:center; gap:2px;}
+.arrow-lab{font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--purple);}
+.cmp-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%;}
+@media(max-width:700px){.cmp-row{grid-template-columns:1fr;}}
+.cmp-col{background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px; min-height:140px;}
+.cmp-col h4{font-size:12px; margin:0 0 8px; font-family:var(--mono); color:var(--muted); letter-spacing:.06em; text-transform:uppercase;}
+.cmp-col .arr-ribbon{display:none;}
+.cmp-col .street{gap:16px; min-height:0; padding-top:20px;}
+.cmp-col .blk{width:62px;}
+.cmp-col .h-body{height:52px; font-size:18px;}
+.cmp-col .train .box{width:54px; height:54px; font-size:16px;}
+
+/* ---------- dynamic memory: malloc / calloc / realloc / free ---------- */
+.dm-wrap{display:flex; flex-direction:column; gap:12px; align-items:center; width:100%;}
+.dm-lane{width:100%; border-radius:12px; border:2px dashed; padding:12px 12px 10px; background:#fff;}
+.dm-lane.stacklane{border-color:#b9cdfb; background:#f4f7ff;}
+.dm-lane.heaplane{border-color:#f0d59a; background:#fffdf6;}
+.dm-lane > h4{
+  font-family:var(--mono); font-size:13px; font-weight:700; letter-spacing:.02em; color:var(--fg);
+  margin:0 0 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+}
+.dm-lane > h4 span{font-family:var(--sans); font-size:11.5px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--muted-2);}
+.dm-lane{text-align:center;}
+.dm-lane > h4{justify-content:center;}
+.dm-lane .blk{display:inline-block; margin-top:24px;}
+.dm-strip{display:flex; gap:0; justify-content:center; flex-wrap:wrap;}
+.dm-cell{
+  min-width:70px; border:2.5px solid #334155; margin-left:-2.5px; background:#fff; text-align:center; padding:8px 6px 6px;
+  animation:housein .4s cubic-bezier(.2,.8,.2,1) both;
+}
+.dm-cell:first-child{border-radius:10px 0 0 10px; margin-left:0;}
+.dm-cell:last-child{border-radius:0 10px 10px 0;}
+.dm-cell .dv{font-family:var(--disp); font-weight:700; font-size:21px; line-height:1.2;}
+.dm-cell .da{
+  display:block; font-family:var(--mono); font-size:12px; font-weight:700; color:var(--accent-dark);
+  background:var(--accent-soft); border-radius:5px; padding:1px 4px; margin-top:6px;
+}
+.dm-cell.garbage{background:#fdecec; border-color:#e79a97;}
+.dm-cell.garbage .dv{color:var(--red); font-size:17px;}
+.dm-cell.zero{background:var(--green-soft); border-color:#a9e0c0;}
+.dm-cell.zero .dv{color:var(--green);}
+.dm-cell.kept{background:var(--accent-soft); border-color:var(--accent);}
+.dm-cell.fresh{background:#fff8e3; border-color:var(--amber);}
+.dm-cell.gone{opacity:.3; filter:grayscale(1);}
+.dm-tag{
+  display:inline-block; font-family:var(--mono); font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px;
+  border:1.5px solid; margin:0 4px 8px 0;
+}
+.tag-ptr{border-color:var(--purple); color:var(--purple); background:var(--purple-soft);}
+.tag-size{border-color:var(--amber); color:#8a5a05; background:var(--amber-soft);}
+.tag-null{border-color:var(--border-strong); color:var(--muted); background:#f4f4f6;}
+.dm-note{font-size:14px; color:var(--muted); text-align:center; line-height:1.6;}
+.dm-note b{color:var(--fg);}
+.dmtab{width:100%; border-collapse:collapse; font-size:14px; background:#fff;}
+.dmtab th, .dmtab td{border:1px solid var(--border); padding:9px 11px; text-align:left;}
+.dmtab th{background:var(--bg-soft); font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+.dmtab td:first-child{font-family:var(--mono); font-weight:700; color:var(--accent-dark); font-size:14px;}
+.nodebox{display:flex; flex-direction:column; align-items:center; gap:5px;}
+.nodebox .nb-addr{
+  font-family:var(--mono); font-size:13px; font-weight:700; color:var(--accent-dark);
+  background:var(--accent-soft); border:1px solid #cfdcfb; border-radius:6px; padding:1px 8px;
+}
+@keyframes housein{from{opacity:0; transform:translateY(14px) scale(.9);} to{opacity:1; transform:none;}}
+.blk{width:86px; text-align:center; position:relative; animation:housein .4s cubic-bezier(.2,.8,.2,1);}
+.blk .h-name{
+  position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:11.5px; font-weight:700;
+  background:var(--accent); color:#fff; padding:2px 8px; border-radius:6px; white-space:nowrap;
+}
+.blk .h-body{
+  height:70px; border:2.5px solid #334155; border-radius:8px; background:#fff;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--disp); font-weight:700; font-size:22px;
+}
+.blk.on .h-body{border-color:var(--accent); background:var(--accent-soft); animation:glowpulse 1.2s ease infinite;}
+.blk.vacant .h-body{border-style:dashed; background:#f7f7f5; color:var(--muted-2); font-size:15px;}
+.blk .h-addr{
+  display:inline-block; font-family:var(--mono); font-size:14px; font-weight:700; color:var(--accent-dark);
+  background:var(--accent-soft); border:1px solid #cfdcfb; border-radius:6px; padding:1px 7px; margin-top:6px;
+}
+.blk.write .h-body{animation:valpop .5s ease;}
+.blk-ptr .h-body{border-color:var(--purple); background:var(--purple-soft);}
+@keyframes valpop{0%{transform:scale(.4);} 70%{transform:scale(1.18);} 100%{transform:scale(1);}}
+@keyframes glowpulse{0%,100%{box-shadow:0 0 0 0 rgba(37,84,224,.25);} 50%{box-shadow:0 0 0 8px rgba(37,84,224,0);}}
+.finger{
+  position:absolute; font-size:28px; z-index:4; filter:drop-shadow(0 4px 6px rgba(0,0,0,.18));
+  animation:bob .7s ease infinite; pointer-events:none;
+}
+@keyframes bob{0%,100%{transform:translate(-50%,0);} 50%{transform:translate(-50%,-7px);}}
+.facts{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:16px;}
+.fact{
+  min-width:120px; background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; text-align:center;
+  animation:housein .4s ease;
+}
+.fact b{display:block; font-size:11px; color:var(--muted); font-family:var(--mono); letter-spacing:.06em; text-transform:uppercase;}
+.fact span{display:block; font-family:var(--disp); font-weight:700; font-size:20px; margin-top:3px;}
+.fact.flash{animation:valpop .45s ease;}
+
+.train{display:flex; align-items:flex-end; justify-content:center; gap:0;}
+.bogie{display:flex; flex-direction:column; align-items:center;}
+.bogie .box{
+  width:74px; height:74px; border:3px solid #334155; background:#fff; display:flex; align-items:center; justify-content:center;
+  font-family:var(--disp); font-weight:700; font-size:22px; margin-left:-3px;
+}
+.bogie:first-child .box{border-radius:12px 0 0 12px; margin-left:0;}
+.bogie:last-child .box{border-radius:0 12px 12px 0;}
+.bogie .ix{font-family:var(--mono); font-size:12.5px; font-weight:700; color:var(--fg); margin-top:6px;}
+.bogie .ad{font-family:var(--mono); font-size:12.5px; font-weight:700; color:var(--accent-dark); background:var(--accent-soft); border-radius:5px; padding:1px 5px; margin-top:3px;}
+.bogie.empty .box{background:#fff8e8; color:#c4a35a; border-style:dashed;}
+.bogie.hi .box{background:var(--accent-soft); border-color:var(--accent); z-index:1; animation:glowpulse 1s ease;}
+.bogie.slide .box{animation:slidex .7s ease;}
+@keyframes slidex{0%{transform:translateX(0);} 45%{transform:translateX(70px);} 100%{transform:translateX(0);}}
+.drop-val{
+  display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:10px;
+  background:var(--amber-soft); border:2px solid var(--amber); font-family:var(--disp); font-weight:700; font-size:20px;
+  animation:dropin .55s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes dropin{from{opacity:0; transform:translateY(-40px) scale(.6);} to{opacity:1; transform:none;}}
+
+.scene{display:flex; align-items:center; justify-content:center; gap:22px; flex-wrap:wrap; min-height:170px;}
+.paper,.boxy{
+  min-width:110px; padding:14px 16px; border-radius:14px; text-align:center; border:3px solid;
+}
+.paper{border-color:var(--purple); background:var(--purple-soft);}
+.boxy{border-color:var(--accent); background:#fff;}
+.pk{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
+.pv{font-family:var(--disp); font-weight:700; font-size:22px; margin-top:4px;}
+.pa{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:3px;}
+.arrow-draw{width:110px; height:36px;}
+.arrow-draw path, .arrow-draw line{stroke:var(--purple); stroke-width:3.5; fill:none; stroke-linecap:round;
+  stroke-dasharray:120; stroke-dashoffset:120; animation:draw 0.7s ease forwards;}
+.arrow-draw polygon{fill:var(--purple); opacity:0; animation:fadehead .2s ease .55s forwards;}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.walker-row{position:relative; height:36px; margin-top:8px;}
+.danger{background:var(--red-soft); border:2px solid #f3b9b7; color:var(--red); padding:10px 14px; border-radius:12px; font-weight:700; animation:shake .45s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);}}
+
+.form{display:flex; border:3px solid #334155; border-radius:14px; overflow:hidden; background:#fff; min-height:100px; animation:housein .4s ease;}
+.room{min-width:120px; padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;}
+.room + .room{border-left:2px solid #94a3b8;}
+.room.hit{background:var(--amber-soft); animation:valpop .45s ease;}
+.rk{font-family:var(--mono); font-size:12.5px; font-weight:600; color:var(--muted); letter-spacing:.04em;}
+.rv2{font-family:var(--disp); font-weight:700; font-size:26px;}
+.ra2{font-family:var(--mono); font-size:12.5px; font-weight:700; color:var(--accent-dark); background:var(--accent-soft); border-radius:5px; padding:1px 6px;}
+.blueprint{opacity:.7; border-style:dashed;}
+.vs{display:grid; grid-template-columns:1fr 1fr; gap:14px; width:100%;}
+@media(max-width:700px){.vs{grid-template-columns:1fr;}}
+.vs-col{background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center;}
+.vs-col h4{font-size:14px; margin-bottom:10px;}
+.bad{background:var(--red-soft); border:2px solid #f3b9b7; border-radius:12px; padding:12px; animation:shake .5s ease;}
+.good{background:var(--green-soft); border:2px solid #a9e0c0; border-radius:12px; padding:12px; animation:housein .4s ease;}
+.node2{display:flex; border:3px solid #334155; border-radius:12px; overflow:hidden; background:#fff; animation:housein .45s ease;}
+.node2 .d,.node2 .n{padding:14px 16px; text-align:center;}
+.node2 .d{font-family:var(--disp); font-weight:700; font-size:24px; min-width:70px;}
+.node2 .n{background:var(--accent); color:#fff; font-family:var(--mono); font-size:13.5px; font-weight:700; min-width:78px;}
+.node2 .n small{display:block; opacity:.8; font-size:9px; letter-spacing:.06em;}
+.gapx{color:var(--red); font-weight:800; font-size:22px; animation:bob .8s ease infinite;}
+.regions{display:flex; gap:18px; justify-content:center; flex-wrap:wrap;}
+.reg{border:2px dashed; border-radius:14px; padding:14px; min-width:200px; background:#fff;}
+.reg.st{border-color:#b9cdfb; background:#f4f7ff;}
+.reg.hp{border-color:#f0d59a; background:#fffdf6;}
+.reg h4{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:10px;}
+.ghost{opacity:.35; filter:grayscale(.6); animation:fadeout .7s ease forwards;}
+@keyframes fadeout{to{opacity:0; transform:scale(.8);}}
+.chain{display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;}
+.ptr-chip{font-family:var(--mono); font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; border:1.5px solid; margin:0 2px;}
+.tiny-note{font-size:13px; color:var(--muted); text-align:center; margin-top:12px; line-height:1.6;}
+.play-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:12px 0 8px;}
+.step-chip{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:11.5px; font-weight:700; color:var(--accent-dark); background:var(--accent-soft); padding:5px 10px; border-radius:999px;}
+
+/* ---------- lab theater: stack + chain + heap ---------- */
+.viz-theater{width:100%; display:flex; flex-direction:column; gap:10px; align-self:stretch;}
+.chain-host{width:100%;}
+.stack-bank{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
+.ptr-reg{
+  min-width:108px; border:1.5px solid var(--border-strong); background:#fff; border-radius:10px; padding:8px 10px; text-align:center;
+}
+.ptr-reg .pr-name{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;}
+.ptr-reg .pr-addr{font-family:var(--mono); font-size:13.5px; font-weight:700; margin-top:3px;}
+.ptr-reg .pr-pts{font-size:10.5px; color:var(--muted); margin-top:2px;}
+.ptr-reg.live-first{border-color:#b9cdfb; background:var(--accent-soft);}
+.ptr-reg.live-temp{border-color:#f0d59a; background:var(--amber-soft);}
+.ptr-reg.live-ptr{border-color:#d8c6fb; background:var(--purple-soft);}
+.ptr-reg.live-prev{border-color:#a9e0c0; background:var(--green-soft);}
+.ptr-reg.nullish{opacity:.55;}
+.imagine-bar{
+  font-size:13px; line-height:1.55; color:#243056; background:linear-gradient(90deg,#eef3ff,#fbf7ff); border:1px solid #d9e3fb;
+  border-radius:10px; padding:9px 12px; text-align:center;
+}
+.imagine-bar:empty{display:none;}
+.heap-strip{border:1.5px dashed #e2c57a; background:#fffdf8; border-radius:12px; padding:10px 12px;}
+.heap-strip .hs-k{font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#9a6b10; margin-bottom:8px;}
+.heap-row{display:flex; gap:6px; overflow-x:auto; align-items:flex-end; padding-bottom:4px;}
+.heap-cell{min-width:70px; border:1.5px solid #334155; border-radius:8px; background:#fff; padding:6px 8px; text-align:center; flex:none;}
+.heap-cell .hv{font-family:var(--disp); font-weight:700; font-size:16px;}
+.heap-cell .ha{font-family:var(--mono); font-size:9.5px; color:var(--muted);}
+.heap-cell.hc-new{border-color:var(--amber); background:var(--amber-soft);}
+.heap-cell.hc-active{border-color:var(--accent); background:var(--accent-soft);}
+.heap-cell.hc-deleted{border-color:var(--red); background:var(--red-soft); opacity:.6;}
+.heap-gap{min-width:28px; height:42px; border:1.5px dashed #d9c48a; border-radius:6px; background:#fff8e8; flex:none; align-self:center;}
+.join-node .jd.hit, .join-node .jn.hit, .join-node .jp.hit{
+  box-shadow:inset 0 0 0 3px #fff; animation:fieldhit .7s ease;
+}
+@keyframes fieldhit{0%{filter:brightness(1.35);} 100%{filter:none;}}
+.circ-uwrap{margin-top:2px; padding:0 24px 6px;}
+.circ-u{
+  height:22px; border:2.5px solid #0f766e; border-top:none; border-radius:0 0 16px 16px; position:relative;
+}
+.circ-u::after{
+  content:""; position:absolute; left:-2px; top:-6px; border:6px solid transparent; border-bottom-color:#0f766e;
+}
+.btn-play{background:var(--green); border-color:var(--green); color:#fff;}
+.btn-play:hover{background:#0b6e3f; border-color:#0b6e3f;}
+.btn-play.playing{background:var(--amber); border-color:var(--amber); color:#fff;}
+
+/* ---------- live C runner ---------- */
+.run-grid{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr); gap:16px;}
+@media (max-width:980px){.run-grid{grid-template-columns:1fr;}}
+.term{
+  background:#0d1117; color:#e6edf3; border-radius:10px; overflow:hidden; border:1px solid var(--code-border); min-height:360px;
+  display:flex; flex-direction:column; font-family:var(--mono);
+}
+.term-head{display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#161b22; border-bottom:1px solid var(--code-border); font-size:11.5px; color:var(--code-muted);}
+.term-out{flex:1; padding:12px 14px; overflow:auto; white-space:pre-wrap; font-size:12.6px; line-height:1.55; min-height:220px;}
+.term-out .t-in{color:#7ee787;}
+.term-out .t-err{color:#ff7b72;}
+.term-in{display:flex; align-items:center; gap:8px; padding:8px 12px; border-top:1px solid var(--code-border); background:#161b22;}
+.term-in .prompt{color:#58a6ff; font-weight:700;}
+.term-in input{
+  flex:1; background:transparent; border:none; outline:none; color:#e6edf3; font-family:var(--mono); font-size:13px;
+}
+.run-side{display:flex; flex-direction:column; gap:10px;}
+.run-list-box{background:#fff; border:1px solid var(--border); border-radius:10px; padding:12px; min-height:140px;}
+.run-hint{font-size:12.5px; color:var(--muted); line-height:1.65;}
+
 
 /* (lab reference styles live under .op-ref above) */
-
-
-/* ======================================================================
-   BASICS TAB — v2 (memory, pointers, DMA family, heap playground)
-   ====================================================================== */
-
-.concept-section{scroll-margin-top:130px;}
-
-/* ---- quick jump nav ---- */
-.basics-quicknav{
-  display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 26px; padding:12px 14px;
-  background:var(--card); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow);
-}
-.basics-quicknav .qn-lab{
-  font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--muted-2); align-self:center; margin-right:6px;
-}
-.qn-chip{
-  font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--fg); text-decoration:none;
-  border:1px solid var(--border-strong); background:#fff; padding:6px 11px; border-radius:999px;
-  transition:all .15s ease; white-space:nowrap;
-}
-.qn-chip:hover{border-color:var(--accent); color:var(--accent-dark); background:var(--accent-soft);}
-.qn-chip b{color:var(--accent); margin-right:5px;}
-
-/* ---- generic small helpers ---- */
-.tip-box, .warn-box, .exam-box{
-  margin-top:14px; padding:12px 15px; border-radius:9px; font-size:13.2px; line-height:1.7; color:var(--fg);
-  border:1px solid; border-left-width:4px;
-}
-.tip-box{background:var(--green-soft); border-color:#a9e0c0;}
-.warn-box{background:var(--red-soft); border-color:#f3b9b7;}
-.exam-box{background:var(--amber-soft); border-color:#f0d59a;}
-.tip-box .bt, .warn-box .bt, .exam-box .bt{
-  display:block; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.13em;
-  text-transform:uppercase; margin-bottom:5px;
-}
-.tip-box .bt{color:var(--green);} .warn-box .bt{color:var(--red);} .exam-box .bt{color:var(--amber);}
-.warn-box ul, .tip-box ul{margin:6px 0 0; padding-left:20px;}
-.warn-box li, .tip-box li{margin-bottom:5px;}
-
-.sub-h{
-  font-family:var(--disp); font-size:16px; font-weight:700; margin:22px 0 8px; color:var(--fg);
-  display:flex; align-items:center; gap:9px;
-}
-.sub-h::before{content:""; width:5px; height:16px; border-radius:3px; background:var(--accent); flex:none;}
-
-/* ---- memory segment map (code / data / heap / stack) ---- */
-.seg-map{display:flex; flex-direction:column; border:2px solid var(--fg); border-radius:10px; overflow:hidden; margin-top:14px; background:#fff;}
-.seg{display:flex; align-items:center; gap:14px; padding:12px 16px; border-bottom:1px solid var(--border);}
-.seg:last-child{border-bottom:none;}
-.seg .sg-name{font-family:var(--mono); font-size:12px; font-weight:700; min-width:118px; flex:none;}
-.seg .sg-desc{font-size:13px; color:var(--muted); line-height:1.6;}
-.seg.sg-stack{background:#eef2ff;} .seg.sg-stack .sg-name{color:#4338ca;}
-.seg.sg-heap{background:var(--amber-soft);} .seg.sg-heap .sg-name{color:var(--amber);}
-.seg.sg-data{background:var(--green-soft);} .seg.sg-data .sg-name{color:var(--green);}
-.seg.sg-code{background:#f1f5f9;} .seg.sg-code .sg-name{color:#334155;}
-.seg-arrows{display:flex; justify-content:space-between; font-family:var(--mono); font-size:10.5px; color:var(--muted-2); padding:6px 16px 0;}
-
-/* ---- size table ---- */
-.size-strip{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
-.size-pill{
-  border:1px solid var(--border-strong); border-radius:8px; padding:8px 12px; background:#fff; text-align:center; min-width:92px;
-}
-.size-pill .t{font-family:var(--mono); font-size:12px; color:var(--accent-dark); font-weight:700;}
-.size-pill .b{font-size:11.5px; color:var(--muted); margin-top:2px;}
-
-/* ---- DMA function cards ---- */
-.dma-card{border:2px solid var(--border-strong); border-radius:12px; overflow:hidden; margin-top:18px; background:#fff;}
-.dma-head{
-  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; padding:13px 18px;
-  background:var(--fg); color:#fff;
-}
-.dma-head .fn{font-family:var(--mono); font-size:16px; font-weight:700; color:#fff;}
-.dma-head .tag{
-  font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-  padding:3px 9px; border-radius:999px; background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.35);
-}
-.dma-head .hd-mean{font-size:12.5px; color:rgba(255,255,255,.72); margin-left:auto;}
-.dma-body{padding:18px;}
-.dma-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:20px;}
-@media (max-width:900px){.dma-grid{grid-template-columns:1fr;}}
-
-.spec-list{margin:0; padding:0; list-style:none; border:1px solid var(--border); border-radius:9px; overflow:hidden;}
-.spec-list li{display:flex; gap:0; border-bottom:1px solid var(--border); font-size:13px;}
-.spec-list li:last-child{border-bottom:none;}
-.spec-list .sk{
-  flex:none; width:104px; padding:9px 12px; background:var(--bg-soft); font-family:var(--mono); font-size:10.5px;
-  font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); border-right:1px solid var(--border);
-}
-.spec-list .sv{padding:9px 12px; color:var(--fg); line-height:1.65; min-width:0;}
-.spec-list .sv code, .spec-list .sv .mono{font-family:var(--mono); font-size:12.5px;}
-
-/* heap block strip used inside DMA cards */
-.blk-row{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; align-items:flex-end;}
-.blk{
-  min-width:52px; padding:8px 6px; border-radius:7px; border:2px solid var(--border-strong); background:#fff;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-}
-.blk .bv{font-family:var(--disp); font-weight:700; font-size:15px;}
-.blk .bi{font-family:var(--mono); font-size:9px; color:var(--muted); margin-top:2px;}
-.blk.garbage{border-color:var(--amber); background:var(--amber-soft); border-style:dashed;}
-.blk.garbage .bv{color:var(--amber);}
-.blk.zero{border-color:var(--green); background:var(--green-soft);}
-.blk.zero .bv{color:var(--green);}
-.blk.kept{border-color:var(--accent); background:var(--accent-soft);}
-.blk.kept .bv{color:var(--accent-dark);}
-.blk.freed{border-color:var(--red); background:var(--red-soft); border-style:dashed; opacity:.75;}
-.blk.freed .bv{color:var(--red);}
-.blk-cap{font-size:12px; color:var(--muted-2); margin-top:8px; line-height:1.6;}
-
-/* ---- interactive heap playground ---- */
-.heap-lab{border:2px solid var(--fg); border-radius:12px; overflow:hidden; margin-top:16px; background:#fff;}
-.hl-head{
-  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
-  padding:11px 16px; border-bottom:2px solid var(--fg); background:#fff;
-}
-.hl-head .hl-t{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--accent);}
-.hl-btns{display:flex; flex-wrap:wrap; gap:7px; padding:13px 16px; border-bottom:1px solid var(--border); background:var(--bg-soft);}
-.hl-btn{
-  border:1.5px solid var(--fg); background:#fff; color:var(--fg); font-family:var(--mono); font-size:11.5px; font-weight:700;
-  padding:7px 12px; border-radius:7px; transition:all .15s ease;
-}
-.hl-btn:hover{background:var(--fg); color:#fff;}
-.hl-btn.danger{border-color:var(--red); color:var(--red);}
-.hl-btn.danger:hover{background:var(--red); color:#fff;}
-.hl-btn.soft{border-color:var(--border-strong); color:var(--muted); font-weight:600;}
-.hl-btn.soft:hover{background:var(--bg-soft); color:var(--fg); border-color:var(--muted-2);}
-.hl-stage{
-  padding:22px 16px; background-image:radial-gradient(circle,#e4e4ea 1px,transparent 1px); background-size:22px 22px;
-  background-color:#fafafa; min-height:150px;
-}
-.hl-ptr{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:16px;}
-.hl-ptr .pchip{
-  font-family:var(--mono); font-size:12px; font-weight:700; padding:7px 13px; border-radius:8px; border:2px solid var(--purple);
-  background:var(--purple-soft); color:var(--purple);
-}
-.hl-ptr .pchip.nullp{border-color:var(--muted-2); background:#f1f1f4; color:var(--muted);}
-.hl-ptr .pchip.dangling{border-color:var(--red); background:var(--red-soft); color:var(--red);}
-.hl-ptr .parrow{font-size:18px; color:var(--purple);}
-.hl-ptr .plab{font-family:var(--mono); font-size:10.5px; color:var(--muted-2);}
-.hl-empty{font-size:13px; color:var(--muted); font-style:italic;}
-.hl-heapbox{border:2px dashed var(--border-strong); border-radius:10px; padding:14px; background:rgba(255,255,255,.75);}
-.hl-heapbox .hb-t{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted-2); margin-bottom:8px;}
-.hl-log{border-top:1px solid var(--border); background:#0d1117; padding:12px 16px; max-height:170px; overflow-y:auto;}
-.hl-log .lg{font-family:var(--mono); font-size:12px; line-height:1.75; color:#e6edf3; white-space:pre-wrap;}
-.hl-log .lg.warn{color:#ffb86b;} .hl-log .lg.err{color:#ff7b72;} .hl-log .lg.ok{color:#7ee787;}
-.hl-log .lg .pf{color:#8b949e;}
-.hl-status{padding:11px 16px; border-top:1px solid var(--border); background:var(--accent-soft); font-size:13.2px; color:var(--fg); line-height:1.6;}
-
-/* ---- operator . vs -> ---- */
-.op-two{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px;}
-@media (max-width:820px){.op-two{grid-template-columns:1fr;}}
-.op-box{border:1px solid var(--border); border-radius:9px; padding:15px 17px; background:var(--bg-soft);}
-.op-box h5{font-family:var(--mono); font-size:15px; margin:0 0 6px; color:var(--accent-dark);}
-.op-box p{font-size:13px; color:var(--muted); line-height:1.7;}
-
-/* ---- mapping table (basics -> linked list) ---- */
-.map-table{width:100%; border-collapse:collapse; margin-top:14px; font-size:13px;}
-.map-table th,.map-table td{border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top;}
-.map-table th{background:var(--fg); color:#fff; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;}
-.map-table td:first-child{font-family:var(--mono); font-size:12.3px; color:var(--accent-dark); white-space:nowrap;}
-.map-table tr:nth-child(even) td{background:var(--bg-soft);}
 
 </style>
 </head>
@@ -685,7 +988,10 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
 
 <footer>
   Data Structures &middot; Unit III &mdash; Lists &middot; Walchand Institute of Technology, Solapur (Autonomous) &middot; S.Y. B.Tech (IT), w.e.f. 2026&ndash;27<br>
-  Prepared for classroom use by Sagar S. Hiremath, Assistant Professor, IT Department.
+  Prepared for classroom use by Sagar S. Hiremath, Assistant Professor, IT Department.<br>
+  <a href="Linked-List-Hands-On.html" target="_blank" rel="noopener">Hands-on classroom (students at front)</a>
+  &middot;
+  <a href="Linked-List-Print-Handouts.html" target="_blank" rel="noopener">Print slides (optional)</a>
 </footer>
 
 <div class="algo-modal" id="algoModal">
@@ -1910,6 +2216,7 @@ function renderCodeHTML(code){
 /* apply the same highlighter to any <pre data-hl="c"> found in the static HTML (Basics tab mini snippets) */
 function highlightStaticBlocks(){
   document.querySelectorAll('pre[data-hl="c"]').forEach((pre) => {
+    if (pre.id === "st-code") return;
     const code = pre.textContent;
     pre.innerHTML = tokenizeLine ? code.split("\n").map((line) => {
       const toks = tokenizeLine(line).map((t) => t.cls ? `<span class="${t.cls}">${escapeHtml(t.text)}</span>` : escapeHtml(t.text)).join("");
@@ -1954,7 +2261,30 @@ function linkExistedBefore(prevFrame, aId, bId, viaPrev){
    last node's NEXT cell literally reads "first" instead of an address. */
 const PENDING = `<span class="pending" title="not filled in yet">&hellip;</span>`;
 
-function joinNodeHTML(node, type, firstId){
+function fieldHitFromDesc(desc){
+  const d = String(desc || "");
+  if (/malloc|fresh, empty|empty block/i.test(d)) return "malloc";
+  if (/\bfree\b|removed — will be freed|give the block back/i.test(d)) return "free";
+  if (/->data|\.data|print ptr->data|value .* is read into/i.test(d)) return "data";
+  if (/->prev|prev =/i.test(d)) return "prev";
+  if (/->next|next =/i.test(d)) return "next";
+  return "";
+}
+function imagineFrom(frame){
+  const d = String((frame && frame.desc) || "");
+  if (/malloc/i.test(d)) return "Imagine the OS handing you a brand-new empty house on the heap. temp now holds that house number (address).";
+  if (/\bfree\b|removed — will be freed/i.test(d)) return "That house is given back to the heap. Nobody should knock on that address again.";
+  if (/first = temp/i.test(d)) return "The list's front door (first) now opens onto this new node.";
+  if (/temp->next = first/i.test(d)) return "The new node's NEXT arrow is bent to the old head — insertion at the front.";
+  if (/ptr = ptr->next/i.test(d) || /set ptr = ptr->next/i.test(d)) return "ptr is a finger. It slides along the NEXT arrow into the next house.";
+  if (/ptr->data/i.test(d)) return "We open the DATA room of the house ptr currently points to.";
+  if (/ptr->next = temp/i.test(d)) return "The last node's NEXT, which was NULL (or first), is rewritten to the new node's address. That is how a link is born.";
+  if (/NULL/i.test(d) && /empty/i.test(d)) return "first holds NULL — there is no house yet. The list is an empty street.";
+  if (/circular|ring|back to first/i.test(d)) return "The last NEXT does not die at NULL. It curves back to first, so the street is a roundabout.";
+  return "";
+}
+
+function joinNodeHTML(node, type, firstId, hit){
   const isDLL = type === "dll";
   const isCirc = type === "cll";
   const valueTxt = node.value === undefined ? PENDING : node.value;
@@ -1965,9 +2295,12 @@ function joinNodeHTML(node, type, firstId){
   const prevTxt = node.prev === undefined ? PENDING
     : !node.prev ? `<span class="nx" title="NULL">X</span>`
     : addrFor(node.prev);
+  const dataHit = hit === "data" ? " hit" : "";
+  const nextHit = (hit === "next" || hit === "malloc") ? " hit" : "";
+  const prevHit = hit === "prev" ? " hit" : "";
   const body = isDLL
-    ? `<div class="jp"><b>PREV</b>${prevTxt}</div><div class="jd">${valueTxt}</div><div class="jn"><b>NEXT</b>${nextTxt}</div>`
-    : `<div class="jd">${valueTxt}</div><div class="jn"><b>NEXT</b>${nextTxt}</div>`;
+    ? `<div class="jp${prevHit}"><b>PREV</b>${prevTxt}</div><div class="jd${dataHit}">${valueTxt}</div><div class="jn${nextHit}"><b>NEXT</b>${nextTxt}</div>`
+    : `<div class="jd${dataHit}">${valueTxt}</div><div class="jn${nextHit}"><b>NEXT</b>${nextTxt}</div>`;
   return `<div class="join-node${isDLL ? " dbl-node" : ""} state-${node.state}">${body}</div>`;
 }
 
@@ -1991,6 +2324,7 @@ function renderChain(container, frame, prevFrame, type){
   const { nodes, ptrs } = frame;
   const isDLL = type === "dll";
   const isCirc = type === "cll";
+  const hit = fieldHitFromDesc(frame.desc);
 
   if (!nodes.length){
     container.innerHTML = `<div class="join-stage"><div class="join-row" style="justify-content:center;">
@@ -2023,7 +2357,7 @@ function renderChain(container, frame, prevFrame, type){
     row += `<div class="join-col" data-nid="${node.id}">
         ${isDel ? `<div class="del-cap">removed — will be freed</div>` : ""}
         ${joinBadgesHTML(names)}
-        ${joinNodeHTML(node, type, firstId)}
+        ${joinNodeHTML(node, type, firstId, hit)}
         <div class="join-addr">${addrFor(node.id)}</div>
       </div>`;
 
@@ -2041,10 +2375,12 @@ function renderChain(container, frame, prevFrame, type){
 
   let circNote = "";
   if (isCirc){
-    const live = nodes.filter((n) => !n.detached);
+    const live = nodes.filter((n) => !n.detached && n.next !== undefined);
+    const closed = live.length && live[live.length - 1].next === firstId;
     if (live.length){
-      circNote = `<div class="circ-back"><div class="gap-lab">circular link</div>
-          <p>Last node <b>${live[live.length - 1].value}</b> &mdash; NEXT points back to <b>first</b></p>
+      circNote = `${closed ? `<div class="circ-uwrap"><div class="circ-u" title="last->next = first"></div></div>` : ""}
+          <div class="circ-back"><div class="gap-lab">circular link</div>
+          <p>Last node <b>${live[live.length - 1].value}</b> &mdash; NEXT ${closed ? "curves back to" : "will curve back to"} <b>first</b></p>
           <div class="loop">${live.map((n) => n.value).join(" &rarr; ")} &rarr; first</div></div>`;
     }
   }
@@ -2052,9 +2388,40 @@ function renderChain(container, frame, prevFrame, type){
   container.innerHTML = `<div class="join-stage"><div class="join-row">${row}</div></div>${circNote}`;
 }
 
+function renderPtrBankHTML(frame){
+  const names = ["first", "temp", "ptr", "prev"];
+  return `<div class="stack-bank">${names.map((nm) => {
+    const id = frame.ptrs ? frame.ptrs[nm] : null;
+    const node = id ? frame.nodes.find((n) => n.id === id) : null;
+    const isNull = id == null;
+    const addr = isNull ? "NULL" : addrFor(id);
+    const pts = isNull ? "points to nothing" : (node && node.value !== undefined ? `points to ${node.value}` : "points to a new block");
+    return `<div class="ptr-reg live-${nm}${isNull ? " nullish" : ""}"><div class="pr-name">${nm}</div><div class="pr-addr">${addr}</div><div class="pr-pts">${pts}</div></div>`;
+  }).join("")}</div>`;
+}
+function renderHeapStripHTML(frame){
+  if (!frame.nodes.length){
+    return `<div class="heap-strip"><div class="hs-k">Heap (dynamic RAM) — empty</div><div class="heap-row"><div class="heap-gap" title="free"></div><div class="heap-gap"></div><div class="heap-gap"></div></div></div>`;
+  }
+  const cells = [];
+  frame.nodes.forEach((n, i) => {
+    const cls = n.state === "new" ? "hc-new" : n.state === "active" ? "hc-active" : n.state === "deleted" ? "hc-deleted" : "";
+    const val = n.value === undefined ? "…" : n.value;
+    cells.push(`<div class="heap-cell ${cls}"><div class="hv">${val}</div><div class="ha">${addrFor(n.id)}</div></div>`);
+    if (i < frame.nodes.length - 1) cells.push(`<div class="heap-gap" title="unused bytes between nodes — they are NOT next-door neighbours"></div>`);
+  });
+  return `<div class="heap-strip"><div class="hs-k">Heap — nodes live at these addresses (gaps = unused memory in between)</div><div class="heap-row">${cells.join("")}</div></div>`;
+}
 function renderCanvas(container, frame, prevFrame, type){
   if (!frame) return;
-  renderChain(container, frame, prevFrame, type);
+  const imagine = imagineFrom(frame);
+  container.innerHTML = `<div class="viz-theater">
+      ${renderPtrBankHTML(frame)}
+      <div class="chain-host"></div>
+      ${renderHeapStripHTML(frame)}
+      <div class="imagine-bar">${imagine ? "Imagine: " + imagine : ""}</div>
+    </div>`;
+  renderChain(container.querySelector(".chain-host"), frame, prevFrame, type);
 }
 
 /* ===================== POINTER-MOVE STRIP ===================== */
@@ -2160,663 +2527,81 @@ const SLL_PROGRAM = "/* ========================================================
 const DLL_PROGRAM = "/* ============================================================\n * File   : dll.c\n * Topic  : Doubly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : Node has prev + data + next. Matches class PPT.\n * Compile: gcc dll.c -o dll && ./dll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *prev;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->prev = NULL;\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) first = temp;\n        else {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n            temp->prev = ptr;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    printf(\"Forward: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->next; }\n    printf(\"NULL\\n\");\n}\n\nvoid displayReverse(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    while (ptr->next != NULL) ptr = ptr->next;\n    printf(\"Reverse: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->prev; }\n    printf(\"NULL\\n\");\n}\n\nstruct Node* search(struct Node *first, int val) {\n    struct Node *ptr = first;\n    while (ptr != NULL) { if (ptr->data == val) return ptr; ptr = ptr->next; }\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    temp->next = first;\n    if (first != NULL) first->prev = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode(), *ptr;\n    if (first == NULL) return temp;\n    ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    ptr->next = temp;\n    temp->prev = ptr;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *temp = search(first, val), *ptr;\n    if (temp) {\n        ptr = getNode();\n        ptr->next = temp->next;\n        ptr->prev = temp;\n        if (temp->next != NULL) temp->next->prev = ptr;\n        temp->next = ptr;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    first = first->next;\n    if (first != NULL) first->prev = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    if (ptr->prev != NULL) ptr->prev->next = NULL;\n    else first = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr == NULL) { printf(\"Node not found\\n\"); return first; }\n    if (ptr->prev == NULL) { first = ptr->next; if (first) first->prev = NULL; }\n    else { ptr->prev->next = ptr->next; if (ptr->next) ptr->next->prev = ptr->prev; }\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.displayReverse 4.insertbeg 5.insertend 6.insertbet 7.search 8.deletebeg 9.deleteend 10.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) displayReverse(first);\n        else if (ch == 4) first = insertbeg(first);\n        else if (ch == 5) first = insertend(first);\n        else if (ch == 6) first = insertbet(first);\n        else if (ch == 7) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 8) first = deletebeg(first);\n        else if (ch == 9) first = deleteend(first);\n        else if (ch == 10) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
 const CLL_PROGRAM = "/* ============================================================\n * File   : csll.c\n * Topic  : Circular Singly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : last->next = first (ring). Matches class PPT.\n * Compile: gcc csll.c -o csll && ./csll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) { first = temp; temp->next = first; }\n        else {\n            ptr = first;\n            while (ptr->next != first) ptr = ptr->next;\n            ptr->next = temp;\n            temp->next = first;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    if (first == NULL) { printf(\"List is empty\\n\"); return; }\n    struct Node *ptr = first;\n    printf(\"Ring: \");\n    do { printf(\"%d -> \", ptr->data); ptr = ptr->next; } while (ptr != first);\n    printf(\"(back to %d)\\n\", first->data);\n}\n\nstruct Node* search(struct Node *first, int val) {\n    if (first == NULL) return NULL;\n    struct Node *ptr = first;\n    do { if (ptr->data == val) return ptr; ptr = ptr->next; } while (ptr != first);\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    temp->next = first;\n    ptr->next = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    ptr->next = temp;\n    temp->next = first;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *temp = search(first, val), *nn;\n    if (temp) { nn = getNode(); nn->next = temp->next; temp->next = nn; }\n    else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *last = first;\n    while (last->next != first) last = last->next;\n    struct Node *temp = first;\n    first = first->next;\n    last->next = first;\n    free(temp);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *ptr = first, *prev = NULL;\n    while (ptr->next != first) { prev = ptr; ptr = ptr->next; }\n    prev->next = first;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = first, *prev = NULL;\n    do { if (ptr->data == val) break; prev = ptr; ptr = ptr->next; } while (ptr != first);\n    if (ptr->data != val) { printf(\"Node not found\\n\"); return first; }\n    if (ptr == first && ptr->next == first) { free(ptr); return NULL; }\n    if (ptr == first) return deletebeg(first);\n    prev->next = ptr->next;\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.insertbeg 4.insertend 5.insertbet 6.search 7.deletebeg 8.deleteend 9.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) first = insertbeg(first);\n        else if (ch == 4) first = insertend(first);\n        else if (ch == 5) first = insertbet(first);\n        else if (ch == 6) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 7) first = deletebeg(first);\n        else if (ch == 8) first = deleteend(first);\n        else if (ch == 9) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
 
-const BASICS_HTML = `
-<div class="basics-intro">
-  <h2>Basics &mdash; Memory, Pointers, Dynamic Memory &amp; Structures</h2>
-  <p class="lead big">Before we build any linked list, we must be completely comfortable with what is actually
-  happening inside the computer's memory. A linked list is not a magic data structure &mdash; it is just
-  <b>small blocks of memory, scattered around the heap, holding each other's addresses.</b> Every idea on this
-  page is a piece of that puzzle: memory gives us the boxes, pointers let us hold an address, the
-  <span class="inline-code">malloc</span> family lets us create a box exactly when we need it, and a structure
-  lets one box carry both data and the address of the next box.</p>
-</div>
-
-<nav class="basics-quicknav">
-  <span class="qn-lab">Jump to</span>
-  <a class="qn-chip" href="#b-memory"><b>01</b>Memory (RAM)</a>
-  <a class="qn-chip" href="#b-variable"><b>02</b>Variable Storage</a>
-  <a class="qn-chip" href="#b-segments"><b>03</b>Static vs Dynamic</a>
-  <a class="qn-chip" href="#b-arrayll"><b>04</b>Array vs Linked List</a>
-  <a class="qn-chip" href="#b-pointer"><b>05</b>Pointers</a>
-  <a class="qn-chip" href="#b-dma"><b>06</b>malloc / calloc / realloc / free</a>
-  <a class="qn-chip" href="#b-heaplab"><b>07</b>Heap Playground</a>
-  <a class="qn-chip" href="#b-struct"><b>08</b>struct Node</a>
-  <a class="qn-chip" href="#b-bridge"><b>09</b>Putting It Together</a>
-</nav>
-
-<!-- ============================ 01 MEMORY ============================ -->
-<section class="card concept-section" id="b-memory">
-  <div class="section-pretitle"><span class="num">01</span><div class="line"></div><span class="ic">&#9635;</span></div>
-  <h3>What is Memory (RAM)?</h3>
-  <p class="lead">Think of RAM as one long strip of numbered boxes. Every box is <b>1 byte</b>, has a unique
-  <b>address</b> (like a house number), and can hold a <b>value</b>. When a program needs to store something, the
-  operating system hands it one or more of these boxes. The address is how the computer finds that value again
-  later &mdash; the value itself has no idea where it lives, only the address does.</p>
-  <div class="mem-row">
-    <div class="mem-cell"><span class="v">10</span><span class="a">@1000</span></div>
-    <div class="mem-cell"><span class="v">42</span><span class="a">@1004</span></div>
-    <div class="mem-cell"><span class="v">7</span><span class="a">@1008</span></div>
-    <div class="mem-cell waste"><span class="v">&mdash;</span><span class="a">@1012</span></div>
-    <div class="mem-cell waste"><span class="v">&mdash;</span><span class="a">@1016</span></div>
+function basicsPanelHTML(){
+  return `
+<div class="bstory">
+  <div class="bs-intro">
+    <h2>Start from zero</h2>
+    <p>Nine chapters — memory, variable, array, pointer, struct, <code>.</code> vs <code>-&gt;</code>, self-reference, <b>malloc / calloc / realloc / free</b>, and the first list. Every step gives you the <b>syntax</b>, a working <b>example</b>, and a <b>live memory picture</b> with real addresses.</p>
   </div>
-  <p class="mem-note">Each box drawn here is 4 bytes (one <span class="inline-code">int</span>), so the addresses
-  jump by 4. Dashed boxes are free / unused memory &mdash; nobody owns them yet.</p>
-
-  <div class="sub-h">How much space does each type need?</div>
-  <p class="lead">This matters because every allocation we make later is written as
-  <span class="inline-code">n * sizeof(type)</span> &mdash; never as a hard-coded number of bytes. The exact size
-  is compiler and machine dependent, so we always ask <span class="inline-code">sizeof</span> instead of assuming.</p>
-  <div class="size-strip">
-    <div class="size-pill"><div class="t">char</div><div class="b">1 byte</div></div>
-    <div class="size-pill"><div class="t">int</div><div class="b">4 bytes</div></div>
-    <div class="size-pill"><div class="t">float</div><div class="b">4 bytes</div></div>
-    <div class="size-pill"><div class="t">double</div><div class="b">8 bytes</div></div>
-    <div class="size-pill"><div class="t">pointer</div><div class="b">8 bytes (64-bit)</div></div>
-    <div class="size-pill"><div class="t">struct Node</div><div class="b">data + pointer</div></div>
+  <div class="bs-mode-bar" id="bs-mode-bar">
+    <button type="button" class="bs-mode on" data-mode="learn">Learn — step by step</button>
+    <button type="button" class="bs-mode" data-mode="puzzle">Puzzle — drag &amp; drop</button>
   </div>
-  <div class="tip-box"><span class="bt">Remember</span>
-  A <b>pointer's own size never changes</b> with what it points to. An <span class="inline-code">int *</span> and a
-  <span class="inline-code">struct Node *</span> are the same size, because both store just one address.</div>
-</section>
-
-<!-- ============================ 02 VARIABLE ============================ -->
-<section class="card concept-section" id="b-variable">
-  <div class="section-pretitle"><span class="num">02</span><div class="line"></div><span class="ic">&#9673;</span></div>
-  <h3>How is a Variable Stored?</h3>
-  <p class="lead">When you write <span class="inline-code">int x = 10;</span>, the compiler reserves one box in
-  memory, silently labels it <b>x</b>, and writes <b>10</b> inside it. The name <b>x</b> is purely for <i>your</i>
-  convenience while writing code &mdash; the computer only ever deals with the real address, e.g. @1000. The
-  <span class="inline-code">&amp;</span> operator is how we ask for that hidden address.</p>
-  <div style="display:flex; align-items:center; gap:22px; margin-top:14px; flex-wrap:wrap;">
-    <div style="text-align:center;">
-      <div style="font-family:var(--mono); font-size:11px; color:var(--accent-dark); margin-bottom:4px;">x</div>
-      <div class="mem-cell active"><span class="v">10</span><span class="a">@1000</span></div>
+  <div id="bs-learn-wrap">
+  <div class="bs-chapters" id="bs-chapters"></div>
+  <div class="bs-prog"><i id="bs-progbar"></i></div>
+  <div class="bs-card">
+    <div class="bs-head">
+      <div>
+        <div class="bs-kicker" id="bs-kicker">Chapter 1</div>
+        <h3 id="bs-title">RAM is numbered blocks</h3>
+      </div>
+      <span class="bs-stepn" id="bs-stepn">Step 1 / 6</span>
     </div>
-    <div class="mono" style="font-size:13px; color:var(--muted); line-height:2;">
-      name &rarr; <b style="color:var(--fg)">x</b><br>
-      value &rarr; <b style="color:var(--fg)">10</b> &nbsp;<span style="font-size:11.5px;">(written as x)</span><br>
-      address &rarr; <b style="color:var(--fg)">@1000</b> &nbsp;<span style="font-size:11.5px;">(written as &amp;x)</span>
+    <div class="bs-say" id="bs-say"></div>
+    <div class="bs-body">
+      <div class="bs-side">
+        <div class="bs-kbox k-syntax" id="bs-synbox">
+          <div class="kb-head"><span>Syntax</span><span id="bs-synhint">general form</span></div>
+          <div class="bs-syntax" id="bs-syntax"></div>
+        </div>
+        <div class="bs-kbox k-code">
+          <div class="kb-head"><span>Example code</span><span>C</span></div>
+          <div class="bs-code" id="bs-code"></div>
+        </div>
+        <div class="bs-example" id="bs-example"></div>
+      </div>
+      <div class="bs-stage" id="bs-stage"></div>
     </div>
+    <div class="bs-pills" id="bs-pills"></div>
+    <div class="bs-nav">
+      <button class="btn btn-step" id="bs-prev">&#8592; Previous step</button>
+      <button class="btn btn-primary btn-step" id="bs-next">Next step &#8594;</button>
+      <button class="btn btn-play" id="bs-play">&#9654; Auto-play</button>
+      <span class="spacer"></span>
+      <button class="btn btn-nextch" id="bs-nextch">Next chapter &#8594;</button>
+    </div>
+    <p class="bs-foot" id="bs-foot">Tip: press <b>Next step</b> after you understand the picture. Keyboard: ← →</p>
   </div>
-  <div class="code-block-mini" style="margin-top:14px; max-width:560px;">
-    <div class="cb-head"><span>value vs address</span></div>
-    <pre class="mono" data-hl="c" style="color:#e6edf3;">int x = 10;
-printf("%d", x);        /* 10      -> the VALUE inside the box   */
-printf("%p", &amp;x);       /* @1000   -> the ADDRESS of the box     */
-printf("%lu", sizeof(x));/* 4       -> how many bytes it occupies */</pre>
   </div>
-</section>
-
-<!-- ============================ 03 SEGMENTS / STATIC vs DYNAMIC ============================ -->
-<section class="card concept-section" id="b-segments">
-  <div class="section-pretitle"><span class="num">03</span><div class="line"></div><span class="ic">&#9707;</span></div>
-  <h3>Static Memory vs Dynamic Memory</h3>
-  <p class="lead">A running C program does not get one flat pile of memory &mdash; it is divided into four regions.
-  Two of them matter to us: the <b>stack</b>, where ordinary variables live and are managed automatically, and the
-  <b>heap</b>, where we can request memory ourselves at run time. A linked list always lives on the heap.</p>
-
-  <div class="seg-map">
-    <div class="seg sg-stack">
-      <span class="sg-name">STACK &darr;</span>
-      <span class="sg-desc">Local variables, function parameters, return addresses. Created and destroyed
-      <b>automatically</b> when a function is entered and left. Fixed, small, very fast.</span>
+  <div id="bs-puzzle-wrap" class="bs-puzzle-wrap" hidden>
+    <div class="bs-pz-head">
+      <div>
+        <div class="bs-kicker">Basics · Practice</div>
+        <h3 id="bs-pz-title">Drag the right answer</h3>
+      </div>
+      <span class="bs-pz-score" id="bs-pz-score">Score: 0 / 8</span>
     </div>
-    <div class="seg sg-heap">
-      <span class="sg-name">HEAP &uarr;</span>
-      <span class="sg-desc">Free pool of memory that <b>you</b> control with
-      <span class="inline-code">malloc / calloc / realloc / free</span>. Grows and shrinks at <b>run time</b>.
-      Every node of a linked list is created here.</span>
-    </div>
-    <div class="seg sg-data">
-      <span class="sg-name">DATA / BSS</span>
-      <span class="sg-desc">Global and <span class="inline-code">static</span> variables. They exist for the whole
-      lifetime of the program.</span>
-    </div>
-    <div class="seg sg-code">
-      <span class="sg-name">CODE (TEXT)</span>
-      <span class="sg-desc">The compiled machine instructions of your program itself &mdash; read only.</span>
-    </div>
-  </div>
-  <div class="seg-arrows"><span>stack grows downward &darr;</span><span>&uarr; heap grows upward</span></div>
-
-  <div class="concept-grid" style="margin-top:20px;">
-    <div class="compare-box">
-      <h4>Static &mdash; the Stack</h4>
-      <p>Decided at <b>compile time</b>. The size is fixed the moment you write the code and can never grow.
-      <span class="inline-code">int a[5];</span> always reserves exactly 5 boxes, whether you use 2 of them or all
-      5 &mdash; the rest is wasted space that cannot be given back while the function is running.</p>
-      <div class="mem-row">
-        <div class="mem-cell"><span class="v">10</span><span class="a">a[0]</span></div>
-        <div class="mem-cell"><span class="v">20</span><span class="a">a[1]</span></div>
-        <div class="mem-cell waste"><span class="v">&mdash;</span><span class="a">a[2]</span></div>
-        <div class="mem-cell waste"><span class="v">&mdash;</span><span class="a">a[3]</span></div>
+    <div class="bs-pz-list" id="bs-pz-list"></div>
+    <div class="bs-pz-card">
+      <p class="bs-pz-q" id="bs-pz-q"></p>
+      <div id="bs-pz-target"></div>
+      <div class="bs-pz-bank">
+        <b>Options — drag to slot</b>
+        <div class="bs-pz-chips" id="bs-pz-chips"></div>
+      </div>
+      <div class="bs-pz-feedback" id="bs-pz-feedback"></div>
+      <div class="bs-pz-nav">
+        <button type="button" class="btn btn-step" id="bs-pz-reset">Reset puzzle</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn btn-primary btn-step" id="bs-pz-next" disabled>Next puzzle &#8594;</button>
       </div>
     </div>
-    <div class="compare-box">
-      <h4>Dynamic &mdash; the Heap</h4>
-      <p>Decided at <b>run time</b>. You ask the operating system for memory exactly when you need it, and give it
-      back when you are done. There is no waste &mdash; and this is precisely how a linked list is able to grow
-      one node at a time, no matter how many nodes the user finally enters.</p>
-      <div class="code-block-mini" style="margin-top:10px;">
-        <div class="cb-head"><span>dynamic allocation</span></div>
-        <pre class="mono" data-hl="c" style="color:#e6edf3;">struct Node *p;
-p = (struct Node*) malloc(sizeof(struct Node));
-/* ... use p ... */
-free(p);</pre>
-      </div>
-    </div>
+    <p class="bs-foot">Har drop par turant <b>Sahi</b> ya <b>Galat</b> dikhega. Galat ho to chip wapas bank mein aa jayegi — dobara try karo.</p>
   </div>
-
-  <table class="compare-table">
-    <tr><th>Point</th><th>Static (compile time)</th><th>Dynamic (run time)</th></tr>
-    <tr><td>Memory region</td><td>Stack / Data segment</td><td>Heap</td></tr>
-    <tr><td>Size decided</td><td>While writing the program</td><td>While the program is running</td></tr>
-    <tr><td>Can size change later?</td><td>No</td><td>Yes &mdash; with <span class="inline-code">realloc()</span></td></tr>
-    <tr><td>Who releases it?</td><td>Compiler, automatically</td><td>Programmer, using <span class="inline-code">free()</span></td></tr>
-    <tr><td>Memory wastage</td><td>Possible (unused slots)</td><td>Almost none</td></tr>
-    <tr><td>Example</td><td><span class="inline-code">int a[5];</span></td><td><span class="inline-code">malloc(5 * sizeof(int))</span></td></tr>
-    <tr><td>Used by</td><td>Arrays</td><td>Linked lists, trees, graphs</td></tr>
-  </table>
-</section>
-
-<!-- ============================ 04 ARRAY vs LL ============================ -->
-<section class="card concept-section" id="b-arrayll">
-  <div class="section-pretitle"><span class="num">04</span><div class="line"></div><span class="ic">&#9636;</span></div>
-  <h3>Array vs Linked List</h3>
-  <div class="concept-grid">
-    <div>
-      <h4 style="font-size:14.5px; margin-bottom:4px;">Array &mdash; contiguous memory</h4>
-      <div class="array-row">
-        <div class="array-cell"><span class="v">10</span><span class="i">[0]</span></div>
-        <div class="array-cell"><span class="v">20</span><span class="i">[1]</span></div>
-        <div class="array-cell"><span class="v">30</span><span class="i">[2]</span></div>
-        <div class="array-cell"><span class="v">40</span><span class="i">[3]</span></div>
-      </div>
-      <p class="lead" style="margin-top:10px;">All boxes sit right next to each other, back to back. That gives
-      instant access by index (<span class="inline-code">a[2]</span> is just "start address + 2&times;4"), but the
-      size is fixed and inserting or deleting in the middle means physically shifting every element after it.</p>
-    </div>
-    <div>
-      <h4 style="font-size:14.5px; margin-bottom:4px;">Linked List &mdash; scattered, joined by pointers</h4>
-      <div class="ll-chain">
-        <div class="ll-node-mini"><span class="d">10</span><span class="n">&bull;</span></div>
-        <span class="ll-arrow">&rarr;</span>
-        <div class="ll-node-mini"><span class="d">20</span><span class="n">&bull;</span></div>
-        <span class="ll-arrow">&rarr;</span>
-        <div class="ll-node-mini"><span class="d">30</span><span class="n">X</span></div>
-      </div>
-      <p class="lead" style="margin-top:10px;">Each node can live <i>anywhere</i> in memory &mdash; they are only
-      connected because each one stores the address of the next one. Growing or shrinking the list is cheap (just a
-      couple of pointer changes), but you cannot jump straight to the 3rd node &mdash; you must walk through the
-      list one link at a time.</p>
-    </div>
-  </div>
-
-  <table class="compare-table">
-    <tr><th>Point</th><th>Array</th><th>Linked List</th></tr>
-    <tr><td>Memory</td><td>Contiguous, one block</td><td>Scattered nodes joined by pointers</td></tr>
-    <tr><td>Size</td><td>Fixed at declaration</td><td>Grows / shrinks at run time</td></tr>
-    <tr><td>Memory type</td><td>Static (stack)</td><td>Dynamic (heap)</td></tr>
-    <tr><td>Access i-th element</td><td>Direct, O(1)</td><td>Sequential walk, O(n)</td></tr>
-    <tr><td>Insert / delete at beginning</td><td>O(n) &mdash; shift all elements</td><td>O(1) &mdash; change one pointer</td></tr>
-    <tr><td>Extra memory per element</td><td>None</td><td>Extra space for the pointer field</td></tr>
-    <tr><td>Memory wastage</td><td>Unused slots are wasted</td><td>Exactly as many nodes as needed</td></tr>
-  </table>
-</section>
-
-<!-- ============================ 05 POINTERS ============================ -->
-<section class="card concept-section" id="b-pointer">
-  <div class="section-pretitle"><span class="num">05</span><div class="line"></div><span class="ic">&#8618;</span></div>
-  <h3>Pointers &mdash; <span class="inline-code">int *ptr</span></h3>
-  <p class="lead">A pointer is a variable that stores an <b>address</b> instead of an ordinary value. If
-  <span class="inline-code">int x = 10;</span> lives at @1000, then <span class="inline-code">int *ptr = &amp;x;</span>
-  makes <b>ptr</b> hold the value @1000. Writing <span class="inline-code">*ptr</span> means "go to the address
-  stored in ptr, and use the value sitting there" &mdash; which is 10. That is called <b>dereferencing</b>.</p>
-  <div class="ptr-demo">
-    <div>
-      <div class="lbl purple">ptr (a pointer variable)</div>
-      <div class="mem-cell active" style="border-color:var(--purple); background:var(--purple-soft);"><span class="v" style="font-size:13px;">@1000</span><span class="a">@2000</span></div>
-    </div>
-    <div style="font-size:20px; color:var(--accent);">&rarr;</div>
-    <div>
-      <div class="lbl blue">x (an ordinary int)</div>
-      <div class="mem-cell active"><span class="v">10</span><span class="a">@1000</span></div>
-    </div>
-  </div>
-  <div class="code-block-mini" style="margin-top:14px; max-width:560px;">
-    <div class="cb-head"><span>pointer basics</span></div>
-    <pre class="mono" data-hl="c" style="color:#e6edf3;">int x = 10;
-int *ptr;              /* ptr can hold the ADDRESS of an int  */
-ptr = &amp;x;              /* ptr now holds the address of x      */
-printf("%d", *ptr);    /* *ptr = 10  (the value AT that address) */
-*ptr = 25;             /* changes x itself, through the pointer  */</pre>
-  </div>
-
-  <div class="sub-h">Three pointer facts a linked list depends on</div>
-  <ul class="theory-points">
-    <li><b>NULL</b> means "this pointer points nowhere". The last node of a singly linked list stores
-      <span class="inline-code">NULL</span> in its next field &mdash; that is how we know the list has ended.</li>
-    <li><b>An empty list is just</b> <span class="inline-code">first = NULL;</span> &mdash; no nodes exist yet, so
-      the head pointer points nowhere.</li>
-    <li><b>Never dereference an invalid pointer.</b> Using <span class="inline-code">*p</span> when p is NULL or
-      already freed crashes the program &mdash; so every walk loop is written as
-      <span class="inline-code">while (ptr != NULL)</span>.</li>
-  </ul>
-</section>
-
-<!-- ============================ 06 DMA FAMILY ============================ -->
-<section class="card concept-section" id="b-dma">
-  <div class="section-pretitle"><span class="num">06</span><div class="line"></div><span class="ic">&#9881;</span></div>
-  <h3>Dynamic Memory Allocation &mdash; <span class="inline-code">malloc() calloc() realloc() free()</span></h3>
-  <p class="lead">These four library functions are declared in <span class="inline-code">&lt;stdlib.h&gt;</span> and
-  they are the only way a C program can get memory from the heap while it is running. Together they are called the
-  <b>dynamic memory allocation (DMA) family</b>: three of them <i>give</i> you memory, and one <i>returns</i> it.
-  A linked list is impossible without them &mdash; every single node is born from
-  <span class="inline-code">malloc()</span> and dies with <span class="inline-code">free()</span>.</p>
-
-  <div class="tip-box"><span class="bt">Two things common to all three allocators</span>
-  They all return a <span class="inline-code">void *</span> (a generic address that must be
-  <b>typecast</b> to the type you want), and they all return <span class="inline-code">NULL</span> if the heap has
-  no space left &mdash; so the return value must always be checked before use.</div>
-
-  <!-- ---------------- malloc ---------------- -->
-  <div class="dma-card">
-    <div class="dma-head">
-      <span class="fn">malloc()</span>
-      <span class="tag">memory allocate</span>
-      <span class="hd-mean">one block &middot; uninitialised &middot; garbage values</span>
-    </div>
-    <div class="dma-body">
-      <p class="lead"><b>Description.</b> <span class="inline-code">malloc()</span> ("memory allocation") reserves a
-      <b>single continuous block</b> of the requested number of bytes on the heap and returns the address of its
-      first byte. It does <b>not</b> clear the block &mdash; whatever bits were lying there earlier remain, which we
-      call <b>garbage values</b>. This is the function used to create one node of a linked list.</p>
-      <div class="dma-grid" style="margin-top:14px;">
-        <div>
-          <ul class="spec-list">
-            <li><span class="sk">Syntax</span><span class="sv"><span class="mono">ptr = (cast-type *) malloc(byte-size);</span></span></li>
-            <li><span class="sk">Parameter</span><span class="sv">Total number of bytes required &mdash; written as
-              <span class="mono">n * sizeof(type)</span></span></li>
-            <li><span class="sk">Returns</span><span class="sv">Address of the first byte on success, <span class="mono">NULL</span> on failure</span></li>
-            <li><span class="sk">Initialises?</span><span class="sv">No &mdash; block contains garbage values</span></li>
-            <li><span class="sk">Header</span><span class="sv"><span class="mono">&lt;stdlib.h&gt;</span></span></li>
-          </ul>
-          <div class="code-block-mini" style="margin-top:12px;">
-            <div class="cb-head"><span>example &mdash; malloc()</span></div>
-            <pre class="mono" data-hl="c" style="color:#e6edf3;">int *p;
-p = (int *) malloc(5 * sizeof(int));   /* space for 5 ints */
-
-if (p == NULL) {                       /* ALWAYS check */
-    printf("Memory not available");
-    exit(1);
+</div>`;
 }
-p[0] = 10;                             /* now safe to use */
-
-/* one node of a linked list */
-struct Node *temp;
-temp = (struct Node *) malloc(sizeof(struct Node));</pre>
-          </div>
-        </div>
-        <div>
-          <div class="blk-row">
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[0]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[1]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[2]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[3]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[4]</span></div>
-          </div>
-          <p class="blk-cap">One block of 5 &times; 4 = <b>20 bytes</b>, and <span class="inline-code">p</span> holds
-          the address of the very first byte. The dashed amber cells mean <b>garbage</b> &mdash; reading
-          <span class="inline-code">p[2]</span> before writing to it gives an unpredictable number.</p>
-          <div class="warn-box"><span class="bt">Common mistakes</span>
-            <ul>
-              <li>Forgetting the <span class="inline-code">NULL</span> check and then dereferencing.</li>
-              <li>Writing <span class="inline-code">malloc(5)</span> when 5 <i>integers</i> were meant &mdash; that
-              is only 5 bytes. Always multiply by <span class="inline-code">sizeof</span>.</li>
-              <li>Assuming the new block is zero. It is not.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ---------------- calloc ---------------- -->
-  <div class="dma-card">
-    <div class="dma-head">
-      <span class="fn">calloc()</span>
-      <span class="tag">contiguous allocate</span>
-      <span class="hd-mean">n blocks &middot; initialised to zero</span>
-    </div>
-    <div class="dma-body">
-      <p class="lead"><b>Description.</b> <span class="inline-code">calloc()</span> ("contiguous allocation")
-      reserves memory for <b>n elements of a given size</b> and, unlike malloc, <b>sets every byte to zero</b>
-      before returning. It therefore takes <b>two</b> arguments instead of one. Use it whenever a clean, zeroed
-      block is convenient &mdash; for example an array of counters, or a node whose pointer fields should start as
-      NULL.</p>
-      <div class="dma-grid" style="margin-top:14px;">
-        <div>
-          <ul class="spec-list">
-            <li><span class="sk">Syntax</span><span class="sv"><span class="mono">ptr = (cast-type *) calloc(n, element-size);</span></span></li>
-            <li><span class="sk">Parameters</span><span class="sv"><b>n</b> = how many elements,
-              <b>element-size</b> = bytes in one element</span></li>
-            <li><span class="sk">Returns</span><span class="sv">Address of the first byte on success, <span class="mono">NULL</span> on failure</span></li>
-            <li><span class="sk">Initialises?</span><span class="sv">Yes &mdash; every byte is set to 0</span></li>
-            <li><span class="sk">Header</span><span class="sv"><span class="mono">&lt;stdlib.h&gt;</span></span></li>
-          </ul>
-          <div class="code-block-mini" style="margin-top:12px;">
-            <div class="cb-head"><span>example &mdash; calloc()</span></div>
-            <pre class="mono" data-hl="c" style="color:#e6edf3;">int *p;
-p = (int *) calloc(5, sizeof(int));  /* 5 ints, all zero */
-
-if (p == NULL) {
-    printf("Memory not available");
-    exit(1);
-}
-printf("%d", p[3]);   /* prints 0, guaranteed */
-
-/* these two lines reserve the same 20 bytes */
-q = (int *) malloc(5 * sizeof(int));  /* garbage */
-r = (int *) calloc(5, sizeof(int));   /* zeros   */</pre>
-          </div>
-        </div>
-        <div>
-          <div class="blk-row">
-            <div class="blk zero"><span class="bv">0</span><span class="bi">p[0]</span></div>
-            <div class="blk zero"><span class="bv">0</span><span class="bi">p[1]</span></div>
-            <div class="blk zero"><span class="bv">0</span><span class="bi">p[2]</span></div>
-            <div class="blk zero"><span class="bv">0</span><span class="bi">p[3]</span></div>
-            <div class="blk zero"><span class="bv">0</span><span class="bi">p[4]</span></div>
-          </div>
-          <p class="blk-cap">Same 20 bytes as the malloc example, but every cell is guaranteed to be
-          <b>0</b> &mdash; that is the only real difference the exam asks about.</p>
-          <div class="exam-box"><span class="bt">malloc vs calloc &mdash; exam answer</span>
-            <b>1.</b> malloc takes one argument (total bytes); calloc takes two (count, size).
-            <b>2.</b> malloc leaves garbage; calloc fills zeros.
-            <b>3.</b> calloc is therefore slightly slower, because zeroing takes time.
-            <b>4.</b> Both return <span class="inline-code">void *</span> and both are released by
-            <span class="inline-code">free()</span>.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ---------------- realloc ---------------- -->
-  <div class="dma-card">
-    <div class="dma-head">
-      <span class="fn">realloc()</span>
-      <span class="tag">re-allocate</span>
-      <span class="hd-mean">resize an existing block &middot; keeps old data</span>
-    </div>
-    <div class="dma-body">
-      <p class="lead"><b>Description.</b> <span class="inline-code">realloc()</span> ("re-allocation") changes the
-      size of a block that was <b>already</b> obtained from malloc or calloc. The old contents are preserved up to
-      the smaller of the two sizes. If the block cannot be extended where it is, the system quietly allocates a new
-      block somewhere else, <b>copies the old data across, frees the old block</b>, and returns the
-      <b>new address</b> &mdash; which is why the return value must always be collected.</p>
-      <div class="dma-grid" style="margin-top:14px;">
-        <div>
-          <ul class="spec-list">
-            <li><span class="sk">Syntax</span><span class="sv"><span class="mono">ptr = (cast-type *) realloc(ptr, new-byte-size);</span></span></li>
-            <li><span class="sk">Parameters</span><span class="sv">The <b>old pointer</b>, and the <b>new total
-              size in bytes</b></span></li>
-            <li><span class="sk">Returns</span><span class="sv">Address of the resized block (may be a
-              <b>different</b> address), or <span class="mono">NULL</span> on failure</span></li>
-            <li><span class="sk">Old data</span><span class="sv">Preserved; extra cells on growth contain garbage</span></li>
-            <li><span class="sk">Special cases</span><span class="sv"><span class="mono">realloc(NULL, n)</span> behaves like
-              <span class="mono">malloc(n)</span>; <span class="mono">realloc(p, 0)</span> behaves like
-              <span class="mono">free(p)</span></span></li>
-          </ul>
-          <div class="code-block-mini" style="margin-top:12px;">
-            <div class="cb-head"><span>example &mdash; realloc()</span></div>
-            <pre class="mono" data-hl="c" style="color:#e6edf3;">int *p = (int *) malloc(5 * sizeof(int));
-/* ... 5 slots turned out to be too few ... */
-
-p = (int *) realloc(p, 8 * sizeof(int));  /* now 8 ints */
-
-/* safer form, so the old block is not lost on failure */
-int *tmp = (int *) realloc(p, 8 * sizeof(int));
-if (tmp != NULL)
-    p = tmp;
-else
-    printf("Resize failed, old block still valid");</pre>
-          </div>
-        </div>
-        <div>
-          <p class="blk-cap" style="margin-top:0;"><b>Before &mdash;</b> 5 ints, filled by the program:</p>
-          <div class="blk-row">
-            <div class="blk kept"><span class="bv">10</span><span class="bi">p[0]</span></div>
-            <div class="blk kept"><span class="bv">20</span><span class="bi">p[1]</span></div>
-            <div class="blk kept"><span class="bv">30</span><span class="bi">p[2]</span></div>
-            <div class="blk kept"><span class="bv">40</span><span class="bi">p[3]</span></div>
-            <div class="blk kept"><span class="bv">50</span><span class="bi">p[4]</span></div>
-          </div>
-          <p class="blk-cap"><b>After</b> <span class="inline-code">realloc(p, 8 * sizeof(int))</span> &mdash; old
-          five values survive, three new cells hold garbage:</p>
-          <div class="blk-row">
-            <div class="blk kept"><span class="bv">10</span><span class="bi">p[0]</span></div>
-            <div class="blk kept"><span class="bv">20</span><span class="bi">p[1]</span></div>
-            <div class="blk kept"><span class="bv">30</span><span class="bi">p[2]</span></div>
-            <div class="blk kept"><span class="bv">40</span><span class="bi">p[3]</span></div>
-            <div class="blk kept"><span class="bv">50</span><span class="bi">p[4]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[5]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[6]</span></div>
-            <div class="blk garbage"><span class="bv">?</span><span class="bi">p[7]</span></div>
-          </div>
-          <div class="warn-box"><span class="bt">Careful</span>
-          After a successful realloc the <b>old pointer value may be invalid</b>. Never keep using a copy of the
-          old address, and never call <span class="inline-code">free()</span> on it.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ---------------- free ---------------- -->
-  <div class="dma-card">
-    <div class="dma-head">
-      <span class="fn">free()</span>
-      <span class="tag">de-allocate</span>
-      <span class="hd-mean">returns the block to the heap</span>
-    </div>
-    <div class="dma-body">
-      <p class="lead"><b>Description.</b> Heap memory is <b>not</b> released when a function ends &mdash; it stays
-      reserved until the program itself gives it back. <span class="inline-code">free()</span> does exactly that:
-      it hands one previously allocated block back to the heap so it can be reused. It returns nothing. Note that
-      <b>free() does not change the pointer</b> &mdash; the variable still holds the old address, which is now
-      illegal to use. Such a pointer is called a <b>dangling pointer</b>, and the standard habit is to set the
-      pointer to NULL immediately afterwards.</p>
-      <div class="dma-grid" style="margin-top:14px;">
-        <div>
-          <ul class="spec-list">
-            <li><span class="sk">Syntax</span><span class="sv"><span class="mono">free(ptr);</span></span></li>
-            <li><span class="sk">Parameter</span><span class="sv">A pointer previously returned by malloc, calloc or realloc</span></li>
-            <li><span class="sk">Returns</span><span class="sv">Nothing (<span class="mono">void</span>)</span></li>
-            <li><span class="sk">Effect</span><span class="sv">Block becomes available again; the pointer variable itself is unchanged</span></li>
-            <li><span class="sk">Note</span><span class="sv"><span class="mono">free(NULL)</span> is legal and does nothing</span></li>
-          </ul>
-          <div class="code-block-mini" style="margin-top:12px;">
-            <div class="cb-head"><span>example &mdash; free()</span></div>
-            <pre class="mono" data-hl="c" style="color:#e6edf3;">int *p = (int *) malloc(5 * sizeof(int));
-/* ... use p ... */
-free(p);        /* block returned to the heap  */
-p = NULL;       /* good habit: no dangling pointer */
-
-/* deleting the first node of a linked list */
-struct Node *ptr = first;
-first = first-&gt;next;   /* unlink FIRST ... */
-free(ptr);             /* ... then release the node */</pre>
-          </div>
-        </div>
-        <div>
-          <div class="blk-row">
-            <div class="blk freed"><span class="bv">&times;</span><span class="bi">freed</span></div>
-            <div class="blk freed"><span class="bv">&times;</span><span class="bi">freed</span></div>
-            <div class="blk freed"><span class="bv">&times;</span><span class="bi">freed</span></div>
-            <div class="blk freed"><span class="bv">&times;</span><span class="bi">freed</span></div>
-            <div class="blk freed"><span class="bv">&times;</span><span class="bi">freed</span></div>
-          </div>
-          <p class="blk-cap">The 20 bytes are back with the heap. <span class="inline-code">p</span> still holds
-          the same address, but that address no longer belongs to us.</p>
-          <div class="warn-box"><span class="bt">Three classic errors</span>
-            <ul>
-              <li><b>Memory leak</b> &mdash; allocating and never calling free. The block stays reserved for the
-              whole run and cannot be reused.</li>
-              <li><b>Dangling pointer</b> &mdash; using <span class="inline-code">*p</span> after
-              <span class="inline-code">free(p)</span>. Undefined behaviour, usually a crash.</li>
-              <li><b>Double free</b> &mdash; calling <span class="inline-code">free(p)</span> twice on the same
-              block. Corrupts the heap.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="sub-h">All four side by side</div>
-  <table class="compare-table">
-    <tr><th>Function</th><th>Purpose</th><th>Arguments</th><th>Initialises</th><th>Returns</th></tr>
-    <tr><td>malloc()</td><td>Allocate one block of given size</td><td>1 &mdash; total bytes</td><td>No (garbage)</td><td><span class="inline-code">void *</span> or NULL</td></tr>
-    <tr><td>calloc()</td><td>Allocate n elements of given size</td><td>2 &mdash; count, size</td><td>Yes (all zeros)</td><td><span class="inline-code">void *</span> or NULL</td></tr>
-    <tr><td>realloc()</td><td>Resize an already allocated block</td><td>2 &mdash; old pointer, new size</td><td>Keeps old data; extra cells garbage</td><td><span class="inline-code">void *</span> (maybe a new address) or NULL</td></tr>
-    <tr><td>free()</td><td>Release an allocated block</td><td>1 &mdash; the pointer</td><td>&mdash;</td><td>Nothing</td></tr>
-  </table>
-  <p class="mem-note">All four are declared in <span class="inline-code">&lt;stdlib.h&gt;</span>. In a linked list
-  program we use only two of them constantly: <span class="inline-code">malloc()</span> inside
-  <span class="inline-code">getNode()</span>, and <span class="inline-code">free()</span> inside every delete
-  function.</p>
-</section>
-
-<!-- ============================ 07 HEAP PLAYGROUND ============================ -->
-<section class="card concept-section" id="b-heaplab">
-  <div class="section-pretitle"><span class="num">07</span><div class="line"></div><span class="ic">&#9881;</span></div>
-  <h3>Heap Playground &mdash; try the four functions live</h3>
-  <p class="lead">Press the buttons in any order and watch what happens to the heap and to the pointer
-  <span class="inline-code">p</span>. Notice how malloc leaves garbage, calloc leaves zeros, realloc keeps your old
-  values, and free leaves the pointer dangling until you set it to NULL. Every action is echoed as the exact C
-  statement it represents.</p>
-
-  <div class="heap-lab">
-    <div class="hl-head">
-      <span class="hl-t">Heap &middot; live simulation</span>
-      <span class="mono" style="font-size:11px; color:var(--muted-2);">int *p;</span>
-    </div>
-    <div class="hl-btns">
-      <button class="hl-btn" data-hp="malloc">p = malloc(5 * sizeof(int))</button>
-      <button class="hl-btn" data-hp="calloc">p = calloc(5, sizeof(int))</button>
-      <button class="hl-btn" data-hp="fill">fill p[i] = (i+1)*10</button>
-      <button class="hl-btn" data-hp="grow">p = realloc(p, 8 * sizeof(int))</button>
-      <button class="hl-btn" data-hp="shrink">p = realloc(p, 3 * sizeof(int))</button>
-      <button class="hl-btn danger" data-hp="free">free(p)</button>
-      <button class="hl-btn danger" data-hp="null">p = NULL</button>
-      <button class="hl-btn soft" data-hp="reset">reset</button>
-    </div>
-    <div class="hl-stage" id="hp-stage"></div>
-    <div class="hl-status" id="hp-status"></div>
-    <div class="hl-log" id="hp-log"></div>
-  </div>
-  <div class="tip-box"><span class="bt">Try this in class</span>
-  Allocate with malloc, fill the values, then press malloc again <i>without</i> freeing &mdash; the log will show a
-  <b>memory leak</b>, because the only copy of the old address has just been overwritten. Then free and press
-  "fill" &mdash; that is a <b>dangling pointer</b> access.</div>
-</section>
-
-<!-- ============================ 08 STRUCT ============================ -->
-<section class="card concept-section" id="b-struct">
-  <div class="section-pretitle"><span class="num">08</span><div class="line"></div><span class="ic">&#9741;</span></div>
-  <h3>Structures &amp; the Self-Referential <span class="inline-code">struct Node</span></h3>
-  <p class="lead">A <b>structure</b> groups related pieces of data under one name. For a linked list, every node
-  needs to hold two things: its own <b>data</b>, and the <b>address of the next node</b>. A structure that contains
-  a pointer to <i>its own type</i> is called a <b>self-referential structure</b> &mdash; and that one idea is the
-  whole trick behind a linked list.</p>
-  <div class="concept-grid" style="margin-top:14px;">
-    <div>
-      <div class="code-block-mini">
-        <div class="cb-head"><span>struct Node &mdash; self-referential</span></div>
-        <pre class="mono" data-hl="c" style="color:#e6edf3;">struct Node {
-    int data;              /* the value stored here   */
-    struct Node *next;     /* address of the NEXT node */
-};</pre>
-      </div>
-      <p class="lead" style="margin-top:10px;"><span class="inline-code">next</span> is declared as
-      <b>struct Node *</b> &mdash; a pointer to the very same struct type it is defined inside. That is the
-      "self-reference": a Node that knows where the next Node lives.</p>
-      <p class="lead" style="margin-top:8px;">A Doubly Linked List node simply adds one more pointer,
-      <span class="inline-code">prev</span>, pointing backward:</p>
-      <div class="code-block-mini" style="margin-top:8px;">
-        <div class="cb-head"><span>struct Node &mdash; doubly linked</span></div>
-        <pre class="mono" data-hl="c" style="color:#e6edf3;">struct Node {
-    struct Node *prev;   /* address of the PREVIOUS node */
-    int data;
-    struct Node *next;   /* address of the NEXT node     */
-};</pre>
-      </div>
-    </div>
-    <div class="node-struct-diagram">
-      <div class="struct-box">
-        <div class="cell"><span class="k">DATA</span><span class="v">10</span></div>
-        <div class="cell"><span class="k">NEXT</span><span class="v" style="font-size:13px; font-family:var(--mono);">@1004</span></div>
-      </div>
-      <p class="struct-caption">One node = DATA + NEXT (the address of the node that follows it).<br>
-      This single block is created with <span class="inline-code">malloc(sizeof(struct Node))</span> and lives on the heap.</p>
-    </div>
-  </div>
-
-  <div class="sub-h">Accessing members: <span class="inline-code">.</span> vs <span class="inline-code">-&gt;</span></div>
-  <div class="op-two">
-    <div class="op-box">
-      <h5>dot &mdash; n.data</h5>
-      <p>Used when you have the <b>structure variable itself</b>. Example:
-      <span class="inline-code">struct Node n; n.data = 10;</span></p>
-    </div>
-    <div class="op-box">
-      <h5>arrow &mdash; p-&gt;data</h5>
-      <p>Used when you have a <b>pointer to</b> the structure. Since every node in a linked list is reached through
-      a pointer, this is the operator we use everywhere.
-      <span class="inline-code">p-&gt;data</span> is just shorthand for <span class="inline-code">(*p).data</span>.</p>
-    </div>
-  </div>
-
-  <div class="sub-h">Everything on this page, in one function</div>
-  <p class="lead"><span class="inline-code">getNode()</span> is where memory, pointers, malloc and structures all
-  meet. Read it line by line &mdash; there is nothing in it you have not already seen above.</p>
-  <div class="code-block-mini" style="margin-top:12px;">
-    <div class="cb-head"><span>getNode() &mdash; the birth of one node</span></div>
-    <pre class="mono" data-hl="c" style="color:#e6edf3;">struct Node* getNode() {
-    struct Node *temp;                                    /* 1. a pointer, pointing nowhere yet   */
-    temp = (struct Node *) malloc(sizeof(struct Node));   /* 2. one node's worth of heap memory   */
-    if (temp == NULL) { printf("No memory"); exit(1); }   /* 3. always check                      */
-    printf("Enter data: ");
-    scanf("%d", &amp;temp-&gt;data);                             /* 4. fill the DATA field               */
-    temp-&gt;next = NULL;                                    /* 5. it links to nothing so far        */
-    return temp;                                          /* 6. hand the address back             */
-}</pre>
-  </div>
-</section>
-
-<!-- ============================ 09 BRIDGE ============================ -->
-<section class="card concept-section" id="b-bridge">
-  <div class="section-pretitle"><span class="num">09</span><div class="line"></div><span class="ic">&#8594;</span></div>
-  <h3>Putting It Together &mdash; from Basics to a Linked List</h3>
-  <p class="lead">Before moving to the next tab, make sure each of these lines is now completely obvious. The whole
-  of Unit III is built from nothing more than this table.</p>
-  <table class="map-table">
-    <tr><th>Line of code</th><th>Which basic concept it is</th></tr>
-    <tr><td>struct Node { int data; struct Node *next; };</td><td>Structure + self-reference &mdash; a box that carries data <i>and</i> an address</td></tr>
-    <tr><td>struct Node *first = NULL;</td><td>Pointer + NULL &mdash; an empty list is just a head pointer pointing nowhere</td></tr>
-    <tr><td>malloc(sizeof(struct Node))</td><td>Dynamic memory &mdash; one new node created on the heap at run time</td></tr>
-    <tr><td>temp-&gt;data = 10;</td><td>Arrow operator &mdash; reaching a member through a pointer</td></tr>
-    <tr><td>temp-&gt;next = first;</td><td>Storing an address inside a node &mdash; this single assignment <i>is</i> the link</td></tr>
-    <tr><td>while (ptr != NULL) ptr = ptr-&gt;next;</td><td>Sequential access &mdash; walking the list because there is no index</td></tr>
-    <tr><td>free(ptr);</td><td>De-allocation &mdash; returning a deleted node's memory to the heap</td></tr>
-  </table>
-  <div class="tip-box"><span class="bt">Next</span>
-  Move to the <b>Singly Linked List</b> tab. Every function there &mdash; getNode, createll, insertbeg, insertend,
-  insertbet, deletebeg, deleteend, deletebt, display &mdash; can be stepped through one algorithm line at a time,
-  with the exact link that changes highlighted on the diagram.</div>
-</section>
-`;
-
 
 /* ===================== LAB PANEL (SLL / DLL / CLL) ===================== */
 
@@ -2842,6 +2627,7 @@ function labPanelHTML(type){
           <div class="inputs-row" id="${type}-inputs" style="margin:0; padding:0; border:none;"></div>
           <div class="btn-row" style="margin-top:12px; padding-top:12px;">
             <button class="btn btn-primary" id="${type}-visualise">&#9654; Visualise</button>
+            <button class="btn btn-play" id="${type}-play">&#9654; Auto-play</button>
             <button class="btn" id="${type}-prev">&#8592; Prev</button>
             <button class="btn" id="${type}-next">Next &#8594;</button>
             <button class="btn" id="${type}-reset">&#8635; Reset</button>
@@ -2949,6 +2735,8 @@ class LinkedListLab {
     this.result = null;
     this.inputs = { value: 40, afterVal: 20, searchVal: 20, datas: "10, 20, 30" };
     this.view = "algo";
+    this.playing = false;
+    this.playTimer = null;
     this.els = {
       pills: document.getElementById(`${type}-op-pills`),
       inputsRow: document.getElementById(`${type}-inputs`),
@@ -2960,6 +2748,7 @@ class LinkedListLab {
       codetitle: document.getElementById(`${type}-codetitle`),
       copyBtn: document.getElementById(`${type}-copycode`),
       visBtn: document.getElementById(`${type}-visualise`),
+      playBtn: document.getElementById(`${type}-play`),
       prevBtn: document.getElementById(`${type}-prev`),
       nextBtn: document.getElementById(`${type}-next`),
       resetBtn: document.getElementById(`${type}-reset`),
@@ -2985,6 +2774,7 @@ class LinkedListLab {
       btn.addEventListener("click", () => this.selectOp(btn.dataset.op));
     });
     this.els.visBtn.addEventListener("click", () => this.visualise());
+    if (this.els.playBtn) this.els.playBtn.addEventListener("click", () => this.togglePlay());
     this.els.prevBtn.addEventListener("click", () => this.prev());
     this.els.nextBtn.addEventListener("click", () => this.next());
     this.els.resetBtn.addEventListener("click", () => this.reset(false));
@@ -3032,6 +2822,7 @@ class LinkedListLab {
     const d4 = g(`${this.type}-in-search`); if (d4) this.inputs.searchVal = d4.value;
   }
   visualise(){
+    this.stopPlay();
     this.readInputs();
     const num = (x) => { const n = parseInt(x, 10); return Number.isFinite(n) ? n : 0; };
     const parseDatas = (s, fallback) => {
@@ -3054,7 +2845,29 @@ class LinkedListLab {
   }
   prev(){ if (this.step > 0){ this.step--; this.renderAll(); } }
   goto(i){ if (i >= 0 && i < this.frames.length){ this.step = i; this.renderAll(); } }
-  reset(silent){ this.frames = []; this.step = -1; this.result = null; if (!silent){ resetAddrMap(); this.renderAll(); } }
+  reset(silent){ this.stopPlay(); this.frames = []; this.step = -1; this.result = null; if (!silent){ resetAddrMap(); this.renderAll(); } }
+  stopPlay(){
+    this.playing = false;
+    if (this.playTimer){ clearTimeout(this.playTimer); this.playTimer = null; }
+    if (this.els.playBtn){ this.els.playBtn.classList.remove("playing"); this.els.playBtn.innerHTML = "&#9654; Auto-play"; }
+  }
+  togglePlay(){
+    if (this.playing){ this.stopPlay(); return; }
+    if (this.step < 0) this.visualise();
+    if (!this.frames.length) return;
+    this.playing = true;
+    if (this.els.playBtn){ this.els.playBtn.classList.add("playing"); this.els.playBtn.textContent = "Pause"; }
+    const tick = () => {
+      if (!this.playing) return;
+      if (this.step < this.frames.length - 1){
+        this.next();
+        this.playTimer = setTimeout(tick, 1100);
+      } else {
+        this.stopPlay();
+      }
+    };
+    this.playTimer = setTimeout(tick, 400);
+  }
   renderAll(){
     const frame = this.currentFrame();
     const prevFrame = this.step > 0 ? this.frames[this.step - 1] : frame;
@@ -3102,9 +2915,27 @@ function programsPanelHTML(){
         <button class="btn btn-ghost" id="prog-copy">&#128203; Copy code</button>
       </div>
       <div class="code-block" id="prog-code"></div>
-      <div class="run-note"><b>How to run:</b> paste this into a <span class="inline-code">.c</span> file and compile with
-      <span class="inline-code">gcc file.c -o file &amp;&amp; ./file</span>, or paste it into any online C compiler. No dependencies beyond
-      <span class="inline-code">stdio.h</span> and <span class="inline-code">stdlib.h</span> &mdash; it is a plain, standard, menu-driven console program.</div>
+      <div class="run-note"><b>How to run on a real compiler:</b> paste this into a <span class="inline-code">.c</span> file and compile with
+      <span class="inline-code">gcc file.c -o file &amp;&amp; ./file</span>. No dependencies beyond
+      <span class="inline-code">stdio.h</span> and <span class="inline-code">stdlib.h</span>.</div>
+    </div>
+
+    <div class="card theory-card" style="margin-top:18px;">
+      <span class="kicker">Live run</span>
+      <h2>Run the program here</h2>
+      <p class="lead big" style="margin-top:8px;">This is the same menu-driven C program. Type a choice (then data when asked) and press Enter.
+      The list on the right is the real <span class="inline-code">first</span> pointer of the running program — malloc, insert, delete all happen live.</p>
+    </div>
+    <div class="run-grid">
+      <div class="term">
+        <div class="term-head"><span id="run-term-title">sll.c — running</span><button class="btn-copy" id="run-restart" type="button">Restart</button></div>
+        <div class="term-out" id="run-out"></div>
+        <div class="term-in"><span class="prompt">&gt;</span><input id="run-stdin" autocomplete="off" spellcheck="false" placeholder="type a number, then Enter"></div>
+      </div>
+      <div class="run-side">
+        <div class="run-list-box" id="run-viz"></div>
+        <p class="run-hint">Try: <span class="inline-code">1</span> (create) → number of nodes <span class="inline-code">3</span> → data <span class="inline-code">10</span>, <span class="inline-code">20</span>, <span class="inline-code">30</span> → <span class="inline-code">2</span> (display). Then insert / delete and watch the heap boxes move.</p>
+      </div>
     </div>
   `;
 }
@@ -3117,6 +2948,9 @@ function initProgramsTab(){
     document.getElementById("prog-title").textContent = titles[key];
     document.getElementById("prog-code").innerHTML = renderCodeHTML(codeMap[key]);
     document.querySelectorAll(".prog-tab").forEach((b) => b.classList.toggle("active", b.dataset.prog === key));
+    const tt = document.getElementById("run-term-title");
+    if (tt) tt.textContent = key + ".c — running";
+    if (LIVE_RUN) LIVE_RUN.setType(key);
   };
   document.querySelectorAll(".prog-tab").forEach((b) => b.addEventListener("click", () => show(b.dataset.prog)));
   document.getElementById("prog-copy").addEventListener("click", async () => {
@@ -3127,213 +2961,10 @@ function initProgramsTab(){
     setTimeout(() => { btn.innerHTML = "&#128203; Copy code"; }, 1500);
   });
   show("sll");
+  LIVE_RUN = new MenuRuntime();
+  const rst = document.getElementById("run-restart");
+  if (rst) rst.addEventListener("click", () => { if (LIVE_RUN) LIVE_RUN.setType(LIVE_RUN.type); });
 }
-
-
-/* ===================== BASICS TAB — HEAP PLAYGROUND =====================
-   A tiny simulation of the heap so malloc / calloc / realloc / free can be
-   demonstrated live in class: garbage vs zeros, data preserved across a
-   resize, dangling pointers, memory leaks and double free.
-   ======================================================================= */
-
-const HP = { cells: null, addr: null, freed: false, nextAddr: 2000, log: [] };
-
-function hpGarbage(){
-  const pool = [7431, 92, -18, 24567, 3, -9021, 118, 65535, 42, -7];
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-function hpNewAddr(){ const a = HP.nextAddr; HP.nextAddr += 64; return "@" + a; }
-function hpLog(text, kind){ HP.log.push({ text, kind: kind || "" }); if (HP.log.length > 40) HP.log.shift(); }
-
-function hpReset(silent){
-  HP.cells = null; HP.addr = null; HP.freed = false; HP.nextAddr = 2000;
-  HP.log = [];
-  if (!silent) hpLog("/* reset — int *p;  (p is an uninitialised pointer) */", "pf");
-  hpRender();
-}
-
-function hpRender(){
-  const stage = document.getElementById("hp-stage");
-  const statusEl = document.getElementById("hp-status");
-  const logEl = document.getElementById("hp-log");
-  if (!stage) return;
-
-  /* ---- pointer row ---- */
-  let ptrCls = "pchip nullp", ptrTxt = "p = NULL";
-  if (HP.addr && HP.freed){ ptrCls = "pchip dangling"; ptrTxt = "p = " + HP.addr + "  (dangling!)"; }
-  else if (HP.addr){ ptrCls = "pchip"; ptrTxt = "p = " + HP.addr; }
-  else if (HP.cells === null && HP.log.length === 0){ ptrTxt = "p = ?  (garbage)"; }
-
-  let html = '<div class="hl-ptr">' +
-    '<span class="plab">pointer variable (stack)</span>' +
-    '<span class="' + ptrCls + '">' + ptrTxt + '</span>';
-  if (HP.cells) html += '<span class="parrow">&rarr;</span><span class="plab">block on the heap</span>';
-  html += "</div>";
-
-  /* ---- heap box ---- */
-  html += '<div class="hl-heapbox"><div class="hb-t">Heap</div>';
-  if (!HP.cells){
-    html += '<p class="hl-empty">Nothing allocated yet — press a malloc or calloc button above.</p>';
-  } else {
-    html += '<div class="blk-row">';
-    HP.cells.forEach((c, i) => {
-      const cls = HP.freed ? "freed" : c.state;
-      const val = HP.freed ? "&times;" : (c.state === "garbage" ? "?" : c.v);
-      html += '<div class="blk ' + cls + '"><span class="bv">' + val + '</span><span class="bi">p[' + i + ']</span></div>';
-    });
-    html += "</div>";
-    const bytes = HP.cells.length * 4;
-    html += '<p class="blk-cap">' + HP.cells.length + ' &times; sizeof(int) = <b>' + bytes +
-            ' bytes</b>, starting at ' + HP.addr + (HP.freed ? " &mdash; <b>already returned to the heap</b>" : "") + "</p>";
-  }
-  html += "</div>";
-  stage.innerHTML = html;
-
-  /* ---- status ---- */
-  let st;
-  if (!HP.cells && !HP.addr) st = "<b>State:</b> p points nowhere. Any <span class='inline-code'>*p</span> or <span class='inline-code'>p[i]</span> access right now would crash the program.";
-  else if (HP.freed) st = "<b>State:</b> the block is freed but p still holds " + HP.addr +
-       " &mdash; this is a <b>dangling pointer</b>. Fix it with <span class='inline-code'>p = NULL;</span>";
-  else {
-    const g = HP.cells.filter((c) => c.state === "garbage").length;
-    st = "<b>State:</b> p holds " + HP.addr + " and owns " + HP.cells.length + " int slots" +
-         (g ? " &mdash; " + g + " of them still contain <b>garbage</b>." : " &mdash; all slots hold known values.");
-  }
-  statusEl.innerHTML = st;
-
-  /* ---- log ---- */
-  logEl.innerHTML = HP.log.map((l) => '<div class="lg ' + l.kind + '">' + l.text + "</div>").join("");
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-function hpAllocate(kind, n){
-  if (HP.cells && !HP.freed){
-    hpLog("/* WARNING — memory leak! The block at " + HP.addr + " is still allocated, and", "warn");
-    hpLog("   its only address is about to be overwritten. It can never be freed now. */", "warn");
-  }
-  HP.addr = hpNewAddr();
-  HP.freed = false;
-  HP.cells = [];
-  for (let i = 0; i < n; i++){
-    HP.cells.push(kind === "calloc" ? { v: 0, state: "zero" } : { v: hpGarbage(), state: "garbage" });
-  }
-  if (kind === "calloc"){
-    hpLog("p = (int *) calloc(" + n + ", sizeof(int));", "ok");
-    hpLog("/* " + (n * 4) + " bytes at " + HP.addr + ", every byte set to 0 */", "pf");
-  } else {
-    hpLog("p = (int *) malloc(" + n + " * sizeof(int));", "ok");
-    hpLog("/* " + (n * 4) + " bytes at " + HP.addr + ", contents NOT initialised (garbage) */", "pf");
-  }
-}
-
-function hpAction(what){
-  switch (what){
-    case "malloc": hpAllocate("malloc", 5); break;
-    case "calloc": hpAllocate("calloc", 5); break;
-
-    case "fill":
-      if (!HP.cells || !HP.addr){
-        hpLog("for (i = 0; i < 5; i++) p[i] = (i+1) * 10;", "err");
-        hpLog("/* ERROR — p is NULL. Dereferencing a NULL pointer crashes the program. */", "err");
-        break;
-      }
-      if (HP.freed){
-        hpLog("for (i = 0; i < 5; i++) p[i] = (i+1) * 10;", "err");
-        hpLog("/* ERROR — dangling pointer. This block was already freed; writing to it is", "err");
-        hpLog("   undefined behaviour and may corrupt the heap. */", "err");
-        break;
-      }
-      HP.cells.forEach((c, i) => { c.v = (i + 1) * 10; c.state = "kept"; });
-      hpLog("for (i = 0; i < " + HP.cells.length + "; i++) p[i] = (i+1) * 10;", "ok");
-      hpLog("/* every slot now holds a known value — no garbage left */", "pf");
-      break;
-
-    case "grow":
-    case "shrink": {
-      const n = what === "grow" ? 8 : 3;
-      if (!HP.cells || !HP.addr){
-        hpLog("p = (int *) realloc(p, " + n + " * sizeof(int));", "warn");
-        hpLog("/* p was NULL, so realloc(NULL, n) simply behaves like malloc(n) */", "warn");
-        hpAllocate("malloc", n);
-        break;
-      }
-      if (HP.freed){
-        hpLog("p = (int *) realloc(p, " + n + " * sizeof(int));", "err");
-        hpLog("/* ERROR — this block was already freed. Passing a dangling pointer to", "err");
-        hpLog("   realloc() is undefined behaviour. */", "err");
-        break;
-      }
-      const old = HP.cells, oldAddr = HP.addr, oldLen = old.length;
-      const next = [];
-      for (let i = 0; i < n; i++){
-        next.push(i < oldLen ? { v: old[i].v, state: old[i].state } : { v: hpGarbage(), state: "garbage" });
-      }
-      HP.cells = next;
-      hpLog("p = (int *) realloc(p, " + n + " * sizeof(int));", "ok");
-      if (what === "grow"){
-        HP.addr = hpNewAddr();
-        hpLog("/* not enough room after " + oldAddr + ", so the block MOVED to " + HP.addr + ":", "pf");
-        hpLog("   old " + oldLen + " values were copied across, the old block was freed automatically,", "pf");
-        hpLog("   and the " + (n - oldLen) + " new slots contain garbage. Note the new address! */", "pf");
-      } else {
-        hpLog("/* block shrunk in place at " + HP.addr + " — first " + n + " values kept,", "pf");
-        hpLog("   the remaining " + (oldLen - n) + " slots are gone. */", "pf");
-      }
-      break;
-    }
-
-    case "free":
-      if (!HP.addr){
-        hpLog("free(p);", "warn");
-        hpLog("/* p is NULL — free(NULL) is perfectly legal and simply does nothing. */", "warn");
-        break;
-      }
-      if (HP.freed){
-        hpLog("free(p);", "err");
-        hpLog("/* ERROR — double free! This block was already returned to the heap. */", "err");
-        break;
-      }
-      HP.freed = true;
-      hpLog("free(p);", "ok");
-      hpLog("/* " + (HP.cells.length * 4) + " bytes at " + HP.addr + " returned to the heap.", "pf");
-      hpLog("   Note that p itself is UNCHANGED — it is now a dangling pointer. */", "pf");
-      break;
-
-    case "null":
-      if (HP.cells && !HP.freed){
-        hpLog("p = NULL;", "warn");
-        hpLog("/* WARNING — memory leak! The block at " + HP.addr + " was never freed and its", "warn");
-        hpLog("   address has just been thrown away. free() first, then set p = NULL. */", "warn");
-      } else {
-        hpLog("p = NULL;", "ok");
-        hpLog("/* p is now safe — no dangling address left behind. */", "pf");
-      }
-      HP.cells = null; HP.addr = null; HP.freed = false;
-      break;
-
-    case "reset": hpReset(); return;
-  }
-  hpRender();
-}
-
-function initBasicsExtras(){
-  const wrap = document.getElementById("panel-basics");
-  if (!wrap) return;
-  wrap.querySelectorAll("[data-hp]").forEach((b) => {
-    b.addEventListener("click", () => hpAction(b.dataset.hp));
-  });
-  /* smooth in-page jumps for the quick-nav chips */
-  wrap.querySelectorAll(".qn-chip").forEach((a) => {
-    a.addEventListener("click", (e) => {
-      const el = document.querySelector(a.getAttribute("href"));
-      if (el){ e.preventDefault(); el.scrollIntoView({ behavior: "smooth", block: "start" }); }
-    });
-  });
-  hpReset(true);
-  hpLog("/* int *p;  — press a button above to allocate memory on the heap */", "pf");
-  hpRender();
-}
-
 
 /* ===================== TOP-LEVEL TAB SWITCHING ===================== */
 
@@ -3350,11 +2981,924 @@ function initTabs(){
   });
 }
 
+function initBasicsPuzzle(){
+  const PUZZLES = [
+    {
+      short: "Pointers",
+      title: "Pointer names",
+      question: "Har pointer ka sahi kaam drag karke match karo.",
+      type: "match",
+      hint: "first = list ka start, temp = naya node, ptr = walk karte waqt.",
+      pairs: [
+        { slot: "first", accept: "List ka head — pehla node" },
+        { slot: "temp", accept: "Naya node banate waqt" },
+        { slot: "ptr", accept: "Traverse / walk karte waqt" },
+      ],
+      options: ["List ka head — pehla node", "Naya node banate waqt", "Traverse / walk karte waqt", "Hamesha NULL", "Sirf free() ke liye"],
+    },
+    {
+      short: "NULL",
+      title: "Last node",
+      question: "Singly linked list mein last node ka next field kya hona chahiye?",
+      type: "single",
+      slotLabel: "last->next =",
+      accept: "NULL",
+      options: ["NULL", "first", "malloc()", "0", "next"],
+    },
+    {
+      short: ". vs ->",
+      title: "Dot vs Arrow",
+      question: "Operator ko sahi situation se match karo.",
+      type: "match",
+      hint: "Struct variable khud hai → dot (.). Pointer hai → arrow (->).",
+      pairs: [
+        { slot: "nodeVar.data", accept: "Struct variable — dot (.)" },
+        { slot: "ptr->data", accept: "Pointer variable — arrow (->)" },
+      ],
+      options: ["Struct variable — dot (.)", "Pointer variable — arrow (->)", "Sirf arrays mein", "Kabhi use nahi"],
+    },
+    {
+      short: "insertbeg",
+      title: "insertbeg() order",
+      question: "insertbeg() ke steps ko sahi order mein rakho (1 se 4).",
+      type: "order",
+      hint: "Pehle node banao, phir link karo, phir first update.",
+      correct: ["temp = getNode()", "temp->next = first", "first = temp", "return first"],
+      options: ["temp = getNode()", "temp->next = first", "first = temp", "return first", "free(temp)", "ptr = first"],
+    },
+    {
+      short: "Heap",
+      title: "malloc / calloc / free",
+      question: "Har memory function ko uski definition se match karo.",
+      type: "match",
+      pairs: [
+        { slot: "malloc()", accept: "Garbage values allowed — sirf allocate" },
+        { slot: "calloc()", accept: "Saari bytes zero se start" },
+        { slot: "free()", accept: "Memory wapas OS ko do" },
+      ],
+      options: ["Garbage values allowed — sirf allocate", "Saari bytes zero se start", "Memory wapas OS ko do", "Block ka size badhao"],
+    },
+    {
+      short: "Chain",
+      title: "Build 10 → 20 → 30",
+      question: "Values ko sahi order mein rakho: first → 10 → 20 → 30 → NULL",
+      type: "order",
+      correct: ["10", "20", "30", "NULL"],
+      options: ["10", "20", "30", "NULL", "40", "99"],
+    },
+    {
+      short: "Empty",
+      title: "Empty list",
+      question: "Jab list khali hai (koi node nahi), first kya equal hota hai?",
+      type: "single",
+      slotLabel: "first =",
+      accept: "NULL",
+      options: ["NULL", "0", "malloc()", "temp", "-1"],
+    },
+    {
+      short: "deletebeg",
+      title: "deletebeg() first line",
+      question: "deletebeg() mein sabse pehli line kaunsi chalti hai?",
+      type: "single",
+      slotLabel: "Pehli line:",
+      accept: "ptr = first",
+      hint: "Pehle purana head save karo, phir first aage badhao, phir free.",
+      options: ["ptr = first", "free(first)", "first = NULL", "return temp"],
+    },
+  ];
+
+  const learnWrap = document.getElementById("bs-learn-wrap");
+  const puzzleWrap = document.getElementById("bs-puzzle-wrap");
+  const modeBar = document.getElementById("bs-mode-bar");
+  if (!puzzleWrap || !modeBar || !learnWrap) return;
+
+  modeBar.querySelectorAll(".bs-mode").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.mode;
+      modeBar.querySelectorAll(".bs-mode").forEach((b) => b.classList.toggle("on", b === btn));
+      learnWrap.hidden = mode !== "learn";
+      puzzleWrap.hidden = mode !== "puzzle";
+    });
+  });
+
+  let pzIdx = 0;
+  let score = 0;
+  const solved = new Set();
+  let dragChip = null;
+
+  const els = {
+    list: document.getElementById("bs-pz-list"),
+    title: document.getElementById("bs-pz-title"),
+    q: document.getElementById("bs-pz-q"),
+    target: document.getElementById("bs-pz-target"),
+    chips: document.getElementById("bs-pz-chips"),
+    feedback: document.getElementById("bs-pz-feedback"),
+    score: document.getElementById("bs-pz-score"),
+    reset: document.getElementById("bs-pz-reset"),
+    next: document.getElementById("bs-pz-next"),
+  };
+  if (!els.chips) return;
+
+  const shuffle = (arr) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
+  const showFeedback = (ok, msg) => {
+    els.feedback.className = "bs-pz-feedback show " + (ok ? "ok" : "bad");
+    els.feedback.textContent = msg;
+    if (!ok) setTimeout(() => { if (!els.feedback.classList.contains("ok")) els.feedback.classList.remove("show"); }, 2400);
+  };
+
+  const makeChip = (text, id) => {
+    const el = document.createElement("div");
+    el.className = "bs-pz-chip";
+    el.draggable = true;
+    el.textContent = text;
+    el.dataset.val = text;
+    el.dataset.chipId = id;
+    el.addEventListener("dragstart", (e) => {
+      dragChip = el;
+      el.classList.add("dragging");
+      e.dataTransfer.setData("text/plain", text);
+      e.dataTransfer.effectAllowed = "move";
+    });
+    el.addEventListener("dragend", () => {
+      el.classList.remove("dragging");
+      dragChip = null;
+    });
+    return el;
+  };
+
+  const bindDropZone = (zone, onDrop) => {
+    zone.addEventListener("dragover", (e) => { e.preventDefault(); zone.classList.add("drag-over"); });
+    zone.addEventListener("dragleave", () => zone.classList.remove("drag-over"));
+    zone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+      if (!dragChip || dragChip.classList.contains("used")) return;
+      onDrop(zone, dragChip);
+    });
+  };
+
+  const checkComplete = (pz) => {
+    if (pz.type === "order") {
+      const slots = els.target.querySelectorAll(".bs-pz-slot");
+      for (let i = 0; i < slots.length; i++) {
+        const filled = slots[i].querySelector(".bs-pz-chip");
+        if (!filled || filled.dataset.val !== pz.correct[i]) return false;
+      }
+      return true;
+    }
+    if (pz.type === "single") {
+      const slot = els.target.querySelector(".bs-pz-slot");
+      return slot && slot.classList.contains("ok");
+    }
+    if (pz.type === "match") {
+      return [...els.target.querySelectorAll(".bs-pz-slot")].every((s) => s.classList.contains("ok"));
+    }
+    return false;
+  };
+
+  const onPuzzleComplete = (pz) => {
+    if (!solved.has(pzIdx)) {
+      solved.add(pzIdx);
+      score++;
+      els.score.textContent = "Score: " + score + " / " + PUZZLES.length;
+    }
+    showFeedback(true, "✓ Sab sahi! Badhiya — puzzle complete.");
+    els.next.disabled = false;
+    paintList();
+  };
+
+  const paintList = () => {
+    els.list.innerHTML = PUZZLES.map((p, i) =>
+      `<button type="button" class="bs-pz-pick ${i === pzIdx ? "on" : ""} ${solved.has(i) ? "done" : ""}" data-i="${i}">${i + 1}. ${p.short || p.title}</button>`
+    ).join("");
+    els.list.querySelectorAll(".bs-pz-pick").forEach((b) => {
+      b.addEventListener("click", () => { pzIdx = +b.dataset.i; renderPuzzle(); });
+    });
+  };
+
+  const renderPuzzle = () => {
+    const pz = PUZZLES[pzIdx];
+    els.title.textContent = pz.title;
+    els.q.textContent = pz.question;
+    els.feedback.classList.remove("show", "ok", "bad", "hint");
+    els.next.disabled = true;
+    els.target.innerHTML = "";
+    els.chips.innerHTML = "";
+    paintList();
+
+    if (pz.type === "match") {
+      const wrap = document.createElement("div");
+      wrap.className = "bs-pz-slots";
+      pz.pairs.forEach((pair) => {
+        const slot = document.createElement("div");
+        slot.className = "bs-pz-slot";
+        slot.dataset.accept = pair.accept;
+        slot.innerHTML = `<span class="sl-lbl">${pair.slot}</span><div class="sl-body"></div>`;
+        const body = slot.querySelector(".sl-body");
+        bindDropZone(slot, (zone, chip) => {
+          if (zone.classList.contains("ok")) return;
+          const val = chip.dataset.val;
+          if (val === pair.accept) {
+            zone.classList.remove("bad");
+            zone.classList.add("ok");
+            body.innerHTML = "";
+            const locked = chip.cloneNode(true);
+            locked.draggable = false;
+            locked.classList.remove("dragging");
+            body.appendChild(locked);
+            chip.classList.add("used");
+            showFeedback(true, "✓ Sahi!");
+            if (checkComplete(pz)) onPuzzleComplete(pz);
+          } else {
+            zone.classList.add("bad");
+            showFeedback(false, "✗ Galat — ye option yahan fit nahi. Dobara try karo.");
+            setTimeout(() => zone.classList.remove("bad"), 650);
+          }
+        });
+        wrap.appendChild(slot);
+      });
+      els.target.appendChild(wrap);
+    } else if (pz.type === "single") {
+      const wrap = document.createElement("div");
+      wrap.className = "bs-pz-slots";
+      const slot = document.createElement("div");
+      slot.className = "bs-pz-slot";
+      slot.dataset.accept = pz.accept;
+      slot.innerHTML = `<span class="sl-lbl">${pz.slotLabel}</span><div class="sl-body"></div>`;
+      const body = slot.querySelector(".sl-body");
+      bindDropZone(slot, (zone, chip) => {
+        if (zone.classList.contains("ok")) return;
+        const val = chip.dataset.val;
+        if (val === pz.accept) {
+          zone.classList.add("ok");
+          body.innerHTML = "";
+          const locked = chip.cloneNode(true);
+          locked.draggable = false;
+          body.appendChild(locked);
+          chip.classList.add("used");
+          showFeedback(true, "✓ Sahi! Bilkul theek jawab.");
+          onPuzzleComplete(pz);
+        } else {
+          zone.classList.add("bad");
+          showFeedback(false, "✗ Galat — linked list mein yahan kya hona chahiye?");
+          setTimeout(() => zone.classList.remove("bad"), 650);
+        }
+      });
+      wrap.appendChild(slot);
+      els.target.appendChild(wrap);
+    } else if (pz.type === "order") {
+      const wrap = document.createElement("div");
+      wrap.className = "bs-pz-order";
+      pz.correct.forEach((_, i) => {
+        const row = document.createElement("div");
+        row.className = "bs-pz-ordrow";
+        const num = document.createElement("span");
+        num.className = "ord-n";
+        num.textContent = i + 1;
+        const slot = document.createElement("div");
+        slot.className = "bs-pz-slot";
+        slot.style.flex = "1";
+        slot.dataset.index = i;
+        slot.dataset.accept = pz.correct[i];
+        slot.innerHTML = `<div class="sl-body"></div>`;
+        bindDropZone(slot, (zone, chip) => {
+          if (zone.classList.contains("ok")) return;
+          const val = chip.dataset.val;
+          const idx = +zone.dataset.index;
+          if (val === pz.correct[idx]) {
+            zone.classList.add("ok");
+            const b = zone.querySelector(".sl-body");
+            b.innerHTML = "";
+            const locked = chip.cloneNode(true);
+            locked.draggable = false;
+            b.appendChild(locked);
+            chip.classList.add("used");
+            showFeedback(true, "✓ Sahi! Step " + (idx + 1) + " theek hai.");
+            if (checkComplete(pz)) onPuzzleComplete(pz);
+          } else {
+            zone.classList.add("bad");
+            showFeedback(false, "✗ Galat order — pehle wale steps yaad karo.");
+            setTimeout(() => zone.classList.remove("bad"), 650);
+          }
+        });
+        row.appendChild(num);
+        row.appendChild(slot);
+        wrap.appendChild(row);
+      });
+      els.target.appendChild(wrap);
+    }
+
+    shuffle(pz.options).forEach((opt, i) => {
+      els.chips.appendChild(makeChip(opt, pzIdx + "-" + i));
+    });
+
+    if (pz.hint) {
+      els.feedback.className = "bs-pz-feedback show hint";
+      els.feedback.textContent = "Hint: " + pz.hint;
+    }
+  };
+
+  els.reset.addEventListener("click", () => renderPuzzle());
+  els.next.addEventListener("click", () => {
+    if (pzIdx < PUZZLES.length - 1) { pzIdx++; renderPuzzle(); }
+    else {
+      els.feedback.className = "bs-pz-feedback show ok";
+      els.feedback.textContent = "🎉 Saare puzzles complete! Ab Singly tab par jao aur visualizer try karo.";
+      els.next.disabled = true;
+    }
+  });
+
+  els.score.textContent = "Score: " + score + " / " + PUZZLES.length;
+  renderPuzzle();
+}
+
+function initBasicsTab(){
+  const blk = (addr, val, o) => {
+    o = o || {};
+    const cls = ["blk", o.on ? "on" : "", o.vacant ? "vacant" : "", o.write ? "write" : "", o.ptr ? "blk-ptr" : ""].filter(Boolean).join(" ");
+    return `<div class="${cls}">
+      ${o.name ? `<div class="h-name">${o.name}</div>` : ""}
+      <div class="h-body">${o.vacant ? "—" : (val == null ? "—" : val)}</div>
+      <div class="h-addr">@${addr}</div>
+    </div>`;
+  };
+  const row = (items) => `<div class="street">${items.join("")}</div>`;
+  const RAM_POS = {
+    1000: [4, 8], 1248: [38, 5], 2088: [12, 50], 3512: [50, 46],
+    4100: [28, 26], 5204: [62, 10], 2000: [4, 70], 3000: [44, 70],
+  };
+  const ramBoard = (cells, cap) => {
+    const dots = [[14,36],[32,10],[44,60],[86,38],[26,24],[60,32],[82,66],[50,86],[4,46],[70,78]]
+      .map((p) => `<span class="ram-dot" style="left:${p[0]}%;top:${p[1]}%"></span>`).join("");
+    const chips = cells.map((c, i) => {
+      const o = c.o || {};
+      const pos = RAM_POS[c.addr] || [10 + (i * 18) % 70, 10 + (i * 21) % 70];
+      const cls = ["ram-cell", o.on ? "on" : "", o.vacant ? "vacant" : "", o.write ? "write" : "", o.ptr ? "ptr" : ""].filter(Boolean).join(" ");
+      const val = o.vacant ? "—" : (c.val == null ? "—" : c.val);
+      const nm = o.name ? `<span class="rc-name">${o.name}</span>` : `<span class="rc-name ghostn">free</span>`;
+      return `<button type="button" class="${cls}" style="left:${pos[0]}%;top:${pos[1]}%;animation-delay:${i * 0.08}s" data-addr="${c.addr}" data-name="${o.name || ""}" data-val="${val}">
+        ${nm}<span class="rc-body">${val}</span><span class="rc-addr">@${c.addr}</span><span class="rc-sz">4 bytes</span>
+      </button>`;
+    }).join("");
+    return `<div class="ramchip">
+      <div class="ramchip-bar"><b>RAM</b><span>scattered blocks · not an array</span></div>
+      <div class="ramchip-pad">${dots}${chips}</div>
+      <div class="ram-read">${cap || "<span class='rr-k'>inspect</span>Click any block — name, value, address"}</div>
+    </div>`;
+  };
+  const arrow = (lab) => `<div class="arrow-col"><svg class="arrow-draw" viewBox="0 0 110 36"><line x1="4" y1="18" x2="88" y2="18"/><polygon points="88,18 76,11 76,25"/></svg>${lab ? `<span class="arrow-lab">${lab}</span>` : ""}</div>`;
+  const node = (data, next, addr) => {
+    const box = `<div class="node2"><div class="d">${data}</div><div class="n"><small>next</small>${next}</div></div>`;
+    return addr ? `<div class="nodebox">${box}<span class="nb-addr">@${addr}</span></div>` : box;
+  };
+  const dmStrip = (cells) => `<div class="dm-strip">${cells.map((c, i) => {
+    const kind = c.kind || "";
+    const show = c.val == null ? "?" : c.val;
+    return `<div class="dm-cell ${kind}" style="animation-delay:${i * 0.07}s"><div class="dv">${show}</div><span class="da">@${c.addr}</span></div>`;
+  }).join("")}</div>`;
+  const lane = (kind, title, sub, body) => `<div class="dm-lane ${kind}"><h4>${title}${sub ? `<span>${sub}</span>` : ""}</h4>${body}</div>`;
+  const dmScene = (stackBody, heapBody, note) => `<div class="dm-wrap">
+      ${lane("stacklane", "STACK", "pointer variables", stackBody)}
+      ${lane("heaplane", "HEAP", "malloc / calloc / realloc blocks", heapBody)}
+      ${note ? `<p class="dm-note">${note}</p>` : ""}
+    </div>`;
+  const ptrTag = (name, val) => `<span class="dm-tag ${val === "NULL" ? "tag-null" : "tag-ptr"}">${name} = ${val}</span>`;
+  const stbox = (roll, marks, hit, dashed) => `<div class="form ${dashed ? "blueprint" : ""}">
+      <div class="room ${hit === "roll" ? "hit" : ""}"><div class="rk">int roll</div><div class="rv2">${roll}</div><div class="ra2">@3000</div></div>
+      <div class="room ${hit === "marks" ? "hit" : ""}"><div class="rk">int marks</div><div class="rv2">${marks}</div><div class="ra2">@3004</div></div>
+    </div>`;
+  const arr = (vals, hi, slideFrom) => `<div class="arr-wrap">
+    <div class="arr-ribbon">ARRAY · glued · no gap · a[i] at 1000 + i×4</div>
+    <div class="train">${vals.map((v, i) => {
+    const empty = v == null;
+    return `<div class="bogie ${empty ? "empty" : ""} ${i === hi ? "hi" : ""} ${(slideFrom != null && i >= slideFrom) ? "slide" : ""}">
+      <div class="box">${empty ? "—" : v}</div>
+      <div class="ix">a[${i}]</div>
+      <div class="ad">@${1000 + i * 4}</div>
+    </div>`;
+  }).join("")}</div></div>`;
+  const formula = (i) => `<div class="formula"><span>1000</span> + <span>${i}</span> × <span>4</span> = <b>${1000 + i * 4}</b></div>`;
+  const syn = (s) => escapeHtml(String(s || "")).replace(/\{([^{}]+)\}/g, '<span class="sy-ph">$1</span>');
+  const hl = (code) => String(code || "").split("\n").map((line) => {
+    const toks = tokenizeLine(line).map((t) => t.cls ? `<span class="${t.cls}">${escapeHtml(t.text)}</span>` : escapeHtml(t.text)).join("");
+    return toks || "&nbsp;";
+  }).join("\n");
+
+  const CH = [
+    {
+      label: "Memory",
+      title: "RAM is numbered blocks",
+      kicker: "1 · memory",
+      syntax: "{type} {name} = {value};\n&{name}      /* address of the block */",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> RAM is a chip of <em>separate</em> blocks. Click any one — they are not glued.", code: "/* RAM: many blocks, many addresses */", ex: "Each box is 4 bytes with its own address. Empty dashed boxes are free. This is not an array — blocks sit far apart.", html: ramBoard([1000,1248,2088,3512,4100,5204].map((a) => ({ addr: a, val: null, o: { vacant: true } }))) },
+        { say: "<span class='step-tag'>Step 2</span> CPU finds a block only by its <em>address</em> (the @ number).", code: "/* address of one block, e.g. 1000 */", ex: "Address = where. Value = what is inside. Neighbour of 1000 is not always 1004.", html: ramBoard([
+          { addr: 1000, val: null, o: { vacant: true, on: true } },
+          { addr: 2088, val: null, o: { vacant: true } },
+          { addr: 3512, val: null, o: { vacant: true } },
+          { addr: 5204, val: null, o: { vacant: true } },
+        ], "<span class='rr-k'>look</span>block @1000 is highlighted — others stay far away") },
+        { say: "<span class='step-tag'>Step 3</span> Store 10 in the block at 1000. Name it <em>x</em>.", code: "int x = 10;     // x lives at 1000", ex: "Name x is for us. Machine stores 10 at address 1000. Next free block can be anywhere.", html: ramBoard([
+          { addr: 1000, val: 10, o: { name: "x", on: true, write: true } },
+          { addr: 2088, val: null, o: { vacant: true } },
+          { addr: 3512, val: null, o: { vacant: true } },
+          { addr: 5204, val: null, o: { vacant: true } },
+        ]) },
+        { say: "<span class='step-tag'>Step 4</span> Separate variables get separate, far-apart blocks.", code: "int a = 10;   // @1000\nint b = 42;   // @2088\nint c = 7;    // @3512", ex: "a, b, c are independent. They are not an array, so they need not sit at 1000, 1004, 1008.", html: ramBoard([
+          { addr: 1000, val: 10, o: { name: "a" } },
+          { addr: 2088, val: 42, o: { name: "b", on: true, write: true } },
+          { addr: 3512, val: 7, o: { name: "c", write: true } },
+          { addr: 5204, val: null, o: { vacant: true } },
+        ]) },
+        { say: "<span class='step-tag'>Step 5</span> A dashed block is free. malloc() can take any free block later.", code: "/* free memory — not yet used */", ex: "Dashed @5204 is unused. Array chapter will show the glued case.", html: ramBoard([
+          { addr: 1000, val: 10, o: { name: "a" } },
+          { addr: 2088, val: 42, o: { name: "b" } },
+          { addr: 3512, val: 7, o: { name: "c" } },
+          { addr: 5204, val: null, o: { vacant: true, on: true } },
+        ]) },
+        { say: "<span class='step-tag'>Step 6</span> Two words only: <em>value</em> and <em>address</em>.", code: "x        // value  (10)\n&x       // address (1000)", ex: "value = what is inside. address = where the block is. Click the block to inspect.", html: ramBoard([
+          { addr: 1000, val: 10, o: { name: "x", on: true } },
+        ], "<span class='rr-k'>remember</span>value 10 &nbsp; address @1000") + `<div class="facts"><div class="fact flash"><b>value</b><span>10</span></div><div class="fact flash"><b>address</b><span>1000</span></div></div>` },
+      ]
+    },
+    {
+      label: "Variable",
+      title: "A variable is a named block",
+      kicker: "2 · variable",
+      syntax: "{type} {name} = {value};   /* declare + init */\n{name} = {new value};      /* assign      */\n&{name}                    /* address     */",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> Declaration creates a block and writes a value.", code: "int x = 10;", ex: "Compiler picks address 1000, labels it x, stores 10.", html: row([blk(1000, 10, { name: "x", on: true, write: true })]) },
+        { say: "<span class='step-tag'>Step 2</span> Three parts of every variable.", code: "int x = 10;", ex: "name = x, value = 10, address = 1000. All three exist together.", html: row([blk(1000, 10, { name: "x", on: true })]) + `<div class="facts"><div class="fact flash"><b>name</b><span>x</span></div><div class="fact flash"><b>value</b><span>10</span></div><div class="fact flash"><b>address</b><span>1000</span></div></div>` },
+        { say: "<span class='step-tag'>Step 3</span> Assignment changes only the value. Address stays.", code: "x = 25;", ex: "Same block @1000. 10 is overwritten by 25.", html: row([blk(1000, 25, { name: "x", on: true, write: true })]) },
+        { say: "<span class='step-tag'>Step 4</span> <em>&amp;x</em> gives the address of x.", code: "printf(\"%d\", x);    // 25\nprintf(\"%p\", &x);   // 1000", ex: "x → value. &x → address of that block.", html: row([blk(1000, 25, { name: "x", on: true })]) + `<div class="facts"><div class="fact flash"><b>&amp;x</b><span>1000</span></div></div>` },
+        { say: "<span class='step-tag'>Step 5</span> Short syntax to keep.", code: "int x = 10;\nx = 25;\n&x;              // address", ex: "You will use this in every later chapter.", html: row([blk(1000, 25, { name: "x", on: true })]) },
+      ]
+    },
+    {
+      label: "Array",
+      title: "An array is contiguous blocks",
+      kicker: "3 · array",
+      syntax: "{type} {name}[{size}];\n{type} {name}[{size}] = {v0, v1, ...};\n{name}[{index}]\n\n/* addr of {name}[i] = base + i * sizeof({type}) */",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> Array = same-type blocks glued with <em>no gap</em>.", code: "int a[6] = {10, 20, 30, 40};", ex: "Size 6 is fixed. Last two slots unused but still reserved. Compare with RAM chapter — those blocks were far apart.", html: arr([10,20,30,40,null,null]) },
+        { say: "<span class='step-tag'>Step 2</span> If a[0] is @1000, then a[i] is @ (1000 + i×4).", code: "a[0]  @1000\na[1]  @1004\na[2]  @1008", ex: "Index → address by formula. That is why a[i] is O(1).", html: arr([10,20,30,40,null,null]) + formula(2) },
+        { say: "<span class='step-tag'>Step 3</span> Read a[2] in one jump: 1000 + 2×4 = 1008 → 30.", code: "printf(\"%d\", a[2]);   // 30", ex: "CPU does not walk a[0], a[1]. It jumps to 1008.", html: arr([10,20,30,40,null,null], 2) + formula(2) },
+        { say: "<span class='step-tag'>Step 4</span> Insert 25 at index 1. Elements after it must shift right.", code: "/* insert 25 at a[1] */\nfor (i = 5; i > 1; i--)\n    a[i] = a[i-1];\na[1] = 25;", ex: "Shift is O(n). Linked list insert will not shift values.", html: `<div style="text-align:center;margin-bottom:10px;"><span class="fly-num">25</span></div>` + arr([10,20,30,40,null,null], 1) },
+        { say: "<span class='step-tag'>Step 5</span> 20, 30, 40 slide one index right.", code: "a[4]=a[3]; a[3]=a[2]; a[2]=a[1];", ex: "Physical move of values. This is the cost of a contiguous array.", html: arr([10,20,30,40,null,null], null, 1) },
+        { say: "<span class='step-tag'>Step 6</span> 25 is now a[1]. a[5] still empty — wasted space.", code: "a[1] = 25;", ex: "Array cannot grow. Extra unused slots stay reserved.", html: arr([10,25,20,30,40,null], 1) },
+        { say: "<span class='step-tag'>Step 7</span> Array vs RAM (remember this).", code: "array : glued, O(1) index, O(n) insert\nlist  : scattered, O(n) walk, O(1) link", ex: "Next chapters build the list using pointers + struct on scattered RAM.", html: `<div class="cmp-row"><div class="cmp-col"><h4>RAM variables</h4><p class="tiny-note">far apart @1000 · @2088 · @3512</p>${row([blk(1000,10,{name:"a"}), blk(2088,42,{name:"b"}), blk(3512,7,{name:"c"})])}</div><div class="cmp-col"><h4>array a[ ]</h4><p class="tiny-note">glued @1000 · @1004 · @1008</p>${arr([10,25,20])}</div></div>` },
+      ]
+    },
+    {
+      label: "Pointer",
+      title: "A pointer stores an address",
+      kicker: "4 · pointer",
+      syntax: "{type} *{ptr};          /* declare  */\n{ptr} = &{variable};     /* store address */\n*{ptr}                   /* value at address */\n{ptr} = NULL;            /* points to nothing */",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> x is an int block. p is a pointer block (empty / NULL).", code: "int x = 10;\nint *p;", ex: "int *p means: p can hold the address of an int.", html: `<div class="scene">${blk(2000, "NULL", { name: "p", ptr: true })}${blk(1000, 10, { name: "x" })}</div>` },
+        { say: "<span class='step-tag'>Step 2</span> p = &amp;x copies x’s address into p. Arrow is born.", code: "p = &x;          // p = 1000", ex: "p now stores 1000, not 10.", html: `<div class="scene">${blk(2000, 1000, { name: "p", ptr: true, on: true, write: true })}${arrow("p stores 1000")}${blk(1000, 10, { name: "x" })}</div>` },
+        { say: "<span class='step-tag'>Step 3</span> Follow p to the block it points to.", code: "p = &x;", ex: "Pointer = address in a block. Following it = go to that address.", html: `<div class="scene">${blk(2000, 1000, { name: "p", ptr: true })}${arrow()}${blk(1000, 10, { name: "x", on: true })}</div><div class="walk-track"><div class="walk-finger">→</div></div>` },
+        { say: "<span class='step-tag'>Step 4</span> <em>*p</em> = value at the address stored in p. Reads 10.", code: "printf(\"%d\", *p);   // 10", ex: "*p is dereference. Same as reading x.", html: `<div class="scene">${blk(2000, 1000, { name: "p", ptr: true })}${arrow()}${blk(1000, 10, { name: "*p", on: true, write: true })}</div>` },
+        { say: "<span class='step-tag'>Step 5</span> *p = 99 writes through the pointer. x becomes 99.", code: "*p = 99;         // x is now 99", ex: "We never typed x, but x changed, because p points at x.", html: `<div class="scene">${blk(2000, 1000, { name: "p", ptr: true })}${arrow()}${blk(1000, 99, { name: "x", on: true, write: true })}</div>` },
+        { say: "<span class='step-tag'>Step 6</span> p = NULL. Arrow gone. x still exists.", code: "p = NULL;", ex: "NULL means “points to nothing”. x is untouched.", html: `<div class="scene">${blk(2000, "NULL", { name: "p", ptr: true })}${blk(1000, 99, { name: "x" })}</div>` },
+        { say: "<span class='step-tag'>Step 7</span> Never use *p when p is NULL.", code: "if (p != NULL)\n    printf(\"%d\", *p);", ex: "Always check p != NULL before dereference.", html: `<div class="scene"><div class="danger">*NULL is invalid</div></div>` },
+      ]
+    },
+    {
+      label: "Struct",
+      title: "struct groups members in one block",
+      kicker: "5 · structure",
+      syntax: "struct {TagName} {\n    {type} {member1};\n    {type} {member2};\n};\n\nstruct {TagName} {variable};",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> Related data packed in consecutive members.", code: "struct Student {\n    int roll;\n    int marks;\n};", ex: "This is a type (blueprint). No variable yet, so no RAM yet.", html: `<div class="scene">${stbox("roll", "marks", null, true)}</div>` },
+        { say: "<span class='step-tag'>Step 2</span> Create a variable from that type.", code: "struct Student s;", ex: "Now one block of 8 bytes: roll @3000, marks @3004. Values garbage until assigned.", html: `<div class="scene">${stbox("?", "?", null, false)}</div>` },
+        { say: "<span class='step-tag'>Step 3</span> Dot operator writes a member of a struct variable.", code: "s.roll = 21;", ex: "s is not a pointer, so use . (dot).", html: `<div class="scene">${stbox(21, "?", "roll")}</div>` },
+        { say: "<span class='step-tag'>Step 4</span> Second member, same variable.", code: "s.marks = 88;", ex: "One variable s, two members, two consecutive addresses.", html: `<div class="scene">${stbox(21, 88, "marks")}</div>` },
+        { say: "<span class='step-tag'>Step 5</span> Linked-list node is the same idea: data + next.", code: "struct Node {\n    int data;\n    struct Node *next;\n};", ex: "data = value. next = address of another Node (or NULL).", html: `<div class="scene">${node(10, "next")}</div>` },
+        { say: "<span class='step-tag'>Step 6</span> Short syntax.", code: "struct Node n;\nn.data = 10;\nn.next = NULL;", ex: "This n is a variable (stack). List nodes later use pointers + malloc.", html: `<div class="scene">${node(10, "NULL")}</div>` },
+      ]
+    },
+    {
+      label: ". vs ->",
+      title: "Dot for variable, arrow for pointer",
+      kicker: "6 · access",
+      syntax: "{variable}.{member}        /* have the struct  */\n{pointer}->{member}       /* have its address */\n(*{pointer}).{member}     /* same as ->       */",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> Two cases: you have the struct, or you have a pointer to it.", code: "struct Student s;     // variable\nstruct Student *p;    // pointer", ex: ".  when you have the object.  ->  when you have its address.", html: `<div class="vs"><div class="vs-col"><h4>variable s</h4>${stbox(21, 88)}</div><div class="vs-col"><h4>pointer p</h4>${blk(4000, "NULL", { name: "p", ptr: true })}</div></div>` },
+        { say: "<span class='step-tag'>Step 2</span> Dot: s.roll — s is the struct itself.", code: "s.roll = 21;", ex: "No walking. Member of a variable.", html: `<div class="scene">${stbox(21, "?", "roll")}</div>` },
+        { say: "<span class='step-tag'>Step 3</span> Dot: s.marks.", code: "s.marks = 88;", ex: "Same variable, other member.", html: `<div class="scene">${stbox(21, 88, "marks")}</div>` },
+        { say: "<span class='step-tag'>Step 4</span> Point p at s.", code: "p = &s;          // p = 3000", ex: "p stores starting address of s.", html: `<div class="scene">${blk(4000, 3000, { name: "p", ptr: true, write: true })}${arrow("p = &s")}${stbox(21, 88)}</div>` },
+        { say: "<span class='step-tag'>Step 5</span> Arrow: p-&gt;roll. Follow p, then open roll. Same as (*p).roll.", code: "p->roll = 21;\n(*p).roll = 21;   // same", ex: "-> is the operator used in all linked-list functions.", html: `<div class="scene">${blk(4000, 3000, { name: "p", ptr: true })}${arrow()}${stbox(21, 88, "roll")}</div><div class="walk-track"><div class="walk-finger">→</div></div>` },
+        { say: "<span class='step-tag'>Step 6</span> Node access you will type everywhere.", code: "p->data = 10;\np->next = NULL;", ex: "malloc returns a pointer, so list code always uses -> not .", html: `<div class="scene">${blk(2000, 1000, { name: "p", ptr: true })}${arrow()}${node(10, "NULL")}</div>` },
+      ]
+    },
+    {
+      label: "Self-ref",
+      title: "Self-referential: next is struct Node *",
+      kicker: "7 · self-referential",
+      syntax: "struct {Node} {\n    {type} {data};\n    struct {Node} *{next};   /* pointer to same type */\n};",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> A list node must store the address of the next node.", code: "/* each node: data + address of next */", ex: "Chain = block → block → block → NULL.", html: `<div class="chain">${node(10, "?")} <span class="gapx">?</span> ${node(20, "?")} <span class="gapx">?</span> ${node(30, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 2</span> Illegal: a Node inside a Node (not a pointer). Size would be infinite.", code: "struct Node {\n    int data;\n    struct Node next;   // error\n};", ex: "Member next would be a full Node, which contains a Node, forever. Compiler rejects it.", html: `<div class="bad"><b>illegal</b><p class="tiny-note" style="margin:8px 0 0;">struct Node next;  /* not a pointer */</p></div>` },
+        { say: "<span class='step-tag'>Step 3</span> Legal: next is a pointer. Pointer size is 4/8 bytes. Finite.", code: "struct Node {\n    int data;\n    struct Node *next;\n};", ex: "Self-referential structure = structure containing a pointer to its own type.", html: `<div class="good"><b>legal</b><p class="tiny-note" style="margin:8px 0 0;">struct Node *next;  /* address only */</p></div>` },
+        { say: "<span class='step-tag'>Step 4</span> Node A at 1000. next = NULL.", code: "struct Node *A = malloc(sizeof(struct Node));\nA->data = 10;\nA->next = NULL;", ex: "One isolated node. Not in a list yet.", html: `<div class="chain">${node(10, "NULL")}</div><p class="tiny-note">A @1000</p>` },
+        { say: "<span class='step-tag'>Step 5</span> Node B at 2008 — not next to A. Arrays must be neighbours. Nodes need not.", code: "struct Node *B = malloc(sizeof(struct Node));\nB->data = 20;\nB->next = NULL;", ex: "Two blocks in different places. Still no link.", html: `<div class="chain">${node(10, "NULL")} <span class="gapx">✕</span> ${node(20, "NULL")}</div><p class="tiny-note">A @1000 &nbsp; B @2008</p>` },
+        { say: "<span class='step-tag'>Step 6</span> A-&gt;next = B stores B’s address in A. That is the link.", code: "A->next = B;      // A->next = 2008", ex: "Only one assignment. No shifting of data.", html: `<div class="chain">${node(10, "2008")} ${arrow("next = 2008")} ${node(20, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 7</span> Two-node list: A → B → NULL.", code: "/* first → 10 → 20 → NULL */", ex: "This is a singly linked list of length 2.", html: `<div class="chain">${node(10, "2008")} ${arrow()} ${node(20, "NULL")}</div>` },
+      ]
+    },
+    {
+      label: "malloc & co",
+      title: "malloc · calloc · realloc · free",
+      kicker: "8 · dynamic memory",
+      syntax: "#include <stdlib.h>\n\n{ptr} = ({type}*) malloc({n} * sizeof({type}));\n{ptr} = ({type}*) calloc({n}, sizeof({type}));\n{ptr} = ({type}*) realloc({ptr}, {newN} * sizeof({type}));\nfree({ptr});",
+      frames: [
+        {
+          say: "<span class='step-tag'>Step 1</span> Array size is fixed at compile time. Heap memory is asked for at <em>run time</em>.",
+          syn: "/* static */   int a[6];\n/* dynamic */  int *p = malloc(6 * sizeof(int));",
+          code: "#include <stdlib.h>\n\nint *p = NULL;   /* stack pointer, heap empty */",
+          ex: "Stack holds the pointer variable <code>p</code>. The block itself will be created in the heap. All four functions need <code>&lt;stdlib.h&gt;</code>.",
+          html: dmScene(`${ptrTag("p", "NULL")}${blk(6000, "NULL", { name: "p", ptr: true })}`, `<p class="dm-note">heap is empty — nothing allocated yet</p>`, "Stack = fixed, automatic. Heap = you ask, you free."),
+        },
+        {
+          say: "<span class='step-tag'>Step 2</span> <em>malloc(size)</em> books one block of <em>size</em> bytes and returns its starting address.",
+          syn: "{ptr} = ({type}*) malloc({bytes});\n{ptr} = (int*) malloc({n} * sizeof(int));",
+          code: "int *p = (int*) malloc(4 * sizeof(int));\n/* 4 * 4 = 16 bytes, starts at 5000 */",
+          ex: "malloc takes <b>one</b> argument: total bytes. It returns <code>void*</code>, so we cast it to <code>int*</code>. p now stores 5000.",
+          html: dmScene(`${ptrTag("p", "5000")}${blk(6000, 5000, { name: "p", ptr: true, on: true, write: true })}`,
+            dmStrip([{ addr: 5000, val: "?", kind: "garbage" }, { addr: 5004, val: "?", kind: "garbage" }, { addr: 5008, val: "?", kind: "garbage" }, { addr: 5012, val: "?", kind: "garbage" }]),
+            "16 bytes booked at <b>5000 … 5015</b>. Blocks are contiguous inside one malloc."),
+        },
+        {
+          say: "<span class='step-tag'>Step 3</span> malloc does <em>not</em> clean the block. Contents are garbage until you write.",
+          syn: "if ({ptr} == NULL) { /* allocation failed */ }",
+          code: "if (p == NULL) {\n    printf(\"Memory not available\\n\");\n    exit(1);\n}\np[0] = 10;   p[1] = 20;",
+          ex: "Always check <code>p == NULL</code> before using it. malloc returns NULL when the heap has no space.",
+          html: dmScene(`${ptrTag("p", "5000")}${blk(6000, 5000, { name: "p", ptr: true })}`,
+            dmStrip([{ addr: 5000, val: 10, kind: "kept" }, { addr: 5004, val: 20, kind: "kept" }, { addr: 5008, val: "?", kind: "garbage" }, { addr: 5012, val: "?", kind: "garbage" }]),
+            "p[0] and p[1] written. p[2], p[3] still garbage."),
+        },
+        {
+          say: "<span class='step-tag'>Step 4</span> <em>calloc(n, size)</em> books n × size bytes and fills every byte with <em>0</em>.",
+          syn: "{ptr} = ({type}*) calloc({count}, {size of one});",
+          code: "int *q = (int*) calloc(4, sizeof(int));\n/* same 16 bytes, but all zero */",
+          ex: "calloc takes <b>two</b> arguments (count, size). Clearing costs a little time, but you never read garbage.",
+          html: dmScene(`${ptrTag("q", "7000")}${blk(6100, 7000, { name: "q", ptr: true, on: true, write: true })}`,
+            dmStrip([{ addr: 7000, val: 0, kind: "zero" }, { addr: 7004, val: 0, kind: "zero" }, { addr: 7008, val: 0, kind: "zero" }, { addr: 7012, val: 0, kind: "zero" }]),
+            "calloc = <b>c</b>lear + allocate."),
+        },
+        {
+          say: "<span class='step-tag'>Step 5</span> Same bytes, different starting state. That is the only real difference.",
+          syn: "malloc({n} * sizeof({type}))    /* 1 arg,  garbage */\ncalloc({n}, sizeof({type}))     /* 2 args, zeros   */",
+          code: "int *p = (int*) malloc(4 * sizeof(int));   /* ?  ?  ?  ? */\nint *q = (int*) calloc(4, sizeof(int));   /* 0  0  0  0 */",
+          ex: "Both give 16 usable bytes. Use calloc when zero is a safe starting value, e.g. counters.",
+          html: `<div class="dm-wrap">${lane("heaplane", "malloc(4 * sizeof(int))", "uninitialised", dmStrip([{ addr: 5000, val: "?", kind: "garbage" }, { addr: 5004, val: "?", kind: "garbage" }, { addr: 5008, val: "?", kind: "garbage" }, { addr: 5012, val: "?", kind: "garbage" }]))}${lane("heaplane", "calloc(4, sizeof(int))", "every byte zero", dmStrip([{ addr: 7000, val: 0, kind: "zero" }, { addr: 7004, val: 0, kind: "zero" }, { addr: 7008, val: 0, kind: "zero" }, { addr: 7012, val: 0, kind: "zero" }]))}</div>`,
+        },
+        {
+          say: "<span class='step-tag'>Step 6</span> <em>realloc(ptr, newSize)</em> resizes an existing block. Old values are kept.",
+          syn: "{ptr} = ({type}*) realloc({ptr}, {new bytes});",
+          code: "p = (int*) realloc(p, 6 * sizeof(int));\n/* 16 bytes → 24 bytes */",
+          ex: "First 4 values survive. The 2 new slots are garbage (realloc does not zero them).",
+          html: dmScene(`${ptrTag("p", "5000")}${blk(6000, 5000, { name: "p", ptr: true, write: true })}`,
+            dmStrip([{ addr: 5000, val: 10, kind: "kept" }, { addr: 5004, val: 20, kind: "kept" }, { addr: 5008, val: "?", kind: "garbage" }, { addr: 5012, val: "?", kind: "garbage" }, { addr: 5016, val: "?", kind: "fresh" }, { addr: 5020, val: "?", kind: "fresh" }]),
+            "Grew in place: address stayed <b>5000</b>."),
+        },
+        {
+          say: "<span class='step-tag'>Step 7</span> If it cannot grow in place, realloc <em>moves</em> the block and returns a <em>new</em> address.",
+          syn: "{ptr} = realloc({ptr}, {bytes});   /* address may change! */",
+          code: "int *tmp = (int*) realloc(p, 6 * sizeof(int));\nif (tmp != NULL) p = tmp;   /* safe pattern */",
+          ex: "Never write <code>p = realloc(p, n)</code> without a temp if you cannot lose p — on failure realloc returns NULL and the old block leaks.",
+          html: dmScene(`${ptrTag("p", "8000")}${blk(6000, 8000, { name: "p", ptr: true, on: true, write: true })}`,
+            `${dmStrip([{ addr: 5000, val: 10, kind: "gone" }, { addr: 5004, val: 20, kind: "gone" }, { addr: 5008, val: "?", kind: "gone" }, { addr: 5012, val: "?", kind: "gone" }])}<p class="dm-note">old block released ↓ values copied</p>${dmStrip([{ addr: 8000, val: 10, kind: "kept" }, { addr: 8004, val: 20, kind: "kept" }, { addr: 8008, val: "?", kind: "garbage" }, { addr: 8012, val: "?", kind: "garbage" }, { addr: 8016, val: "?", kind: "fresh" }, { addr: 8020, val: "?", kind: "fresh" }])}`,
+            "Values are copied for you. Only the address changed."),
+        },
+        {
+          say: "<span class='step-tag'>Step 8</span> Two special cases you should remember.",
+          syn: "realloc(NULL, {n})   ==  malloc({n})\nrealloc({ptr}, 0)    ==  free({ptr})",
+          code: "p = realloc(NULL, 4 * sizeof(int));  /* acts like malloc */\np = realloc(p, 2 * sizeof(int));     /* shrink: last values lost */",
+          ex: "Shrinking keeps only the first part. The trimmed slots are returned to the heap.",
+          html: dmScene(`${ptrTag("p", "8000")}${blk(6000, 8000, { name: "p", ptr: true })}`,
+            dmStrip([{ addr: 8000, val: 10, kind: "kept" }, { addr: 8004, val: 20, kind: "kept" }, { addr: 8008, val: "×", kind: "gone" }, { addr: 8012, val: "×", kind: "gone" }, { addr: 8016, val: "×", kind: "gone" }, { addr: 8020, val: "×", kind: "gone" }]),
+            "After shrink only <b>8000</b> and <b>8004</b> are yours."),
+        },
+        {
+          say: "<span class='step-tag'>Step 9</span> <em>free(ptr)</em> returns the block to the heap. Then set the pointer to NULL.",
+          syn: "free({ptr});\n{ptr} = NULL;",
+          code: "free(p);\np = NULL;      /* stops a dangling pointer */",
+          ex: "After free, the block is not yours. Using <code>*p</code> then is a <b>dangling pointer</b>. Losing p without free is a <b>memory leak</b>.",
+          html: dmScene(`${ptrTag("p", "NULL")}${blk(6000, "NULL", { name: "p", ptr: true, write: true })}`,
+            `<div class="ghost">${dmStrip([{ addr: 8000, val: 10 }, { addr: 8004, val: 20 }])}</div>`,
+            "free does <b>not</b> erase p by itself — you must assign NULL."),
+        },
+        {
+          say: "<span class='step-tag'>Step 10</span> Full picture of the four functions.",
+          syn: "malloc({bytes})              calloc({n}, {size})\nrealloc({ptr}, {bytes})      free({ptr})",
+          code: "int *p;\np = malloc(4 * sizeof(int));    /* garbage */\np = calloc(4, sizeof(int));     /* zeros   */\np = realloc(p, 6 * sizeof(int));/* resize  */\nfree(p); p = NULL;              /* release */",
+          ex: "Every allocation needs exactly one matching <code>free</code>.",
+          html: `<div class="dm-wrap"><table class="dmtab">
+            <tr><th>function</th><th>arguments</th><th>initial content</th><th>returns</th></tr>
+            <tr><td>malloc</td><td>total bytes</td><td>garbage</td><td>void* to block, or NULL</td></tr>
+            <tr><td>calloc</td><td>count, size of one</td><td>all zero</td><td>void* to block, or NULL</td></tr>
+            <tr><td>realloc</td><td>old ptr, new bytes</td><td>old data kept, extra garbage</td><td>same or new address, or NULL</td></tr>
+            <tr><td>free</td><td>ptr</td><td>—</td><td>nothing (void)</td></tr>
+          </table></div>`,
+        },
+        {
+          say: "<span class='step-tag'>Step 11</span> Linked lists use malloc for <em>one node at a time</em>.",
+          syn: "{ptr} = (struct Node*) malloc(sizeof(struct Node));",
+          code: "struct Node *temp;\ntemp = (struct Node*) malloc(sizeof(struct Node));\ntemp->data = 10;\ntemp->next = NULL;",
+          ex: "No count needed — one node per call. This is exactly <code>getNode()</code> in the Singly tab.",
+          html: dmScene(`${ptrTag("temp", "1000")}${blk(6000, 1000, { name: "temp", ptr: true })}`,
+            `<div class="chain">${node(10, "NULL", 1000)}</div>`,
+            "Each node is a separate malloc — that is why nodes sit far apart in RAM."),
+        },
+      ]
+    },
+    {
+      label: "List",
+      title: "Build 10 → 20 → 30 with short code",
+      kicker: "9 · createll",
+      syntax: "struct Node *first = NULL;\n\n{temp} = (struct Node*) malloc(sizeof(struct Node));\n{temp}->data = {value};\n{temp}->next = NULL;\n{last}->next = {temp};",
+      frames: [
+        { say: "<span class='step-tag'>Step 1</span> Empty list.", code: "struct Node *first = NULL;", ex: "first is the only external pointer into the list.", html: `<div class="chain"><span class="ptr-chip badge-first">first = NULL</span></div>` },
+        { say: "<span class='step-tag'>Step 2</span> Allocate first node.", code: "temp = malloc(sizeof(struct Node));\ntemp->data = 10;\ntemp->next = NULL;", ex: "New heap block. Not linked yet.", html: `<div class="chain"><span class="ptr-chip badge-temp">temp</span>${node(10, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 3</span> first was NULL, so first = temp.", code: "first = temp;", ex: "List of one node: first → 10 → NULL.", html: `<div class="chain"><span class="ptr-chip badge-first">first</span>${node(10, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 4</span> Allocate second node (20). Still detached.", code: "temp = malloc(sizeof(struct Node));\ntemp->data = 20;\ntemp->next = NULL;", ex: "Two blocks. first still points only at 10.", html: `<div class="chain"><span class="ptr-chip badge-first">first</span>${node(10, "NULL")} <span class="gapx">✕</span> <span class="ptr-chip badge-temp">temp</span>${node(20, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 5</span> Walk ptr to the last node (next == NULL).", code: "ptr = first;\nwhile (ptr->next != NULL)\n    ptr = ptr->next;", ex: "For one node, ptr stays at first.", html: `<div class="chain"><span class="ptr-chip badge-ptr">ptr</span>${node(10, "NULL")} <span class="gapx">✕</span> ${node(20, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 6</span> Join: last-&gt;next = new node.", code: "ptr->next = temp;", ex: "10’s next becomes 2008. Arrow appears. No data is shifted.", html: `<div class="chain">${node(10, "2008")} ${arrow()} <span class="ptr-chip badge-temp">temp</span>${node(20, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 7</span> Same for 30: malloc, walk to end, link.", code: "temp->data = 30;\nptr->next = temp;", ex: "Repeat until n nodes. Last next stays NULL.", html: `<div class="chain">${node(10, "2008")} ${arrow()} ${node(20, "2016")} ${arrow()} ${node(30, "NULL")}</div>` },
+        { say: "<span class='step-tag'>Step 8</span> Done. Open Singly tab — every function uses this picture.", code: "first → 10 → 20 → 30 → NULL", ex: "display() walks ptr = first; while (ptr) { print ptr->data; ptr = ptr->next; }", html: `<div class="chain"><span class="ptr-chip badge-first">first</span>${node(10, "→")} ${arrow()} ${node(20, "→")} ${arrow()} ${node(30, "NULL")}</div>` },
+      ]
+    },
+  ];
+
+  let ch = 0, step = 0, timer = null;
+  const els = {
+    chapters: document.getElementById("bs-chapters"),
+    kicker: document.getElementById("bs-kicker"),
+    title: document.getElementById("bs-title"),
+    stepn: document.getElementById("bs-stepn"),
+    say: document.getElementById("bs-say"),
+    code: document.getElementById("bs-code"),
+    syntax: document.getElementById("bs-syntax"),
+    synbox: document.getElementById("bs-synbox"),
+    synhint: document.getElementById("bs-synhint"),
+    stage: document.getElementById("bs-stage"),
+    example: document.getElementById("bs-example"),
+    pills: document.getElementById("bs-pills"),
+    prev: document.getElementById("bs-prev"),
+    next: document.getElementById("bs-next"),
+    play: document.getElementById("bs-play"),
+    nextch: document.getElementById("bs-nextch"),
+    foot: document.getElementById("bs-foot"),
+    prog: document.getElementById("bs-progbar"),
+  };
+  if (!els.stage) return;
+
+  els.chapters.innerHTML = CH.map((c, i) => `<button type="button" class="bs-ch" data-i="${i}"><span class="n">${i + 1}</span><span class="l">${c.label}</span></button>`).join("");
+
+  const stop = () => {
+    if (timer) { clearInterval(timer); timer = null; }
+    els.play.classList.remove("playing");
+    els.play.innerHTML = "&#9654; Auto-play";
+  };
+  const paint = () => {
+    const C = CH[ch];
+    const f = C.frames[step];
+    const last = step >= C.frames.length - 1;
+    els.kicker.textContent = C.kicker;
+    els.title.textContent = C.title;
+    els.stepn.textContent = `Step ${step + 1} / ${C.frames.length}`;
+    els.say.innerHTML = f.say;
+    const synText = f.syn || C.syntax || "";
+    if (els.synbox) els.synbox.style.display = synText ? "" : "none";
+    if (els.syntax) els.syntax.innerHTML = syn(synText);
+    if (els.synhint) els.synhint.textContent = f.syn ? "this step" : "general form";
+    els.code.innerHTML = f.code ? hl(f.code) : "";
+    els.stage.classList.remove("stage-pop");
+    els.stage.innerHTML = f.html;
+    void els.stage.offsetWidth;
+    els.stage.classList.add("stage-pop");
+    els.example.innerHTML = f.ex ? `<b>Meaning</b>${f.ex}` : "";
+    els.pills.innerHTML = C.frames.map((_, i) => `<button type="button" class="bs-pill ${i === step ? "on" : ""} ${i < step ? "done" : ""}" data-s="${i}">${i + 1}</button>`).join("");
+    els.pills.querySelectorAll(".bs-pill").forEach((p) => p.addEventListener("click", () => { stop(); go(ch, +p.dataset.s); }));
+    if (els.prog){
+      const frac = (ch + (step + 1) / C.frames.length) / CH.length;
+      els.prog.style.width = Math.round(frac * 100) + "%";
+    }
+    const read = els.stage.querySelector(".ram-read");
+    els.stage.querySelectorAll(".ram-cell").forEach((cell) => {
+      cell.addEventListener("click", () => {
+        els.stage.querySelectorAll(".ram-cell").forEach((x) => x.classList.remove("picked"));
+        cell.classList.add("picked");
+        const nm = cell.dataset.name || "(no name yet)";
+        if (read) read.innerHTML = `<span class="rr-k">inspect</span>name <b>${nm}</b> &nbsp; value <b>${cell.dataset.val}</b> &nbsp; address <b>@${cell.dataset.addr}</b>`;
+      });
+    });
+    els.chapters.querySelectorAll(".bs-ch").forEach((b, i) => {
+      b.classList.toggle("on", i === ch);
+      b.classList.toggle("done", i < ch);
+    });
+    els.prev.disabled = step === 0;
+    els.next.disabled = last;
+    els.nextch.disabled = ch >= CH.length - 1;
+    els.next.textContent = last ? "End of chapter" : "Next step →";
+    els.foot.innerHTML = last
+      ? `Chapter complete. Press <b>Next chapter</b>.`
+      : `Press <b>Next step</b> for the next block + code. Keyboard: ← →`;
+  };
+  const go = (c, s) => {
+    ch = Math.max(0, Math.min(CH.length - 1, c));
+    step = Math.max(0, Math.min(CH[ch].frames.length - 1, s));
+    paint();
+  };
+  const nextStep = () => { if (step < CH[ch].frames.length - 1) go(ch, step + 1); };
+  const prevStep = () => { if (step > 0) go(ch, step - 1); };
+
+  els.chapters.querySelectorAll(".bs-ch").forEach((b) => b.addEventListener("click", () => { stop(); go(+b.dataset.i, 0); }));
+  els.next.onclick = () => { stop(); nextStep(); };
+  els.prev.onclick = () => { stop(); prevStep(); };
+  els.nextch.onclick = () => { stop(); if (ch < CH.length - 1) go(ch + 1, 0); };
+  els.play.onclick = () => {
+    if (timer) { stop(); return; }
+    els.play.classList.add("playing");
+    els.play.textContent = "Pause";
+    timer = setInterval(() => {
+      if (step < CH[ch].frames.length - 1) go(ch, step + 1);
+      else stop();
+    }, 2200);
+  };
+  document.addEventListener("keydown", (e) => {
+    const panel = document.getElementById("panel-basics");
+    if (!panel || !panel.classList.contains("visible")) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); stop(); if (step < CH[ch].frames.length - 1) nextStep(); else if (ch < CH.length - 1) go(ch + 1, 0); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); stop(); prevStep(); }
+  });
+  paint();
+  initBasicsPuzzle();
+}
+
+const RUN_MENUS = {
+  sll: "1.create  2.display  3.insertbeg  4.insertend  5.insertbet\n6.search  7.deletebeg  8.deleteend  9.deletebt  0.exit",
+  dll: "1.create  2.display  3.displayReverse  4.insertbeg  5.insertend\n6.insertbet  7.search  8.deletebeg  9.deleteend  10.deletebt  0.exit",
+  cll: "1.create  2.display  3.insertbeg  4.insertend  5.insertbet\n6.search  7.deletebeg  8.deleteend  9.deletebt  0.exit",
+};
+class MenuRuntime {
+  constructor(){
+    this.type = "sll";
+    this.list = [];
+    this.wait = "choice";
+    this.pending = {};
+    this.out = document.getElementById("run-out");
+    this.input = document.getElementById("run-stdin");
+    if (!this.out || !this.input) return;
+    this.boot();
+    this.input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter"){ e.preventDefault(); this.feed(this.input.value.trim()); this.input.value = ""; }
+    });
+  }
+  setType(t){ this.type = t; this.list = []; this.wait = "choice"; this.pending = {}; this.out.textContent = ""; this.boot(); this.viz(); }
+  line(s, cls){
+    const d = document.createElement("div");
+    if (cls) d.className = cls;
+    d.textContent = s;
+    this.out.appendChild(d);
+    this.out.scrollTop = this.out.scrollHeight;
+  }
+  boot(){
+    this.line("/* live run — same menu as the C program. Type a choice and press Enter. */");
+    this.line(this.type === "sll" ? "Singly Linked List" : this.type === "dll" ? "Doubly Linked List" : "Circular Singly Linked List");
+    this.menu();
+  }
+  menu(){
+    this.line("");
+    RUN_MENUS[this.type].split("\n").forEach((l) => this.line(l));
+    this.line("Choice: ");
+    this.wait = "choice";
+    this.viz();
+  }
+  viz(){
+    const wrap = document.getElementById("run-viz");
+    if (!wrap) return;
+    resetAddrMap();
+    _id = 0;
+    const nodes = makeChain(this.list, this.type === "cll");
+    const frame = {
+      nodes,
+      ptrs: { first: nodes[0] ? nodes[0].id : null, temp: null, ptr: null, prev: null },
+      desc: this.list.length ? "This is the list your running program currently holds in first." : "first = NULL — run create to malloc the first node.",
+      algo: -1,
+    };
+    renderCanvas(wrap, frame, null, this.type);
+  }
+  feed(raw){
+    if (this.wait === "dead"){ this.setType(this.type); return; }
+    this.line("> " + raw, "t-in");
+    const n = parseInt(raw, 10);
+    if (this.wait === "choice"){
+      if (!Number.isFinite(n)) { this.line("Invalid choice", "t-err"); this.menu(); return; }
+      this.handleChoice(n);
+      return;
+    }
+    if (this.wait === "n"){
+      if (!Number.isFinite(n) || n < 0) { this.line("Enter a non-negative integer.", "t-err"); return; }
+      this.pending.n = Math.min(8, n); this.pending.i = 0; this.pending.vals = [];
+      if (this.pending.n === 0){ this.list = []; this.line("Created empty list."); this.menu(); return; }
+      this.wait = "data"; this.line("Enter data: "); return;
+    }
+    if (this.wait === "data"){
+      if (!Number.isFinite(n)) { this.line("Enter an integer.", "t-err"); return; }
+      this.pending.vals.push(n); this.pending.i++;
+      if (this.pending.i < this.pending.n){ this.line("Enter data: "); return; }
+      this.list = this.pending.vals.slice();
+      this.line("List created.");
+      this.menu(); return;
+    }
+    if (this.wait === "one"){
+      if (!Number.isFinite(n)) { this.line("Enter an integer.", "t-err"); return; }
+      this.finishOne(n); return;
+    }
+    if (this.wait === "after"){
+      if (!Number.isFinite(n)) { this.line("Enter an integer.", "t-err"); return; }
+      this.pending.after = n; this.wait = "one"; this.line("Enter data: "); return;
+    }
+    if (this.wait === "search"){
+      if (!Number.isFinite(n)) { this.line("Enter an integer.", "t-err"); return; }
+      const found = this.list.indexOf(n) >= 0;
+      this.line(found ? "Found" : "Not found");
+      this.menu(); return;
+    }
+    if (this.wait === "searchdel"){
+      if (!Number.isFinite(n)) { this.line("Enter an integer.", "t-err"); return; }
+      const i = this.list.indexOf(n);
+      if (i < 0) this.line("Node not found", "t-err");
+      else this.list.splice(i, 1);
+      this.menu();
+    }
+  }
+  handleChoice(ch){
+    const t = this.type;
+    if (ch === 0){ this.line("exit"); this.wait = "dead"; return; }
+    const map = t === "dll"
+      ? { 1: "create", 2: "display", 3: "displayrev", 4: "insertbeg", 5: "insertend", 6: "insertbet", 7: "search", 8: "deletebeg", 9: "deleteend", 10: "deletebt" }
+      : { 1: "create", 2: "display", 3: "insertbeg", 4: "insertend", 5: "insertbet", 6: "search", 7: "deletebeg", 8: "deleteend", 9: "deletebt" };
+    const op = map[ch];
+    if (!op){ this.line("Invalid choice", "t-err"); this.menu(); return; }
+    this.runOp(op);
+  }
+  showList(rev){
+    if (!this.list.length){ this.line("List is empty"); return; }
+    if (this.type === "cll") this.line("Ring: " + this.list.join(" -> ") + " -> (back to " + this.list[0] + ")");
+    else if (this.type === "dll") this.line((rev ? "Reverse: " : "Forward: ") + (rev ? this.list.slice().reverse() : this.list).join(" <-> ") + " <-> NULL");
+    else this.line("List: " + this.list.join(" -> ") + " -> NULL");
+  }
+  runOp(op){
+    if (op === "create"){ this.line("Enter number of nodes: "); this.wait = "n"; return; }
+    if (op === "display"){ this.showList(false); this.menu(); return; }
+    if (op === "displayrev"){ this.showList(true); this.menu(); return; }
+    if (op === "search"){ this.line("Search: "); this.wait = "search"; return; }
+    if (op === "insertbeg" || op === "insertend"){ this.pending.op = op; this.line("Enter data: "); this.wait = "one"; return; }
+    if (op === "insertbet"){ this.line("Insert after which value: "); this.wait = "after"; this.pending.op = "insertbet"; return; }
+    if (op === "deletebeg"){
+      if (!this.list.length) this.line("List empty");
+      else this.list.shift();
+      this.menu(); return;
+    }
+    if (op === "deleteend"){
+      if (!this.list.length) this.line("List empty");
+      else this.list.pop();
+      this.menu(); return;
+    }
+    if (op === "deletebt"){ this.line("Delete which value: "); this.wait = "searchdel"; }
+  }
+  finishOne(n){
+    const op = this.pending.op;
+    if (op === "insertbeg") this.list.unshift(n);
+    else if (op === "insertend") this.list.push(n);
+    else if (op === "insertbet"){
+      const i = this.list.indexOf(this.pending.after);
+      if (i < 0) this.line("Value " + this.pending.after + " not found", "t-err");
+      else this.list.splice(i + 1, 0, n);
+    }
+    this.menu();
+  }
+}
+
+let LIVE_RUN = null;
+
 /* ===================== INIT ===================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("panel-basics").innerHTML = BASICS_HTML;
-  initBasicsExtras();
+  document.getElementById("panel-basics").innerHTML = basicsPanelHTML();
+  try { initBasicsTab(); } catch (err) { console.error("Basics lab failed:", err); }
   ["sll", "dll", "cll"].forEach((type) => {
     document.getElementById(`panel-${type}`).innerHTML = labPanelHTML(type);
   });
