@@ -186,6 +186,22 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
 }
 .field input.wide{width:190px;}
 .field input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+.scanf-box{
+  width:100%; background:#0f172a; color:#e2e8f0; border-radius:12px; padding:14px 16px;
+  font-family:var(--mono); box-shadow:inset 0 0 0 1px #1e293b;
+}
+.scanf-k{font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#64748b; font-weight:700; margin-bottom:8px;}
+.scanf-q{font-size:15.5px; font-weight:700; color:#f8fafc; margin-bottom:10px;}
+.scanf-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+.scanf-row input{
+  flex:1; min-width:160px; border:1px solid #334155; background:#020617; color:#f8fafc;
+  border-radius:8px; padding:10px 12px; font-family:var(--mono); font-size:16px; font-weight:700;
+}
+.scanf-row input:focus{outline:none; border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.2);}
+.scanf-got{margin-top:8px; font-size:12.5px; color:#94a3b8;}
+.scanf-got b{color:#38bdf8;}
+.scanf-err{margin-top:6px; font-size:12.5px; color:#f87171; font-weight:700; display:none;}
+.scanf-err.show{display:block;}
 .btn-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:16px; padding-top:16px; border-top:1px solid var(--border);}
 .btn{
   border:1px solid var(--border-strong); background:#fff; color:var(--fg); font-size:13px; font-weight:600;
@@ -201,10 +217,22 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
 
 /* ---------- lab grid: visualize LEFT · reference RIGHT ---------- */
 .lab-grid{
-  display:grid; grid-template-columns:minmax(0,1.05fr) minmax(340px,0.95fr); gap:16px; align-items:stretch;
+  display:grid; grid-template-columns:minmax(0,1.3fr) minmax(400px,0.8fr); gap:16px; align-items:start;
 }
-@media (max-width:980px){.lab-grid{grid-template-columns:1fr;}}
-.diagram-card{padding:0; min-height:420px; display:flex; flex-direction:column; overflow:hidden;}
+@media(max-width:1100px){.lab-grid{grid-template-columns:1fr;}}
+.diagram-card,.op-ref{
+  position:sticky; top:70px; max-height:calc(100vh - 82px);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.diagram-card{padding:0; min-height:0;}
+.op-ref{
+  border:2px solid #17171c; background:#fff; border-radius:0;
+  box-shadow:none; min-height:0;
+}
+@media(max-width:1100px){
+  .diagram-card,.op-ref{position:relative; top:auto; max-height:none;}
+  .op-ref{min-height:420px; max-height:70vh;}
+}
 .viz-head{
   display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
   padding:12px 16px; border-bottom:1px solid var(--border); background:#fff;
@@ -215,8 +243,8 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
 .viz-controls{padding:14px 16px; border-bottom:1px solid var(--border); background:var(--bg-soft);}
 .canvas-wrap{
   position:relative;
-  flex:1; min-height:360px; display:flex; align-items:stretch; justify-content:center;
-  padding:34px 18px 22px; overflow:auto;
+  flex:1 1 auto; min-height:220px; display:flex; align-items:stretch; justify-content:flex-start;
+  padding:18px 14px 16px; overflow:auto;
   background-image:radial-gradient(circle, #e4e4ea 1px, transparent 1px); background-size:22px 22px; background-color:#fafafa;
 }
 .join-col.flip-move{transition:transform .4s cubic-bezier(.22,.85,.32,1);}
@@ -233,24 +261,21 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
 .ptr-flyer.fly-go{opacity:1; transform:translate(-50%,-50%) scale(1);}
 .join-node.just-arrived{animation:arrivepulse .6s ease;}
 @keyframes arrivepulse{0%{box-shadow:0 0 0 9px rgba(124,58,237,.28);} 100%{box-shadow:0 0 0 0 rgba(124,58,237,0);}}
-.step-banner{margin:0; border:none; border-top:1px solid var(--border); border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0; padding:12px 16px;}
+.step-banner{margin:0; border:none; border-top:1px solid var(--border); border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0; padding:12px 16px; flex:none;}
 .step-banner .tag{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent-dark); font-weight:700;}
-.step-banner p{margin-top:4px; font-size:13.5px; line-height:1.6; color:var(--fg);}
+.step-banner p{margin-top:4px; font-size:15px; line-height:1.55; color:var(--fg); font-weight:600;}
+.viz-head,.viz-controls,.viz-legend,.move-strip{flex:none;}
 
 /* ---- OPERATION REFERENCE (Queue Notes style) ---- */
-.op-ref{
-  display:flex; flex-direction:column; border:2px solid #17171c; background:#fff; border-radius:0;
-  box-shadow:none; min-height:520px; overflow:hidden;
-}
 .op-ref-head{
   display:flex; align-items:center; justify-content:space-between; gap:8px;
-  padding:11px 16px; border-bottom:2px solid #17171c; background:#fff;
+  padding:11px 16px; border-bottom:2px solid #17171c; background:#fff; flex:none;
+}
+.op-ref-tabs{
+  display:flex; flex-wrap:wrap; gap:4px; padding:8px 10px; border-bottom:1px solid rgba(23,23,28,.12); background:#fff; flex:none;
 }
 .op-ref-head span{
   font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--accent);
-}
-.op-ref-tabs{
-  display:flex; flex-wrap:wrap; gap:4px; padding:10px 10px; border-bottom:1px solid rgba(23,23,28,.12); background:#fff;
 }
 .op-ref-tabs .op-pill{
   border:none; background:transparent; color:var(--fg); font-family:var(--mono); font-size:11px; font-weight:700;
@@ -264,13 +289,13 @@ main{max-width:1280px; margin:0 auto; padding:28px 24px 80px;}
   font-family:var(--mono); font-size:10.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#17171c;
 }
 .op-ref-code .sec-label b{font-weight:700; letter-spacing:.04em; text-transform:none; font-size:12px; color:var(--accent-dark);}
-main{max-width:1360px;}
-.header-top,.top-nav,footer{max-width:1360px;}
+main{max-width:1680px;}
+.header-top,.top-nav,footer{max-width:1680px;}
 
-.op-ref-code{flex:1; display:flex; flex-direction:column; background:#fff; min-height:0;}
+.op-ref-code{flex:1; display:flex; flex-direction:column; background:#fff; min-height:0; overflow:hidden;}
 .op-ref-code .code-bar{
   display:flex; align-items:center; justify-content:space-between; gap:8px;
-  padding:10px 16px; border-bottom:1px solid rgba(23,23,28,.12);
+  padding:10px 16px; border-bottom:1px solid rgba(23,23,28,.12); flex:none;
 }
 .btn-copy{
   border:1.5px solid #17171c; background:#fff; color:#17171c; font-family:var(--mono);
@@ -279,24 +304,36 @@ main{max-width:1360px;}
 }
 .btn-copy:hover{background:#17171c; color:#fff;}
 .fncode-wrap{
-  flex:1; overflow:auto; max-height:none; padding:14px 8px 18px; background:#fff;
+  flex:1 1 auto; overflow:auto; min-height:0; padding:10px 6px 18px; background:#fff;
+  --fn-fs:16.5px;
 }
-.fncode-wrap .code-line{display:flex; padding:0 10px; border-radius:4px;}
+.fncode-wrap .code-line{display:flex; padding:3px 10px; border-radius:0; align-items:stretch;}
 .fncode-wrap .code-line .ln{
-  user-select:none; width:28px; flex:none; text-align:right; padding-right:14px;
-  color:#9494a0; font-family:var(--mono); font-size:12px; line-height:1.7;
+  user-select:none; width:36px; flex:none; text-align:right; padding-right:16px;
+  color:#6b6b76; font-family:var(--mono); font-size:calc(var(--fn-fs) - 2px); line-height:1.85;
 }
 .fncode-wrap .code-line .lc{
-  font-family:var(--mono); font-size:13px; white-space:pre; color:#17171c; line-height:1.7;
+  font-family:var(--mono); font-size:var(--fn-fs); white-space:pre; color:#17171c; line-height:1.85; font-weight:500;
 }
-.fncode-wrap .code-line.on{background:#fff6e0;}
-.fncode-wrap .code-line.on .lc{color:#17171c; font-weight:600;}
-.fncode-wrap .code-line.on .ln{color:var(--amber);}
+.fncode-wrap .code-line.on{
+  background:#f59e0b;
+  box-shadow:inset 5px 0 0 #9a3412;
+}
+.fncode-wrap .code-line.on .lc{color:#111; font-weight:800;}
+.fncode-wrap .code-line.on .ln{color:#7c2d12; font-weight:800;}
+.fncode-wrap .code-line.on .tok-kw,
+.fncode-wrap .code-line.on .tok-type,
+.fncode-wrap .code-line.on .tok-fn,
+.fncode-wrap .code-line.on .tok-op,
+.fncode-wrap .code-line.on .tok-num{color:#111;}
 /* light-theme tokens inside function code panel */
-.fncode-wrap .tok-kw{color:#c41d7f;} .fncode-wrap .tok-type{color:#0958d9;}
-.fncode-wrap .tok-str{color:#389e0d;} .fncode-wrap .tok-com{color:#8c8c8c; font-style:italic;}
-.fncode-wrap .tok-num{color:#d4380d;} .fncode-wrap .tok-fn{color:#531dab;}
-.fncode-wrap .tok-pp{color:#c41d7f;} .fncode-wrap .tok-op{color:#cf1322;}
+.fncode-wrap .tok-kw{color:#9d174d;} .fncode-wrap .tok-type{color:#1d4ed8;}
+.fncode-wrap .tok-str{color:#166534;} .fncode-wrap .tok-com{color:#737373; font-style:italic;}
+.fncode-wrap .tok-num{color:#c2410c;} .fncode-wrap .tok-fn{color:#6b21a8;}
+.fncode-wrap .tok-pp{color:#9d174d;} .fncode-wrap .tok-op{color:#b91c1c;}
+.fn-zoom{display:flex; align-items:center; gap:4px;}
+.fn-zoom button{min-width:28px; height:26px; font-weight:800; font-size:14px; padding:0;}
+.fn-zoom span{font-family:var(--mono); font-size:11px; min-width:40px; text-align:center; color:var(--muted);}
 
 .lab-side{display:none;} /* legacy */
 .doc-chip{display:none;}
@@ -305,9 +342,19 @@ body{font-size:15.5px;}
 
 /* ---------- node canvas — "join stage": one long row, scrolls instead of wrapping,
    so an arrow can never get stranded on its own line the way a wrapping flex row would. ---------- */
-.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:24px 18px; overflow-x:auto; overflow-y:hidden; animation:framein .28s ease;}
+.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:40px 14px 18px; overflow:visible; animation:framein .28s ease; position:relative;}
 @keyframes framein{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:none;}}
 .join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; min-width:100%; box-sizing:border-box;}
+.join-grid{display:grid; grid-template-rows:auto auto; width:max-content; min-width:100%; column-gap:0; row-gap:18px; align-items:end; min-height:220px;}
+.join-grid.has-below{grid-template-rows:auto auto;}
+.g-skip{min-width:72px; height:24px; align-self:center; margin-bottom:26px;}
+.g-below{display:flex; flex-direction:column; align-items:center; padding:4px 10px 0; animation:popin .35s ease;}
+.below-lab{font-family:var(--mono); font-size:9.5px; font-weight:800; color:var(--amber); background:var(--amber-soft); border:1px solid #f0d59a; padding:2px 8px; border-radius:999px; margin-bottom:6px; white-space:nowrap;}
+.splice-svg{position:absolute; left:0; top:0; pointer-events:none; overflow:visible; z-index:4;}
+.splice-svg .spl-line{fill:none; stroke:#16a34a; stroke-width:3;}
+.splice-svg .spl-line.new{stroke-dasharray:80; stroke-dashoffset:80; animation:drawlink .6s ease forwards;}
+.splice-svg .spl-num{font-family:var(--disp); font-weight:800; font-size:12px; fill:#fff;}
+.splice-svg .spl-num-bg{fill:#111;}
 .join-col{display:flex; flex-direction:column; align-items:center; flex-shrink:0; position:relative; padding:0 10px;}
 .join-badges{display:flex; gap:4px; margin-bottom:5px; flex-wrap:wrap; justify-content:center; max-width:150px; min-height:22px; align-items:flex-end;}
 .badge{font-family:var(--mono); font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid; white-space:nowrap;}
@@ -341,7 +388,22 @@ body{font-size:15.5px;}
 
 /* the join arrow — drawn with a dash-offset animation so a brand new link visibly "connects"
    instead of simply appearing, exactly like the sample's JOIN arrow. */
-.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin-bottom:26px; min-width:64px; flex-shrink:0;}
+.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin-bottom:26px; min-width:64px; flex-shrink:0; position:relative;}
+.link-circ{
+  width:22px; height:22px; border-radius:50%; background:#111; color:#fff;
+  font-family:var(--disp); font-weight:800; font-size:12px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 0 3px #fff; z-index:2; flex:none;
+}
+.join-link .link-circ{margin-bottom:4px;}
+.join-link.new .link-circ{animation:popin .35s ease;}
+.link-step-line{
+  display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;
+  text-align:center; margin:12px 8px 0; font-size:15px; font-weight:700; color:#1c2748;
+  padding:8px 12px; background:#fff8e3; border:1px solid #f0d59a; border-radius:10px;
+}
+.link-step-line .link-circ{box-shadow:none;}
+.link-step-line code{font-family:var(--mono); font-size:13.5px; background:#fdefc8; padding:1px 6px; border-radius:4px;}
 .join-link .gap-lab{font-family:var(--mono); font-size:9.5px; font-weight:700; color:#fff; background:var(--green); padding:2px 9px; border-radius:999px; margin-bottom:3px; white-space:nowrap;}
 .join-link svg{width:64px; height:26px; display:block;}
 .join-link .arrow-line{stroke:var(--green); stroke-width:3; fill:none;}
@@ -353,6 +415,10 @@ body{font-size:15.5px;}
 .join-link.prev-link .gap-lab{background:#6366f1;}
 .join-link.prev-link .arrow-line{stroke:#6366f1;}
 .join-link.prev-link .arrow-head{fill:#6366f1;}
+.join-link.follow .gap-lab{background:#c2410c;}
+.join-link.follow .arrow-line{stroke:#c2410c; stroke-width:4;}
+.join-link.follow .arrow-head{fill:#c2410c;}
+.join-link.follow{filter:drop-shadow(0 0 6px rgba(194,65,12,.45));}
 .join-both{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:76px; flex-shrink:0; gap:3px;}
 .join-both .join-link{margin-bottom:0; min-width:76px;}
 
@@ -363,6 +429,16 @@ body{font-size:15.5px;}
 
 /* empty list: first → X, plain and big, the way it's taught */
 .empty-null{width:64px; height:64px; display:flex; align-items:center; justify-content:center; border:3px dashed var(--red); border-radius:12px; background:var(--red-soft); color:var(--red); font-weight:900; font-size:24px; margin-top:4px;}
+.tail-null{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:flex-end;
+  margin:0 6px 26px; min-width:56px; flex-shrink:0;
+}
+.tail-null .tn-box{
+  width:52px; height:52px; border:3px dashed var(--red); border-radius:10px; background:var(--red-soft);
+  color:var(--red); font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--mono);
+}
+.tail-null .tn-lab{margin-top:5px; font-family:var(--mono); font-size:9px; font-weight:700; color:var(--red);}
 .es-caption{text-align:center; margin-top:16px; font-size:13px; color:var(--muted); line-height:1.7;}
 .es-caption b{color:var(--fg); font-family:var(--mono);}
 
@@ -399,12 +475,15 @@ body{font-size:15.5px;}
 .prog-tab{border:1px solid var(--border-strong); background:#fff; padding:9px 16px; border-radius:8px; font-size:13.5px; font-weight:600; color:var(--muted);}
 .prog-tab.active{background:var(--fg); border-color:var(--fg); color:#fff;}
 .code-card{padding:0; overflow:hidden;}
-.code-toolbar{display:flex; align-items:center; justify-content:space-between; padding:11px 16px; background:var(--code-bg-2); border-bottom:1px solid var(--code-border);}
-.code-title{font-family:var(--mono); font-size:12.5px; color:var(--code-muted);}
-.code-block{background:var(--code-bg); margin:0; padding:16px 0; overflow-x:auto; max-height:640px; overflow-y:auto;}
+.code-toolbar{display:flex; align-items:center; gap:10px; padding:11px 16px; background:var(--code-bg-2); border-bottom:1px solid var(--code-border); flex-wrap:wrap;}
+.code-title{font-family:var(--mono); font-size:12.5px; color:var(--code-muted); margin-right:auto;}
+.zoom-btns{display:flex; align-items:center; gap:6px;}
+.zoom-btns button{min-width:34px; height:32px; font-size:16px; font-weight:800; line-height:1;}
+.zoom-btns span{font-family:var(--mono); font-size:12px; color:var(--code-muted); min-width:44px; text-align:center;}
+.code-block{background:var(--code-bg); margin:0; padding:16px 0; overflow-x:auto; max-height:640px; overflow-y:auto; --prog-fs:12.8px;}
 .code-line{display:flex; padding:0 18px;}
-.code-line .ln{user-select:none; width:34px; flex:none; text-align:right; padding-right:16px; color:#4b5563; font-family:var(--mono); font-size:12.5px;}
-.code-line .lc{font-family:var(--mono); font-size:12.8px; white-space:pre; color:var(--code-fg);}
+.code-line .ln{user-select:none; width:34px; flex:none; text-align:right; padding-right:16px; color:#4b5563; font-family:var(--mono); font-size:var(--prog-fs);}
+.code-line .lc{font-family:var(--mono); font-size:var(--prog-fs); white-space:pre; color:var(--code-fg);}
 .tok-kw{color:#ff7b72;} .tok-type{color:#79c0ff;} .tok-str{color:#a5d6ff;} .tok-com{color:#8b949e; font-style:italic;}
 .tok-num{color:#79c0ff;} .tok-fn{color:#d2a8ff;} .tok-pp{color:#ff7b72;} .tok-op{color:#ff7b72;}
 
@@ -889,9 +968,9 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
 /* ---------- lab theater: stack + chain + heap ---------- */
 .viz-theater{width:100%; display:flex; flex-direction:column; gap:10px; align-self:stretch;}
 .chain-host{width:100%;}
-.stack-bank{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
+.stack-bank{display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-start; overflow-x:auto; padding-bottom:4px;}
 .ptr-reg{
-  min-width:108px; border:1.5px solid var(--border-strong); background:#fff; border-radius:10px; padding:8px 10px; text-align:center;
+  min-width:96px; border:1.5px solid var(--border-strong); background:#fff; border-radius:10px; padding:7px 8px; text-align:center; flex:none;
 }
 .ptr-reg .pr-name{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;}
 .ptr-reg .pr-addr{font-family:var(--mono); font-size:13.5px; font-weight:700; margin-top:3px;}
@@ -917,7 +996,7 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
 .heap-cell.hc-deleted{border-color:var(--red); background:var(--red-soft); opacity:.6;}
 .heap-gap{min-width:28px; height:42px; border:1.5px dashed #d9c48a; border-radius:6px; background:#fff8e8; flex:none; align-self:center;}
 .join-node .jd.hit, .join-node .jn.hit, .join-node .jp.hit{
-  box-shadow:inset 0 0 0 3px #fff; animation:fieldhit .7s ease;
+  box-shadow:inset 0 0 0 4px #111; filter:brightness(1.15); animation:fieldhit .7s ease;
 }
 @keyframes fieldhit{0%{filter:brightness(1.35);} 100%{filter:none;}}
 .circ-uwrap{margin-top:2px; padding:0 24px 6px;}
@@ -1207,6 +1286,7 @@ const ALGO = {
     ],
     "insertend": [
       "temp = getnode()",
+      "if (first == NULL) return temp",
       "ptr = first",
       "while (ptr->next != NULL) ptr = ptr->next",
       "ptr->next = temp",
@@ -1220,6 +1300,7 @@ const ALGO = {
       "return first"
     ],
     "deletebeg": [
+      "if (first == NULL) return NULL",
       "ptr = first",
       "first = first->next",
       "free(ptr)",
@@ -1266,11 +1347,11 @@ const ALGO = {
       "if ptr != NULL go to step 3"
     ],
     "displayrev": [
-      "Check whether the DLL is present",
-      "Set ptr to first node (or last for reverse)",
+      "If first == NULL, stop (list empty)",
+      "Walk ptr to the last node (while ptr->next != NULL)",
       "Print ptr->data",
       "Set ptr = ptr->prev",
-      "if ptr != NULL go to step 3"
+      "If ptr != NULL go to step 3, else stop"
     ],
     "search": [
       "ptr = first",
@@ -1409,17 +1490,17 @@ const FN_CODE = {
     "display": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nvoid display(struct Node *first)\n{\n    struct Node *ptr;\n    ptr = first;\n    while (ptr != NULL)\n    {\n        printf(\"%d\", ptr->data);\n        ptr = ptr->next;\n    }\n}",
     "search": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* search(struct Node *first, int val)\n{\n    struct Node *ptr;\n    ptr = first;\n    while (ptr != NULL)\n    {\n        if (ptr->data == val)\n            return ptr;\n        ptr = ptr->next;\n    }\n    return NULL;\n}",
     "insertbeg": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertbeg(struct Node *first)\n{\n    struct Node *temp;\n    temp = getnode();\n    temp->next = first;\n    first = temp;\n    return first;\n}",
-    "insertend": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertend(struct Node *first)\n{\n    struct Node *temp, *ptr;\n    temp = getnode();\n    ptr = first;\n    while (ptr->next != NULL)\n    {\n        ptr = ptr->next;\n    }\n    ptr->next = temp;\n    return first;\n}",
+    "insertend": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertend(struct Node *first)\n{\n    struct Node *temp, *ptr;\n    temp = getnode();\n    if (first == NULL)\n        return temp;\n    ptr = first;\n    while (ptr->next != NULL)\n    {\n        ptr = ptr->next;\n    }\n    ptr->next = temp;\n    return first;\n}",
     "insertbet": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertbet(struct Node *first, int val)\n{\n    struct Node *ptr, *temp;\n    ptr = search(first, val);\n    if (ptr)\n    {\n        temp = getnode();\n        temp->next = ptr->next;\n        ptr->next = temp;\n    }\n    return first;\n}",
-    "deletebeg": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* deletebeg(struct Node *first)\n{\n    struct Node *ptr;\n    ptr = first;\n    first = first->next;\n    free(ptr);\n    return first;\n}",
+    "deletebeg": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* deletebeg(struct Node *first)\n{\n    if (first == NULL)\n        return NULL;\n    struct Node *ptr;\n    ptr = first;\n    first = first->next;\n    free(ptr);\n    return first;\n}",
     "deleteend": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* deleteend(struct Node *first)\n{\n    if (first == NULL)\n        return NULL;\n    if (first->next == NULL)\n    {\n        free(first);\n        return NULL;\n    }\n    struct Node *ptr = first;\n    while (ptr->next->next != NULL)\n    {\n        ptr = ptr->next;\n    }\n    free(ptr->next);\n    ptr->next = NULL;\n    return first;\n}",
     "deletebt": "/* Singly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* deletebt(struct Node *first)\n{\n    int val;\n    struct Node *ptr, *prev;\n    printf(\"Enter node value to be deleted: \");\n    scanf(\"%d\", &val);\n    ptr = first;\n    prev = NULL;\n    while (ptr != NULL && ptr->data != val)\n    {\n        prev = ptr;\n        ptr = ptr->next;\n    }\n    if (prev == NULL)\n        first = ptr->next;\n    else\n        prev->next = ptr->next;\n    free(ptr);\n    return first;\n}"
   },
   "dll": {
     "get": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* getNode()\n{\n    struct Node *temp;\n    temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data for the node: \");\n    scanf(\"%d\", &temp->data);\n    temp->prev = NULL;\n    temp->next = NULL;\n    return temp;\n}",
     "create": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* createDLL()\n{\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n)\n    {\n        temp = getNode();\n        if (first == NULL)\n            first = temp;\n        else\n        {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n            temp->prev = ptr;\n        }\n        i++;\n    }\n    return first;\n}",
-    "display": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nvoid display(struct Node *first)\n{\n    struct Node *ptr = first;\n    printf(\"Forward traversal: \");\n    while (ptr != NULL)\n    {\n        printf(\"%d \", ptr->data);\n        if (ptr->next == NULL)\n            break;\n        ptr = ptr->next;\n    }\n}",
-    "displayrev": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nvoid displayReverse(struct Node *first)\n{\n    struct Node *ptr = first;\n    printf(\"Reverse traversal: \");\n    while (ptr != NULL)\n    {\n        printf(\"%d \", ptr->data);\n        ptr = ptr->prev;\n    }\n    printf(\"\\n\");\n}",
+    "display": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nvoid display(struct Node *first)\n{\n    struct Node *ptr = first;\n    if (ptr == NULL)\n        return;\n    printf(\"Forward traversal: \");\n    while (ptr != NULL)\n    {\n        printf(\"%d \", ptr->data);\n        ptr = ptr->next;\n    }\n}",
+    "displayrev": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nvoid displayReverse(struct Node *first)\n{\n    struct Node *ptr = first;\n    if (ptr == NULL)\n        return;\n    while (ptr->next != NULL)\n        ptr = ptr->next;\n    printf(\"Reverse traversal: \");\n    while (ptr != NULL)\n    {\n        printf(\"%d \", ptr->data);\n        ptr = ptr->prev;\n    }\n    printf(\"\\n\");\n}",
     "search": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* search(struct Node *first, int val)\n{\n    struct Node *ptr = first;\n    while (ptr != NULL)\n    {\n        if (ptr->data == val)\n            return ptr;\n        ptr = ptr->next;\n    }\n    return NULL;\n}",
     "insertbeg": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertbeg(struct Node *first)\n{\n    struct Node *temp;\n    temp = getnode();\n    temp->next = first;\n    if (first != NULL)\n        first->prev = temp;\n    first = temp;\n    return first;\n}",
     "insertend": "/* Doubly Linked List — PPT function\n * Data Structures Unit III | WIT Solapur\n */\nstruct Node* insertend(struct Node *first)\n{\n    struct Node *temp, *ptr;\n    temp = getnode();\n    if (first == NULL)\n        first = temp;\n    else\n    {\n        ptr = first;\n        while (ptr->next != NULL)\n            ptr = ptr->next;\n        ptr->next = temp;\n        temp->prev = ptr;\n    }\n    return first;\n}",
@@ -1454,17 +1535,17 @@ const CODE_HL = {
     "display":    [7, 10, 11, 8],
     "search":     [7, 11, 12, 14],
     "insertbeg":  [7, 8, 9, 10],
-    "insertend":  [7, 8, 9, 13, 14],
+    "insertend":  [7, 8, 10, 13, 15, 16],
     "insertbet":  [7, 10, 11, 12, 14],
-    "deletebeg":  [7, 8, 9, 10],
+    "deletebeg":  [6, 9, 10, 11, 12],
     "deleteend":  [6, 8, 14, 18, 20],
     "deletebt":   [8, 10, 12, 17, 21]
   },
   "dll": {
     "get":        [7, 8, 9, 10, 11, 12],
     "create":     [9, 12, 14, 17, 18, 10, 23],
-    "display":    [8, 6, 10, 13, 8],
-    "displayrev": [8, 6, 10, 11, 8],
+    "display":     [7, 6, 12, 13, 10],
+    "displayrev": [7, 9, 14, 15, 12],
     "search":     [6, 10, 11, 13],
     "insertbeg":  [7, 8, 10, 11, 12],
     "insertend":  [7, 9, 13, 15, 16, 18],
@@ -1529,11 +1610,12 @@ function makeChain(values, circular){
   relink(ns, circular);
   return ns;
 }
-function snap(nodes, ptrs, desc, algo){
+function snap(nodes, ptrs, desc, algo, links){
   return {
-    nodes: nodes.map((n) => ({ id: n.id, value: n.value, state: n.state, next: n.next, prev: n.prev, detached: !!n.detached })),
+    nodes: nodes.map((n) => ({ id: n.id, value: n.value, state: n.state, next: n.next, prev: n.prev, detached: !!n.detached, below: !!n.below, anchorId: n.anchorId ?? null })),
     ptrs: { first: ptrs.first ?? null, temp: ptrs.temp ?? null, ptr: ptrs.ptr ?? null, prev: ptrs.prev ?? null },
     desc, algo,
+    links: (links || []).map((L) => ({ from: L.from, to: L.to, num: L.num, text: L.text, kind: L.kind || "next" })),
   };
 }
 
@@ -1544,11 +1626,88 @@ function generate(type, op, list, params){
   const ptrs = { first: nodes[0]?.id ?? null, temp: null, ptr: null, prev: null };
   const F = [];
   let result = list.slice();
+  let linkLog = [];
 
-  const push = (d, a) => F.push(snap(nodes, ptrs, d, a));
+  const push = (d, a) => F.push(snap(nodes, ptrs, d, a, linkLog));
   const st = (id, s) => { const n = nodes.find((x) => x.id === id); if (n) n.state = s; };
   const clear = () => nodes.forEach((n) => (n.state = "default"));
   const p = params || {};
+  const hopPtr = (toNode, algoIdx, msg) => {
+    const cur = nodes.find((n) => n.id === ptrs.ptr);
+    if (cur && cur.id !== ptrs.temp) st(cur.id, "visited");
+    ptrs.ptr = toNode.id;
+    st(toNode.id, "active");
+    const tn = ptrs.temp ? nodes.find((n) => n.id === ptrs.temp) : null;
+    if (tn && tn.detached) tn.state = "new";
+    push(msg, algoIdx);
+  };
+  /* Walk ptr along EXISTING next arrows only — one hop per frame. Never creates a link.
+     temp stays on screen exactly where it was built; only ptr moves. */
+  const walkToLast = (chain, algoIdx, circularWalk) => {
+    if (!chain.length) return null;
+    const tempId = ptrs.temp;
+    nodes.forEach((n) => { if (n.id !== tempId) n.state = "default"; });
+    ptrs.ptr = chain[0].id;
+    st(chain[0].id, "active");
+    if (tempId){ const tn = nodes.find((n) => n.id === tempId); if (tn) tn.state = "new"; }
+    push(tempId
+      ? `ptr = first — ptr now sits on ${chain[0].value}. temp stays where it is (still unlinked).`
+      : `ptr = first — ptr now sits on ${chain[0].value}.`, algoIdx);
+    const lastIdx = chain.length - 1;
+    for (let j = 0; j < lastIdx; j++){
+      const nxt = chain[j + 1];
+      hopPtr(nxt, algoIdx, circularWalk
+        ? `ptr->next != first, so ptr = ptr->next. ptr slides along the existing NEXT arrow to ${nxt.value}.`
+        : `ptr->next != NULL, so ptr = ptr->next. ptr slides along the existing NEXT arrow to ${nxt.value}.`);
+    }
+    const last = chain[lastIdx];
+    push(circularWalk
+      ? `ptr->next == first — ptr is at the last node (${last.value}).`
+      : `ptr->next == NULL — ptr is at the last node (${last.value}).`, algoIdx);
+    return last;
+  };
+  const walkToSecondLast = (chain, algoIdx) => {
+    if (chain.length < 2) return null;
+    nodes = chain.slice();
+    clear();
+    ptrs.ptr = chain[0].id;
+    st(chain[0].id, "active");
+    push(`ptr = first — ptr now sits on ${chain[0].value}.`, algoIdx);
+    const stop = chain.length - 2;
+    for (let j = 0; j < stop; j++){
+      hopPtr(chain[j + 1], algoIdx, `ptr->next->next != NULL, so ptr = ptr->next. ptr slides along the existing NEXT arrow to ${chain[j + 1].value}. No new link.`);
+    }
+    push(`ptr->next->next == NULL — ptr is at the second-last node (${chain[stop].value}).`, algoIdx);
+    return chain[stop];
+  };
+  const noteNext = (fromNode, toId, text) => {
+    fromNode.next = toId == null ? null : toId;
+    if (toId == null) return;
+    linkLog = linkLog.concat([{ from: fromNode.id, to: toId, num: linkLog.length + 1, text, kind: "next" }]);
+  };
+  const notePrev = (fromNode, toId, text) => {
+    fromNode.prev = toId == null ? null : toId;
+    if (toId == null) return;
+    linkLog = linkLog.concat([{ from: fromNode.id, to: toId, num: linkLog.length + 1, text, kind: "prev" }]);
+  };
+  /* After the new NEXT/PREV arrows are drawn while temp still sits on the lower row,
+     lift it into the list row so students see: links first, then the node joins the chain. */
+  const liftTemp = (t) => {
+    if (!t) return;
+    t.below = false;
+    t.detached = false;
+    const rest = nodes.filter((n) => n.id !== t.id);
+    const main = rest.filter((n) => !n.below);
+    const extra = rest.filter((n) => n.below);
+    if (t.anchorId == null){
+      nodes = [t, ...main, ...extra];
+    } else {
+      const i = main.findIndex((n) => n.id === t.anchorId);
+      const at = i < 0 ? main.length : i + 1;
+      nodes = [...main.slice(0, at), t, ...main.slice(at), ...extra];
+    }
+    t.anchorId = null;
+  };
 
   /* Builds a temp node the way getNode() truly works: malloc first — a block with nothing filled
      in yet — then the value is read into temp->data, then (DLL) temp->prev, then temp->next.
@@ -1556,9 +1715,24 @@ function generate(type, op, list, params){
      appearing complete the instant it's created. It's appended to `nodes` immediately (as a
      floating, not-yet-linked node) so it's visible while it's being built; the caller is
      responsible for moving it to its real final position afterwards. */
-  function buildTempNode(value, algoIdx){
-    const t = { id: newId(), value: undefined, state: "new", next: undefined, prev: undefined, detached: true };
-    nodes = [...nodes, t];
+  /* Place temp where the operation will attach it:
+     - "end"  (default) = after the last node  — createll / insertend
+     - "front"          = before first         — insertbeg
+     insertbet later splices temp after the found node. */
+  function buildTempNode(value, algoIdx, where){
+    const t = { id: newId(), value: undefined, state: "new", next: undefined, prev: undefined, detached: true, below: false, anchorId: null };
+    const main = nodes.filter((n) => !n.below);
+    if (where === "front"){
+      if (main.length){ t.below = true; t.anchorId = null; }
+      nodes = [...main, t];
+    } else if (where && typeof where === "object" && where.after){
+      t.below = true;
+      t.anchorId = where.after;
+      nodes = [...main, t];
+    } else {
+      if (main.length){ t.below = true; t.anchorId = main[main.length - 1].id; }
+      nodes = [...main, t];
+    }
     ptrs.temp = t.id;
     push(`temp = malloc(sizeof(struct Node)) — a fresh, empty block is reserved on the heap. Its address is stored in temp.`, algoIdx);
     t.value = value;
@@ -1574,8 +1748,12 @@ function generate(type, op, list, params){
 
   switch (op) {
     case "get": {
+      nodes = [];
+      ptrs.first = null;
+      ptrs.ptr = null;
+      ptrs.prev = null;
       const t = { id: newId(), value: undefined, state: "new", next: undefined, prev: undefined, detached: true };
-      nodes = [...nodes, t];
+      nodes = [t];
       ptrs.temp = t.id;
       push(`malloc(sizeof(struct Node)) reserves a fresh, empty block of memory on the heap. Its address is stored in temp.`, 0);
       push(`Enter data for the node — prompt printed.`, 1);
@@ -1610,17 +1788,17 @@ function generate(type, op, list, params){
             clear(); st(t.id, "active");
             push(`first == NULL, so first = temp.`, 4);
           } else {
-            clear();
-            for (let j = 0; j < existing.length; j++){
-              ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-              if (j < existing.length - 1) st(existing[j].id, "default");
-            }
-            push(`else — walk ptr to the last node.`, 5);
-            nodes = [...existing, t]; t.detached = false; relink(nodes, circular); ptrs.first = nodes[0].id;
-            clear(); st(t.id, "active");
-            push(`ptr->next = temp — the new node is attached at the end.`, 6);
+            walkToLast(existing, 5);
+            ptrs.ptr = existing[existing.length - 1].id;
+            ptrs.temp = t.id;
+            noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+            st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+            push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 6);
+            liftTemp(t);
+            st(t.id, "new");
+            push(`Links are done — temp now sits in the list.`, 6);
           }
-          ptrs.temp = null; ptrs.ptr = null;
+          ptrs.ptr = null;
           push(`i = i + 1 (now ${i + 1}).`, 7);
           if (i < vals.length - 1) push(`i < n, so go back to step 4 and create the next node.`, 8);
         }
@@ -1636,17 +1814,21 @@ function generate(type, op, list, params){
             clear(); st(t.id, "active");
             push(`first == NULL, so first = temp.`, 2);
           } else {
-            clear();
-            for (let j = 0; j < existing.length; j++){
-              ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-              if (j < existing.length - 1) st(existing[j].id, "default");
-            }
-            push(`else — walk ptr to the last node.`, 3);
-            nodes = [...existing, t]; t.detached = false; relink(nodes, circular); ptrs.first = nodes[0].id;
-            clear(); st(t.id, "active");
-            push(`ptr->next = temp; temp->prev = ptr — linked at the end, both ways.`, 4);
+            walkToLast(existing, 3);
+            ptrs.ptr = existing[existing.length - 1].id;
+            ptrs.temp = t.id; ptrs.first = existing[0].id;
+            noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+            st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+            push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 4);
+            notePrev(t, existing[existing.length - 1].id, "temp→prev = ptr");
+            ptrs.first = existing[0].id;
+            st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+            push(`temp->prev = ptr — link ②. temp is still on the lower row.`, 4);
+            liftTemp(t);
+            st(t.id, "new");
+            push(`Both links are done — temp now sits in the list.`, 4);
           }
-          ptrs.temp = null; ptrs.ptr = null;
+          ptrs.ptr = null;
           if (i < vals.length - 1) push(`i = i + 1; i < n, so go back and create the next node.`, 5);
         }
         clear();
@@ -1662,17 +1844,21 @@ function generate(type, op, list, params){
             clear(); st(t.id, "active");
             push(`first == NULL, so first = temp and temp->next = first (a ring of one).`, 3);
           } else {
-            clear();
-            for (let j = 0; j < existing.length; j++){
-              ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-              if (j < existing.length - 1) st(existing[j].id, "default");
-            }
-            push(`else — walk ptr around the ring until ptr->next == first (the last node).`, 4);
-            nodes = [...existing, t]; t.detached = false; relink(nodes, circular); ptrs.first = nodes[0].id;
-            clear(); st(t.id, "active");
-            push(`ptr->next = temp and temp->next = first — the ring is closed again.`, 5);
+            walkToLast(existing, 4, true);
+            ptrs.ptr = existing[existing.length - 1].id;
+            ptrs.temp = t.id; ptrs.first = existing[0].id;
+            noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+            st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+            push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 5);
+            noteNext(t, existing[0].id, "temp→next = first");
+            ptrs.first = existing[0].id;
+            st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+            push(`temp->next = first — link ②. temp is still on the lower row.`, 5);
+            liftTemp(t);
+            st(t.id, "new");
+            push(`Both links are done — temp now sits in the ring.`, 5);
           }
-          ptrs.temp = null; ptrs.ptr = null;
+          ptrs.ptr = null;
           if (i < vals.length - 1) push(`i = i + 1; i < n, so go back to step 3 and create the next node.`, 6);
         }
         clear();
@@ -1690,8 +1876,8 @@ function generate(type, op, list, params){
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
           push(`Print ptr->data = ${nodes[i].value}.`, 2);
-          st(nodes[i].id, "visited");
-          if (i < nodes.length - 1) push(`Set ptr = ptr->next.`, 3);
+          if (i < nodes.length - 1) hopPtr(nodes[i + 1], 3, `Set ptr = ptr->next — follow NEXT to ${nodes[i + 1].value}.`);
+          else st(nodes[i].id, "visited");
         }
         ptrs.ptr = null;
         push(`ptr->next == NULL — traversal complete.`, 4);
@@ -1702,20 +1888,26 @@ function generate(type, op, list, params){
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
           push(`print ptr->data = ${nodes[i].value}.`, 1);
-          st(nodes[i].id, "visited");
-          push(`set ptr = ptr->next.`, 2);
+          if (i < nodes.length - 1){
+            hopPtr(nodes[i + 1], 2, `ptr = ptr->next — follow NEXT to ${nodes[i + 1].value}.`);
+          } else {
+            hopPtr(nodes[0], 2, `ptr = ptr->next — back to first (${nodes[0].value}).`);
+            push(`while (ptr != first) is FALSE — the do-while ends. The full ring has been printed.`, 3);
+          }
         }
         ptrs.ptr = null;
-        push(`ptr came back to first — the do-while ends, the full ring has been printed.`, 3);
       } else { // sll
         if (!nodes.length){ push(`first == NULL — nothing to print, the list is empty.`, 3); break; }
-        clear(); ptrs.ptr = ptrs.first;
+        clear(); ptrs.ptr = nodes[0].id; st(nodes[0].id, "active");
         push(`Set pointer ptr to the first node in the list.`, 0);
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
           push(`print ptr->data = ${nodes[i].value}.`, 1);
-          st(nodes[i].id, "visited");
-          push(`set ptr = ptr->next.`, 2);
+          if (i < nodes.length - 1){
+            hopPtr(nodes[i + 1], 2, `ptr = ptr->next — follow the existing NEXT arrow to ${nodes[i + 1].value}.`);
+          } else {
+            st(nodes[i].id, "visited");
+          }
         }
         ptrs.ptr = null;
         push(`ptr is NULL now — traversal complete.`, 3);
@@ -1723,15 +1915,14 @@ function generate(type, op, list, params){
       break;
     }
     case "displayrev": {
-      if (!nodes.length){ push(`first == NULL — the DLL is empty.`, 0); break; }
-      clear(); ptrs.ptr = nodes[nodes.length - 1].id;
+      if (!nodes.length){ push(`first == NULL — the DLL is empty, so reverse display stops.`, 0); break; }
       push(`Check whether the DLL is present (first != NULL).`, 0);
-      push(`Set ptr to the last node (walk forward until next == NULL).`, 1);
+      walkToLast(nodes.slice(), 1);
+      push(`ptr is at the last node (${nodes[nodes.length - 1].value}). Reverse print starts here.`, 1);
       for (let i = nodes.length - 1; i >= 0; i--){
         ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
         push(`Print ptr->data = ${nodes[i].value}.`, 2);
-        st(nodes[i].id, "visited");
-        if (i > 0) push(`Set ptr = ptr->prev.`, 3);
+        if (i > 0) hopPtr(nodes[i - 1], 3, `ptr = ptr->prev — slide along the existing PREV arrow to ${nodes[i - 1].value}. No new link.`);
       }
       ptrs.ptr = null;
       push(`ptr became NULL going backward — reverse traversal complete.`, 4);
@@ -1746,9 +1937,9 @@ function generate(type, op, list, params){
         let found = false;
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === val){ st(nodes[i].id, "visited"); found = true; push(`ptr->data (${nodes[i].value}) == ${val} — return ptr.`, 2); break; }
-          push(`ptr->data (${nodes[i].value}) != ${val} — ptr = ptr->next (loop until back to first).`, 3);
-          st(nodes[i].id, "default");
+          if (nodes[i].value === val){ st(nodes[i].id, "visited"); found = true; push(`if (ptr->data == ${val}) return ptr — found.`, 2); break; }
+          push(`ptr->data (${nodes[i].value}) != ${val} — check first, then move.`, 3);
+          hopPtr(i < nodes.length - 1 ? nodes[i + 1] : nodes[0], 3, `ptr = ptr->next — ptr slides along the existing NEXT arrow. No new link.`);
         }
         if (!found) push(`Walked the whole ring, back to first — return NULL.`, 4);
       } else {
@@ -1759,57 +1950,82 @@ function generate(type, op, list, params){
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
           if (nodes[i].value === val){ st(nodes[i].id, "visited"); found = true; push(`ptr->data (${nodes[i].value}) == ${val} — return ptr.`, 1); break; }
-          push(`ptr->data (${nodes[i].value}) != ${val} — ptr = ptr->next.`, 2);
-          st(nodes[i].id, "default");
+          push(`ptr->data (${nodes[i].value}) != ${val}.`, 2);
+          if (i < nodes.length - 1) hopPtr(nodes[i + 1], 2, `ptr = ptr->next — follow the existing NEXT arrow to ${nodes[i + 1].value}.`);
         }
         if (!found) push(`Reached NULL without a match — value ${val} is not in the list.`, 3);
       }
       break;
     }
     case "insertbeg": {
-      const existing = nodes.slice();
-      const t = buildTempNode(p.value, 0);
+      const existing = nodes.filter((n) => n.id !== undefined && !n.below);
+      const t = buildTempNode(p.value, 0, "front");
+      st(t.id, "new");
+      push(`temp sits on the lower row. The list above is unchanged — first still points to the old head.`, 0);
       if (type === "dll"){
-        nodes = [t, ...existing];
-        push(`temp->next = first.`, 1);
-        if (existing.length > 0) push(`first != NULL, so first->prev = temp.`, 2);
-        t.detached = false; relink(nodes, circular); ptrs.first = t.id;
-        push(`first = temp.`, 3);
-        clear();
+        const oldFirst = existing[0] || null;
+        noteNext(t, oldFirst ? oldFirst.id : null, "temp→next = first");
+        st(t.id, "new");
+        if (oldFirst) st(oldFirst.id, "active");
+        push(`temp->next = first — link ①. temp is still on the lower row.`, 1);
+        if (oldFirst){
+          notePrev(oldFirst, t.id, "first→prev = temp");
+          push(`first != NULL, so first->prev = temp — link ②. temp is still below.`, 2);
+        }
+        ptrs.first = t.id;
+        st(t.id, "new");
+        push(`first = temp — the new node is the head. Still on the lower row until we lift it.`, 3);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`temp now sits at the front of the list.`, 3);
         push(`return first.`, 4);
         result = [p.value, ...list];
       } else if (type === "cll"){
         if (!existing.length){
-          nodes = [t]; t.detached = false; relink(nodes, circular); ptrs.first = t.id;
+          noteNext(t, t.id, "temp→next = first (ring of one)");
+          t.detached = false; ptrs.first = t.id;
           clear(); st(t.id, "active");
           push(`List was empty: first = temp; temp->next = first.`, 1);
         } else {
-          clear();
-          for (let j = 0; j < existing.length; j++){
-            ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-            if (j < existing.length - 1) st(existing[j].id, "default");
-          }
-          push(`Else — traverse ptr to the last node (ptr->next != first).`, 2);
-          nodes = [t, ...existing]; t.detached = false; relink(nodes, circular); ptrs.first = t.id;
-          clear(); st(t.id, "active");
-          push(`temp->next = first; ptr->next = temp; first = temp.`, 3);
+          walkToLast(existing, 2, true);
+          const last = existing[existing.length - 1];
+          const oldFirst = existing[0];
+          ptrs.temp = t.id;
+          noteNext(t, oldFirst.id, "temp→next = first");
+          st(t.id, "new"); st(oldFirst.id, "active");
+          push(`temp->next = first — link ①. temp is still on the lower row.`, 3);
+          noteNext(last, t.id, "ptr→next = temp");
+          st(t.id, "new"); st(last.id, "active");
+          push(`ptr->next = temp — link ②. temp is still on the lower row.`, 3);
+          ptrs.first = t.id;
+          st(t.id, "new");
+          push(`first = temp — new node is the head. Still below until we lift it.`, 3);
+          liftTemp(t);
+          st(t.id, "new");
+          push(`temp now sits at the front of the ring.`, 3);
         }
-        ptrs.ptr = null; ptrs.temp = null;
+        ptrs.ptr = null;
         push(`return first.`, 4);
         result = [p.value, ...list];
       } else { // sll
-        nodes = [t, ...existing];
-        t.detached = false; relink(nodes, circular); ptrs.first = t.id;
-        push(`temp->next = first — the new node points to the old head.`, 1);
-        push(`first = temp — the new node is now the head of the list.`, 2);
-        clear();
+        const oldFirst = existing[0] || null;
+        noteNext(t, oldFirst ? oldFirst.id : null, "temp→next = first");
+        st(t.id, "new");
+        if (oldFirst) st(oldFirst.id, "active");
+        push(`temp->next = first — link ①. temp is still on the lower row.`, 1);
+        ptrs.first = t.id;
+        st(t.id, "new");
+        push(`first = temp — the new node is the head. Still on the lower row until we lift it.`, 2);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`temp now sits at the front of the list.`, 2);
         push(`return first.`, 3);
         result = [p.value, ...list];
       }
       break;
     }
     case "insertend": {
-      const existing = nodes.slice();
+      const existing = nodes.filter((n) => !n.below);
       const t = buildTempNode(p.value, 0);
       if (type === "dll"){
         if (!existing.length){
@@ -1821,16 +2037,17 @@ function generate(type, op, list, params){
           result = [p.value];
           break;
         }
-        clear();
-        for (let j = 0; j < existing.length; j++){
-          ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-          if (j < existing.length - 1) st(existing[j].id, "default");
-        }
-        push(`else — ptr = first, walk ptr to the last node.`, 2);
-        nodes = [...existing, t]; t.detached = false; relink(nodes, circular);
-        push(`ptr->next = temp.`, 3);
-        push(`temp->prev = ptr.`, 4);
-        clear();
+        walkToLast(existing, 2);
+        ptrs.ptr = existing[existing.length - 1].id;
+        ptrs.temp = t.id;
+        noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+        st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+        push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 3);
+        notePrev(t, existing[existing.length - 1].id, "temp→prev = ptr");
+        push(`temp->prev = ptr — link ②. temp is still on the lower row.`, 4);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`Both links are done — temp now sits at the end of the list.`, 4);
         push(`return first.`, 5);
         result = [...list, p.value];
       } else if (type === "cll"){
@@ -1843,119 +2060,127 @@ function generate(type, op, list, params){
           result = [p.value];
           break;
         }
-        clear();
-        for (let j = 0; j < existing.length; j++){
-          ptrs.ptr = existing[j].id; st(existing[j].id, "active");
-          if (j < existing.length - 1) st(existing[j].id, "default");
-        }
-        push(`else — find the last node (ptr->next != first).`, 2);
-        nodes = [...existing, t]; t.detached = false; relink(nodes, circular);
-        push(`ptr->next = temp; temp->next = first.`, 3);
-        clear();
-        ptrs.ptr = null; ptrs.temp = null;
+        walkToLast(existing, 2, true);
+        ptrs.ptr = existing[existing.length - 1].id;
+        ptrs.temp = t.id;
+        noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+        st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+        push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 3);
+        noteNext(t, existing[0].id, "temp→next = first");
+        push(`temp->next = first — link ②. temp is still on the lower row.`, 3);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`Both links are done — temp now sits at the end of the ring.`, 3);
+        ptrs.ptr = null;
         push(`return first.`, 4);
         result = [...list, p.value];
       } else { // sll
         if (!existing.length){
-          nodes = [t]; t.detached = false; relink(nodes, circular); ptrs.first = t.id;
+          nodes = [t]; t.detached = false; ptrs.first = t.id;
           clear(); st(t.id, "active");
-          push(`List was empty, so first = temp.`, 4);
+          push(`List was empty, so first = temp; return temp.`, 1);
           result = [p.value];
           break;
         }
-        push(`ptr = first.`, 1);
-        clear(); ptrs.ptr = existing[0].id; st(existing[0].id, "active");
-        for (let i = 0; i < existing.length - 1; i++){
-          ptrs.ptr = existing[i].id; st(existing[i].id, "active");
-          push(`while (ptr->next != NULL) — ptr = ptr->next.`, 2);
-          st(existing[i].id, "default");
-        }
-        ptrs.ptr = existing[existing.length - 1].id; st(existing[existing.length - 1].id, "active");
-        nodes = [...existing, t]; t.detached = false; relink(nodes, circular);
-        push(`ptr->next = temp — the new node is linked at the end.`, 3);
-        clear();
-        push(`return first.`, 4);
+        walkToLast(existing, 3);
+        ptrs.ptr = existing[existing.length - 1].id;
+        ptrs.temp = t.id;
+        noteNext(existing[existing.length - 1], t.id, "ptr→next = temp");
+        st(t.id, "new"); st(existing[existing.length - 1].id, "active");
+        push(`ptr->next = temp — link ① drawn. temp is still on the lower row.`, 4);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`The link is done — temp now sits at the end of the list.`, 4);
+        push(`return first.`, 5);
         result = [...list, p.value];
       }
       break;
     }
     case "insertbet": {
       const av = p.afterVal;
+      const walkSearch = (foundAlgo, missAlgo) => {
+        const chain = nodes.filter((n) => !n.below);
+        if (!chain.length){ push(`List empty — value ${av} not found.`, missAlgo); return -1; }
+        clear(); ptrs.ptr = chain[0].id; st(chain[0].id, "active");
+        push(`ptr = first — start search for ${av}.`, foundAlgo);
+        for (let i = 0; i < chain.length; i++){
+          ptrs.ptr = chain[i].id; st(chain[i].id, "active");
+          if (chain[i].value === av){
+            push(`ptr->data (${av}) == val — found. ptr stays here. NEXT is not rewritten yet.`, foundAlgo);
+            return nodes.indexOf(chain[i]);
+          }
+          push(`ptr->data (${chain[i].value}) != ${av}.`, foundAlgo);
+          if (i < chain.length - 1){
+            hopPtr(chain[i + 1], foundAlgo, `ptr = ptr->next — follow the existing NEXT arrow to ${chain[i + 1].value}.`);
+          }
+        }
+        push(`Reached the end — ${av} not found, return first unchanged.`, missAlgo);
+        return -1;
+      };
       if (type === "dll"){
         push(`Enter the value after which to insert: ${av}.`, 0);
-        if (!nodes.length){ push(`ptr = search(first, ${av}) → not found — return first unchanged.`, 2); break; }
-        clear(); ptrs.ptr = ptrs.first;
-        let idx = -1;
-        for (let i = 0; i < nodes.length; i++){
-          ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === av){ idx = i; st(nodes[i].id, "visited"); push(`ptr = search(first, ${av}) — found it.`, 1); break; }
-          st(nodes[i].id, "default");
-        }
-        if (idx === -1){ push(`Not found — return first unchanged.`, 2); break; }
-        const oldNextId = nodes[idx].next;
-        const t = buildTempNode(p.value, 3);
-        nodes = nodes.filter((n) => n.id !== t.id); // drop the temporary tail slot buildTempNode used
-        nodes.splice(idx + 1, 0, t);
-        /* Wire only the links the algorithm has actually made so far — temp points
-           forward/back to ptr, but ptr does NOT point to temp yet, so only one link
-           (temp -> old-next) is visible at this step, matching the real pointer state. */
-        t.detached = false; t.next = oldNextId; t.prev = nodes[idx].id;
-        clear(); st(nodes[idx].id, "active"); st(t.id, "new");
-        push(`temp->next = ptr->next; temp->prev = ptr.`, 4);
+        const idx = walkSearch(1, 2);
+        if (idx < 0) break;
+        const ptrNode = nodes[idx];
+        const oldNextId = ptrNode.next;
+        const t = buildTempNode(p.value, 3, { after: ptrNode.id });
+        ptrs.ptr = ptrNode.id; ptrs.temp = t.id;
+        st(ptrNode.id, "active"); st(t.id, "new");
+        noteNext(t, oldNextId, "temp→next = ptr→next");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`temp->next = ptr->next — link ①. List above is still joined. temp stays on the lower row.`, 4);
+        notePrev(t, ptrNode.id, "temp→prev = ptr");
+        push(`temp->prev = ptr — link ②. temp is still below.`, 4);
         if (oldNextId != null){
           const on = nodes.find((n) => n.id === oldNextId);
-          if (on) on.prev = t.id;
-          push(`ptr->next != NULL, so ptr->next->prev = temp.`, 5);
+          if (on){ notePrev(on, t.id, "ptr→next→prev = temp"); }
+          push(`ptr->next != NULL, so ptr->next->prev = temp — link ③.`, 5);
         }
-        nodes[idx].next = t.id;
-        clear(); st(t.id, "active");
-        push(`ptr->next = temp — return first.`, 6);
-        clear();
+        noteNext(ptrNode, t.id, "ptr→next = temp");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`ptr->next = temp — link ④. The old NEXT arrow is gone; the path now goes through temp below.`, 6);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`Both links are done — temp now sits in the list between the two nodes.`, 6);
         const r = list.slice(); r.splice(idx + 1, 0, p.value); result = r;
       } else if (type === "cll"){
         push(`Enter val = ${av}; ptr = search(first, val).`, 0);
-        if (!nodes.length){ push(`Not found — return first unchanged.`, 0); break; }
-        clear(); ptrs.ptr = ptrs.first;
-        let idx = -1;
-        for (let i = 0; i < nodes.length; i++){
-          ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === av){ idx = i; st(nodes[i].id, "visited"); break; }
-          st(nodes[i].id, "default");
-        }
-        if (idx === -1){ push(`Not found — return first unchanged.`, 0); break; }
-        const t = buildTempNode(p.value, 1);
-        nodes = nodes.filter((n) => n.id !== t.id);
-        nodes.splice(idx + 1, 0, t); t.detached = false; relink(nodes, circular);
-        push(`temp->next = ptr->next.`, 2);
-        push(`ptr->next = temp.`, 3);
-        clear();
+        const idx = walkSearch(0, 0);
+        if (idx < 0) break;
+        const ptrNode = nodes[idx];
+        const oldNextId = ptrNode.next;
+        const t = buildTempNode(p.value, 1, { after: ptrNode.id });
+        ptrs.ptr = ptrNode.id; ptrs.temp = t.id;
+        st(ptrNode.id, "active"); st(t.id, "new");
+        noteNext(t, oldNextId, "temp→next = ptr→next");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`temp->next = ptr->next — link ①. List above is still joined. temp stays on the lower row.`, 2);
+        noteNext(ptrNode, t.id, "ptr→next = temp");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`ptr->next = temp — link ②. Old next arrow is gone; path now goes through temp below.`, 3);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`Both links are done — temp now sits in the ring between the two nodes.`, 3);
         push(`return first.`, 4);
         const r = list.slice(); r.splice(idx + 1, 0, p.value); result = r;
       } else { // sll
         if (!nodes.length){ push(`The list is empty — cannot insert after ${av}.`, 0); break; }
-        clear(); ptrs.ptr = ptrs.first;
-        push(`ptr = search(first, ${av}).`, 0);
-        let idx = -1;
-        for (let i = 0; i < nodes.length; i++){
-          ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === av){ idx = i; st(nodes[i].id, "visited"); break; }
-          st(nodes[i].id, "default");
-        }
-        if (idx === -1){ push(`Node ${av} not found — insertion cancelled.`, 0); break; }
-        const oldNextId = nodes[idx].next;
-        const t = buildTempNode(p.value, 1);
-        nodes = nodes.filter((n) => n.id !== t.id);
-        nodes.splice(idx + 1, 0, t);
-        /* Wire only the link the algorithm has actually made so far — temp points forward
-           to ptr's old next, but ptr does not yet point to temp, so exactly one new link
-           is visible at this step. */
-        t.detached = false; t.next = oldNextId;
-        clear(); st(nodes[idx].id, "active"); st(t.id, "new");
-        push(`temp->next = ptr->next.`, 2);
-        nodes[idx].next = t.id;
-        clear(); st(t.id, "active");
-        push(`ptr->next = temp.`, 3);
-        clear();
+        const idx = walkSearch(0, 0);
+        if (idx < 0) break;
+        const ptrNode = nodes[idx];
+        const oldNextId = ptrNode.next;
+        const t = buildTempNode(p.value, 1, { after: ptrNode.id });
+        ptrs.ptr = ptrNode.id; ptrs.temp = t.id;
+        st(ptrNode.id, "active"); st(t.id, "new");
+        noteNext(t, oldNextId, "temp→next = ptr→next");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`temp->next = ptr->next — link ①. List above is still joined. temp stays on the lower row.`, 2);
+        noteNext(ptrNode, t.id, "ptr→next = temp");
+        st(t.id, "new"); st(ptrNode.id, "active");
+        push(`ptr->next = temp — link ②. Old next arrow is gone; path now goes through temp below.`, 3);
+        liftTemp(t);
+        st(t.id, "new");
+        push(`Both links are done — temp now sits in the list between the two nodes.`, 3);
         push(`return first.`, 4);
         const r = list.slice(); r.splice(idx + 1, 0, p.value); result = r;
       }
@@ -1967,39 +2192,45 @@ function generate(type, op, list, params){
         clear(); ptrs.ptr = nodes[0].id; st(nodes[0].id, "active");
         push(`ptr = first — this is the node we will delete.`, 1);
         ptrs.first = nodes[1]?.id ?? null;
-        push(`first = first->next.`, 2);
-        if (nodes.length > 1) push(`first != NULL, so first->prev = NULL.`, 3);
-        st(nodes[0].id, "deleted");
-        push(`free(ptr); return first.`, 4);
-        nodes = nodes.slice(1); relink(nodes, circular); ptrs.ptr = null;
-        result = list.slice(1);
-      } else if (type === "cll"){
-        if (!nodes.length){ push(`first == NULL — return NULL, nothing to delete.`, 0); break; }
-        if (nodes.length === 1){ clear(); st(nodes[0].id, "deleted"); push(`Only one node — free it and return NULL.`, 1); nodes = []; ptrs.first = null; result = []; break; }
-        clear();
-        for (let j = 0; j < nodes.length; j++){
-          ptrs.ptr = nodes[j].id; st(nodes[j].id, "active");
-          if (j < nodes.length - 1) st(nodes[j].id, "default");
+        push(`first = first->next. The old head stays in place until free.`, 2);
+        if (nodes.length > 1){
+          nodes[1].prev = null;
+          push(`first != NULL, so first->prev = NULL. The old head stays in place.`, 3);
         }
-        ptrs.ptr = nodes[0].id; st(nodes[0].id, "deleted");
-        push(`Find last; temp = first; first = first->next.`, 2);
-        ptrs.first = nodes[1].id;
-        push(`last->next = first; free(temp).`, 3);
+        st(nodes[0].id, "deleted");
+        push(`free(ptr) — now the old head is given back to the heap.`, 4);
         nodes = nodes.slice(1); relink(nodes, circular); ptrs.ptr = null;
         clear();
         push(`return first.`, 4);
         result = list.slice(1);
-      } else { // sll
-        if (!nodes.length){ push(`The list is empty. Nothing to delete.`, 0); break; }
-        clear(); ptrs.ptr = nodes[0].id; st(nodes[0].id, "active");
-        push(`ptr = first.`, 0);
-        ptrs.first = nodes[1]?.id ?? null;
-        push(`first = first->next.`, 1);
+      } else if (type === "cll"){
+        if (!nodes.length){ push(`first == NULL — return NULL, nothing to delete.`, 0); break; }
+        if (nodes.length === 1){ clear(); st(nodes[0].id, "deleted"); push(`Only one node — free it and return NULL.`, 1); nodes = []; ptrs.first = null; result = []; break; }
+        const last = walkToLast(nodes.slice(), 2, true);
+        ptrs.temp = nodes[0].id;
+        st(nodes[0].id, "active");
+        push(`temp = first — this is the node we will delete. It stays in place.`, 2);
+        ptrs.first = nodes[1].id;
+        push(`first = first->next. The old head stays in the ring until free.`, 2);
+        noteNext(last, nodes[1].id, "last→next = first");
+        push(`last->next = first — the ring now skips the old head. The node stays until free.`, 3);
         st(nodes[0].id, "deleted");
-        push(`free(ptr).`, 2);
+        push(`free(temp) — the skipped node is given back to the heap.`, 3);
+        nodes = nodes.slice(1); relink(nodes, circular); ptrs.ptr = null; ptrs.temp = null;
+        clear();
+        push(`return first.`, 4);
+        result = list.slice(1);
+      } else { // sll
+        if (!nodes.length){ push(`if (first == NULL) return NULL — nothing to delete.`, 0); break; }
+        clear(); ptrs.ptr = nodes[0].id; st(nodes[0].id, "active");
+        push(`ptr = first.`, 1);
+        ptrs.first = nodes[1]?.id ?? null;
+        push(`first = first->next. The old head stays in place until free.`, 2);
+        st(nodes[0].id, "deleted");
+        push(`free(ptr) — now the old head is given back to the heap.`, 3);
         nodes = nodes.slice(1); relink(nodes, circular); ptrs.ptr = null;
         clear();
-        push(`return first.`, 3);
+        push(`return first.`, 4);
         result = list.slice(1);
       }
       break;
@@ -2008,27 +2239,36 @@ function generate(type, op, list, params){
       if (type === "dll"){
         if (!nodes.length){ push(`first == NULL — return NULL.`, 0); break; }
         if (nodes.length === 1){ clear(); st(nodes[0].id, "deleted"); push(`Only one node — free it, return NULL.`, 1); nodes = []; ptrs.first = null; result = []; break; }
-        clear(); ptrs.ptr = nodes[0].id;
-        for (let i = 0; i < nodes.length; i++){ ptrs.ptr = nodes[i].id; st(nodes[i].id, "active"); if (i < nodes.length - 1) st(nodes[i].id, "default"); }
-        push(`ptr = first; walk ptr to the last node (while ptr->next != NULL).`, 2);
-        st(nodes[nodes.length - 1].id, "deleted");
-        push(`ptr->prev->next = NULL.`, 3);
+        walkToLast(nodes.slice(), 2);
+        const lastD = nodes[nodes.length - 1];
+        const prevD = nodes[nodes.length - 2];
+        ptrs.ptr = lastD.id;
+        prevD.next = null;
+        push(`ptr->prev->next = NULL — the list now ends before ${lastD.value}. That node stays in place until free.`, 3);
+        st(lastD.id, "deleted");
+        push(`free(ptr) — the skipped last node is given back to the heap.`, 4);
         nodes = nodes.slice(0, -1); relink(nodes, circular);
         clear();
-        push(`free(ptr); return first.`, 4);
+        ptrs.ptr = null;
+        push(`return first.`, 4);
         result = list.slice(0, -1);
       } else if (type === "cll"){
         if (!nodes.length){ push(`first == NULL — return NULL.`, 0); break; }
         if (nodes.length === 1){ clear(); st(nodes[0].id, "deleted"); push(`Only one node — free it, return NULL.`, 1); nodes = []; ptrs.first = null; result = []; break; }
-        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null;
+        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null; st(nodes[0].id, "active");
+        push(`ptr = first, prev = NULL.`, 2);
         for (let i = 0; i < nodes.length - 1; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (i < nodes.length - 2){ push(`ptr->next != first — prev = ptr; ptr = ptr->next.`, 2); ptrs.prev = nodes[i].id; st(nodes[i].id, "default"); }
+          push(`while (ptr->next != first): ptr is on ${nodes[i].value} — condition is TRUE. Enter the body.`, 2);
+          ptrs.prev = nodes[i].id;
+          push(`prev = ptr — prev now sits on ${nodes[i].value}. ptr has not moved yet.`, 2);
+          hopPtr(nodes[i + 1], 2, `ptr = ptr->next — ptr slides to ${nodes[i + 1].value}. prev stays on ${nodes[i].value}.`);
         }
-        ptrs.prev = nodes[nodes.length - 2].id;
-        push(`ptr->next == first — traversal stops here.`, 2);
+        push(`while (ptr->next != first): ptr->next == first — FALSE. ptr is at the last node. prev is second-last.`, 2);
+        noteNext(nodes[nodes.length - 2], nodes[0].id, "prev→next = first");
+        push(`prev->next = first — the ring jumps over ${nodes[nodes.length - 1].value}. The node stays in place until free.`, 3);
         st(nodes[nodes.length - 1].id, "deleted");
-        push(`prev->next = first; free(ptr).`, 3);
+        push(`free(ptr) — the skipped last node is given back to the heap.`, 3);
         nodes = nodes.slice(0, -1); relink(nodes, circular);
         ptrs.ptr = null; ptrs.prev = null;
         clear();
@@ -2037,14 +2277,15 @@ function generate(type, op, list, params){
       } else { // sll
         if (!nodes.length){ push(`if (first == NULL) return NULL.`, 0); break; }
         if (nodes.length === 1){ clear(); st(nodes[0].id, "deleted"); push(`Only one node — free(first); return NULL.`, 1); nodes = []; ptrs.first = null; result = []; break; }
-        clear(); ptrs.ptr = nodes[0].id;
-        for (let i = 0; i < nodes.length - 2; i++){ ptrs.ptr = nodes[i].id; st(nodes[i].id, "active"); push(`while (ptr->next->next != NULL) ptr = ptr->next.`, 2); st(nodes[i].id, "default"); }
-        const sl = nodes[nodes.length - 2]; ptrs.ptr = sl.id; st(sl.id, "active");
-        push(`ptr is now the second-last node.`, 2);
+        const sl = walkToSecondLast(nodes.slice(), 2);
+        ptrs.ptr = sl.id; st(sl.id, "active");
+        sl.next = null;
+        push(`ptr->next = NULL — the list now ends at ${sl.value}. The last node stays in place until free.`, 3);
         st(nodes[nodes.length - 1].id, "deleted");
-        push(`free(ptr->next); ptr->next = NULL.`, 3);
+        push(`free(ptr->next) — the skipped last node is given back to the heap.`, 3);
         nodes = nodes.slice(0, -1); relink(nodes, circular);
         clear();
+        ptrs.ptr = null;
         push(`return first.`, 4);
         result = list.slice(0, -1);
       }
@@ -2055,58 +2296,70 @@ function generate(type, op, list, params){
       if (type === "dll"){
         push(`Enter node value to be deleted: ${val}.`, 0);
         if (!nodes.length){ push(`ptr = search(first, ${val}) → NULL — node not found, return first.`, 2); break; }
-        clear(); ptrs.ptr = nodes[0].id;
+        clear(); ptrs.ptr = nodes[0].id; st(nodes[0].id, "active");
+        push(`ptr = first — search for ${val}.`, 1);
         let idx = -1;
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === val){ idx = i; break; }
-          st(nodes[i].id, "default");
+          if (nodes[i].value === val){
+            push(`if (ptr->data == ${val}) return ptr — found. ptr stays here.`, 1);
+            idx = i;
+            break;
+          }
+          push(`ptr->data (${nodes[i].value}) != ${val} — not a match. Check first, then move.`, 1);
+          if (i < nodes.length - 1) hopPtr(nodes[i + 1], 1, `ptr = ptr->next — slide along the existing NEXT arrow to ${nodes[i + 1].value}.`);
         }
         if (idx === -1){ push(`ptr = search(first, ${val}) → NULL — node not found, return first.`, 2); break; }
-        push(`ptr = search(first, ${val}) — found it.`, 1);
-        st(nodes[idx].id, "deleted"); nodes[idx].detached = true;
         const deletedIdD = nodes[idx].id;
         const prevNode = idx > 0 ? nodes[idx - 1] : null;
         const nextId = nodes[idx].next;
         if (idx === 0){
           ptrs.first = nextId ?? null;
-          push(`ptr->prev == NULL, so first = ptr->next; first->prev = NULL.`, 3);
+          push(`ptr->prev == NULL, so first = ptr->next. ${nodes[idx].value} stays in place until free.`, 3);
           if (nextId != null){ const nn = nodes.find((n) => n.id === nextId); if (nn) nn.prev = null; }
+          if (nextId != null) push(`first != NULL, so first->prev = NULL.`, 3);
         } else {
-          /* Move the deleted node out of its old array slot the instant prev->next is
-             reassigned. The renderer only draws a link between array-ADJACENT nodes, so
-             leaving the (still-present, merely detached) deleted node sitting between prev
-             and ptr->next would silently swallow the new arrow — moving it out of the way
-             makes prev and ptr->next adjacent again so both the NEXT and PREV links can
-             actually be drawn. */
-          const deletedNode = nodes[idx];
           prevNode.next = nextId;
-          nodes = [...nodes.slice(0, idx), ...nodes.slice(idx + 1), deletedNode];
-          push(`Else — ptr->prev->next = ptr->next.`, 4);
+          noteNext(prevNode, nextId, "ptr→prev→next = ptr→next");
+          push(`ptr->prev->next = ptr->next — the NEXT arrow jumps over ${nodes[idx].value}. The node stays where it is.`, 4);
           if (nextId != null){
             const nn = nodes.find((n) => n.id === nextId);
-            if (nn) nn.prev = prevNode.id;
+            if (nn){ nn.prev = prevNode.id; notePrev(nn, prevNode.id, "ptr→next→prev = ptr→prev"); }
             push(`ptr->next != NULL, so ptr->next->prev = ptr->prev.`, 5);
           }
         }
-        push(`free(ptr); return first.`, 6);
+        st(nodes[idx].id, "deleted");
+        push(`free(ptr) — now the skipped node is given back to the heap.`, 6);
         nodes = nodes.filter((n) => n.id !== deletedIdD); relink(nodes, circular);
         ptrs.ptr = null;
         clear();
+        push(`return first.`, 6);
         const r = list.slice(); r.splice(idx, 1); result = r;
       } else if (type === "cll"){
         push(`Enter val = ${val}; walk the ring with ptr and prev.`, 0);
         if (!nodes.length){ push(`Not found — return first.`, 1); break; }
-        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null;
+        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null; st(nodes[0].id, "active");
+        push(`ptr = first, prev = NULL.`, 1);
         let idx = -1;
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === val){ idx = i; break; }
-          ptrs.prev = nodes[i].id; st(nodes[i].id, "default");
+          if (nodes[i].value === val){
+            push(`do-while: ptr->data (${val}) == val — break. prev is still the previous node.`, 1);
+            idx = i;
+            break;
+          }
+          push(`do-while: ptr->data (${nodes[i].value}) != ${val} — not a match yet. Check first, then move.`, 1);
+          ptrs.prev = nodes[i].id;
+          push(`prev = ptr — prev now sits on ${nodes[i].value}. ptr has not moved yet.`, 1);
+          if (i < nodes.length - 1){
+            hopPtr(nodes[i + 1], 1, `ptr = ptr->next — ptr slides to ${nodes[i + 1].value}. prev stays on ${nodes[i].value}.`);
+          } else {
+            hopPtr(nodes[0], 1, `ptr = ptr->next — wrapped back to first. prev stays on ${nodes[i].value}.`);
+          }
         }
         if (idx === -1){ push(`Walked the whole ring — not found, return first.`, 1); break; }
-        st(nodes[idx].id, "deleted");
         if (nodes.length === 1){
+          st(nodes[0].id, "deleted");
           push(`Only one node in the ring — free it and return NULL.`, 2);
           nodes = []; ptrs.first = null; ptrs.ptr = null; ptrs.prev = null;
           clear();
@@ -2114,48 +2367,61 @@ function generate(type, op, list, params){
           break;
         }
         if (idx === 0){
-          push(`ptr is the first node — this is deletebeg(first).`, 3);
           ptrs.first = nodes[1].id;
+          const last = nodes[nodes.length - 1];
+          noteNext(last, nodes[1].id, "last→next = first");
+          push(`ptr is the first node — this is deletebeg(first). last->next = first. ${nodes[0].value} stays until free.`, 3);
         } else {
-          push(`Else — prev->next = ptr->next; free(ptr).`, 4);
+          nodes[idx - 1].next = nodes[idx].next;
+          noteNext(nodes[idx - 1], nodes[idx].next, "prev→next = ptr→next");
+          push(`prev->next = ptr->next — the NEXT arrow jumps over ${nodes[idx].value}. The node stays where it is.`, 4);
         }
+        st(nodes[idx].id, "deleted");
+        push(`free(ptr) — now the skipped node is given back to the heap.`, 4);
         nodes = nodes.filter((_, i) => i !== idx); relink(nodes, circular);
         ptrs.ptr = null; ptrs.prev = null;
         clear();
+        push(`return first.`, 4);
         const r = list.slice(); r.splice(idx, 1); result = r;
       } else { // sll
         if (!nodes.length){ push(`The list is empty. Nothing to delete.`, 0); break; }
-        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null;
+        clear(); ptrs.ptr = nodes[0].id; ptrs.prev = null; st(nodes[0].id, "active");
         push(`Enter node value to be deleted: ${val}.`, 0);
         push(`ptr = first, prev = NULL.`, 1);
         let idx = -1;
         for (let i = 0; i < nodes.length; i++){
           ptrs.ptr = nodes[i].id; st(nodes[i].id, "active");
-          if (nodes[i].value === val){ idx = i; break; }
-          ptrs.prev = nodes[i].id; st(nodes[i].id, "default");
-          push(`ptr->data (${nodes[i].value}) != ${val} — prev = ptr; ptr = ptr->next.`, 2);
+          if (nodes[i].value === val){
+            push(`while (ptr != NULL && ptr->data != ${val}): ptr->data is ${val} — condition is FALSE. Loop stops. prev stays one node behind.`, 2);
+            idx = i;
+            break;
+          }
+          push(`while (ptr != NULL && ptr->data != ${val}): ptr->data is ${nodes[i].value} — condition is TRUE. Enter the body.`, 2);
+          ptrs.prev = nodes[i].id;
+          push(`prev = ptr — prev now points to ${nodes[i].value}. ptr has not moved yet.`, 2);
+          if (i < nodes.length - 1){
+            hopPtr(nodes[i + 1], 2, `ptr = ptr->next — ptr slides to ${nodes[i + 1].value}. prev stays on ${nodes[i].value}.`);
+          } else {
+            ptrs.ptr = null;
+            push(`ptr = ptr->next — ptr is NULL. Next while check fails.`, 2);
+          }
         }
         if (idx === -1){ push(`Node ${val} not found — nothing deleted.`, 2); break; }
-        st(nodes[idx].id, "deleted"); nodes[idx].detached = true;
         const deletedIdS = nodes[idx].id;
         if (idx === 0){
           ptrs.first = nodes[idx].next ?? null;
-          push(`prev == NULL, so first = ptr->next.`, 3);
+          push(`prev == NULL, so first = ptr->next. ${nodes[idx].value} stays in place until free.`, 3);
         } else {
-          /* Move the deleted node out of its old array slot the instant prev->next is
-             reassigned. The renderer only draws a link between array-ADJACENT nodes, so
-             leaving the (still-present, merely detached) deleted node sitting between prev
-             and ptr->next would silently swallow the new arrow — moving it out of the way
-             makes prev and ptr->next adjacent again so the new link actually renders. */
-          const deletedNode = nodes[idx];
-          nodes[idx - 1].next = deletedNode.next;
-          nodes = [...nodes.slice(0, idx), ...nodes.slice(idx + 1), deletedNode];
-          push(`Else — prev->next = ptr->next.`, 3);
+          nodes[idx - 1].next = nodes[idx].next;
+          noteNext(nodes[idx - 1], nodes[idx].next, "prev→next = ptr→next");
+          push(`prev->next = ptr->next — the NEXT arrow jumps over ${nodes[idx].value}. The node stays where it is.`, 3);
         }
-        push(`free(ptr); return first.`, 4);
+        st(nodes[idx].id, "deleted");
+        push(`free(ptr) — now the skipped node is given back to the heap.`, 4);
         nodes = nodes.filter((n) => n.id !== deletedIdS); relink(nodes, circular);
         ptrs.ptr = null; ptrs.prev = null;
         clear();
+        push(`return first.`, 4);
         const r = list.slice(); r.splice(idx, 1); result = r;
       }
       break;
@@ -2247,6 +2513,15 @@ function joinBadgesHTML(names){
   if (!names.length) return `<div class="join-badges"></div>`;
   return `<div class="join-badges">${names.map((nm) => `<span class="badge badge-${nm}">${nm}</span>`).join("")}</div>`;
 }
+function nodeFieldHit(hit, names, node){
+  if (!hit) return "";
+  if (hit === "malloc") return (names.includes("temp") || node.state === "new") ? hit : "";
+  if (hit === "free") return node.state === "deleted" ? hit : "";
+  if (hit === "data" || hit === "next" || hit === "prev"){
+    return (names.includes("ptr") || names.includes("temp") || names.includes("first")) ? hit : "";
+  }
+  return hit;
+}
 
 /* does node `aId`'s next (or prev, for the DLL back-link) already point to `bId` in the previous frame? */
 function linkExistedBefore(prevFrame, aId, bId, viaPrev){
@@ -2266,8 +2541,11 @@ function fieldHitFromDesc(desc){
   if (/malloc|fresh, empty|empty block/i.test(d)) return "malloc";
   if (/\bfree\b|removed — will be freed|give the block back/i.test(d)) return "free";
   if (/->data|\.data|print ptr->data|value .* is read into/i.test(d)) return "data";
-  if (/->prev|prev =/i.test(d)) return "prev";
-  if (/->next|next =/i.test(d)) return "next";
+  /* Travel (ptr = ptr->next) only READS an existing arrow. Do not light NEXT as if we are writing a link. */
+  if (/ptr = ptr->next|ptr = ptr->prev|slides along the existing NEXT|follow the existing NEXT|follow NEXT|No new link/i.test(d)) return "";
+  if (/ptr->next\s*!=|ptr->next\s*==|ptr->next->next/i.test(d)) return "";
+  if (/->prev\s*=/.test(d)) return "prev";
+  if (/->next\s*=/.test(d)) return "next";
   return "";
 }
 function imagineFrom(frame){
@@ -2304,22 +2582,108 @@ function joinNodeHTML(node, type, firstId, hit){
   return `<div class="join-node${isDLL ? " dbl-node" : ""} state-${node.state}">${body}</div>`;
 }
 
-function joinLinkHTML(justLinked, kind){
+function joinLinkHTML(justLinked, kind, num, following){
   const isPrev = kind === "prev";
-  const cls = `join-link${justLinked ? " new" : ""}${isPrev ? " prev-link" : ""}`;
+  const cls = `join-link${justLinked ? " new" : ""}${isPrev ? " prev-link" : ""}${following ? " follow" : ""}`;
   const label = isPrev ? "PREV" : "NEXT";
+  const circ = num ? `<span class="link-circ">${num}</span>` : "";
   return isPrev
-    ? `<div class="${cls}"><div class="gap-lab">${label}</div><svg viewBox="0 0 100 28"><line class="arrow-line" x1="98" y1="14" x2="16" y2="14"/><polygon class="arrow-head" points="16,14 28,7 28,21"/></svg></div>`
-    : `<div class="${cls}"><div class="gap-lab">${label}</div><svg viewBox="0 0 72 28"><line class="arrow-line" x1="2" y1="14" x2="58" y2="14"/><polygon class="arrow-head" points="58,14 48,8 48,20"/></svg></div>`;
+    ? `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 100 28"><line class="arrow-line" x1="98" y1="14" x2="16" y2="14"/><polygon class="arrow-head" points="16,14 28,7 28,21"/></svg></div>`
+    : `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 72 28"><line class="arrow-line" x1="2" y1="14" x2="58" y2="14"/><polygon class="arrow-head" points="58,14 48,8 48,20"/></svg></div>`;
 }
-function joinBothHTML(nextNew, prevNew){
-  return `<div class="join-both">${joinLinkHTML(nextNew, "next")}${joinLinkHTML(prevNew, "prev")}</div>`;
+function joinBothHTML(nextNew, prevNew, numNext, numPrev, followNext, followPrev){
+  return `<div class="join-both">${joinLinkHTML(nextNew, "next", numNext, followNext)}${joinLinkHTML(prevNew, "prev", numPrev, followPrev)}</div>`;
+}
+function linkNumFor(frame, fromId, toId, kind){
+  const hit = (frame.links || []).find((L) => L.from === fromId && L.to === toId && (L.kind || "next") === (kind || "next"));
+  return hit ? hit.num : 0;
+}
+function linkCaptionHTML(frame, prevFrame){
+  const links = frame.links || [];
+  const prevN = (prevFrame && prevFrame.links) ? prevFrame.links.length : 0;
+  if (!links.length || links.length <= prevN) return "";
+  const last = links[links.length - 1];
+  return `<p class="link-step-line"><span class="link-circ">${last.num}</span> <span>Link ${last.num}: <code>${escapeHtml(last.text)}</code></span></p>`;
 }
 
-/* The whole diagram: one horizontal row that scrolls sideways instead of wrapping (so an arrow can
-   never get orphaned on its own line), a real dashed "not joined" block wherever a node genuinely
-   isn't linked in yet, and — for a circular list — no ring geometry at all: the last node's NEXT
-   cell just reads "first", backed up by a one-line summary underneath, the way the sample teaches it. */
+function joinColHTML(node, type, firstId, hit, ptrs){
+  const names = ptrNamesFor(ptrs, node.id);
+  const isDel = node.state === "deleted";
+  return `<div class="join-col" data-nid="${node.id}">
+      ${isDel ? `<div class="del-cap">removed — will be freed</div>` : ""}
+      ${joinBadgesHTML(names)}
+      ${joinNodeHTML(node, type, firstId, nodeFieldHit(hit, names, node))}
+      <div class="join-addr">${addrFor(node.id)}</div>
+    </div>`;
+}
+
+function layoutSpliceArrows(stage, frame, prevFrame){
+  const svg = stage && stage.querySelector(".splice-svg");
+  if (!svg) return;
+  const nodes = frame.nodes || [];
+  const below = nodes.filter((n) => n.below);
+  const main = nodes.filter((n) => !n.below);
+  const adjOf = (id) => {
+    const i = main.findIndex((n) => n.id === id);
+    return i >= 0 && main[i + 1] ? main[i + 1].id : null;
+  };
+  /* High skip-arc when NEXT does not go to the visual neighbour — e.g. jump over a
+     deleted node, or last→new first after deletebeg. Do NOT treat the normal circular
+     close (last → main[0]) as a skip; the U-wrap already draws that. */
+  const isNormalCircWrap = (n) => !adjOf(n.id) && main[0] && n.next === main[0].id;
+  const hasSkip = main.some((n) => n.next && n.next !== adjOf(n.id) && !isNormalCircWrap(n) && main.some((m) => m.id === n.next));
+  if (!below.length && !hasSkip){ svg.innerHTML = ""; return; }
+  const w = Math.max(stage.scrollWidth, stage.clientWidth, 1);
+  const h = Math.max(stage.scrollHeight, stage.clientHeight, 1);
+  svg.setAttribute("width", String(w));
+  svg.setAttribute("height", String(h));
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  const sr = stage.getBoundingClientRect();
+  const rel = (el) => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left - sr.left, y: r.top - sr.top, w: r.width, h: r.height };
+  };
+  const col = (id) => stage.querySelector(`[data-nid="${id}"]`);
+  const isBelow = (id) => below.some((b) => b.id === id);
+  let paths = `<defs><marker id="spl-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker><marker id="spl-ah-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1"/></marker></defs>`;
+  const draw = (fromId, toId, kind, highArc) => {
+    if (!fromId || !toId) return;
+    const aEl = col(fromId), bEl = col(toId);
+    if (!aEl || !bEl) return;
+    const fromSel = kind === "prev" ? ".jp" : ".jn";
+    const aBox = rel(aEl.querySelector(fromSel) || aEl);
+    const bBox = rel(bEl.querySelector(".jd") || bEl);
+    const x1 = kind === "prev" ? aBox.x : aBox.x + aBox.w;
+    const y1 = aBox.y + aBox.h / 2;
+    const x2 = isBelow(toId) ? bBox.x + bBox.w / 2 : bBox.x + 6;
+    const y2 = isBelow(toId) ? bBox.y + 2 : bBox.y + bBox.h / 2;
+    const cx = (x1 + x2) / 2;
+    const cy = highArc ? (Math.min(y1, y2) - 40) : ((y1 + y2) / 2);
+    const qy = highArc ? cy : y1;
+    const isNew = !linkExistedBefore(prevFrame, fromId, toId, kind === "prev");
+    const num = isNew ? linkNumFor(frame, fromId, toId, kind === "prev" ? "prev" : "next") : 0;
+    const color = kind === "prev" ? "#6366f1" : "#16a34a";
+    const mk = kind === "prev" ? "spl-ah-p" : "spl-ah";
+    paths += `<path class="spl-line${isNew ? " new" : ""}" stroke="${color}" marker-end="url(#${mk})" d="M ${x1.toFixed(1)} ${y1.toFixed(1)} Q ${cx.toFixed(1)} ${qy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}"/>`;
+    if (num){
+      paths += `<circle class="spl-num-bg" cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="10"/>`;
+      paths += `<text class="spl-num" x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" text-anchor="middle" dominant-baseline="central">${num}</text>`;
+    }
+  };
+  nodes.forEach((n) => {
+    if (n.next){
+      if (isBelow(n.id) || isBelow(n.next)) draw(n.id, n.next, "next", false);
+      else if (n.next !== adjOf(n.id) && !isNormalCircWrap(n) && main.some((m) => m.id === n.next)) draw(n.id, n.next, "next", true);
+    }
+    if (n.prev){
+      if (isBelow(n.id) || isBelow(n.prev)) draw(n.id, n.prev, "prev", false);
+    }
+  });
+  svg.innerHTML = paths;
+}
+
+/* Upper row = the live list (never split open just to park temp). Lower row = the new
+   node until both links exist, then generate() lifts it into the list. */
 function renderChain(container, frame, prevFrame, type){
   const { nodes, ptrs } = frame;
   const isDLL = type === "dll";
@@ -2338,44 +2702,110 @@ function renderChain(container, frame, prevFrame, type){
     return;
   }
 
-  const firstId = nodes[0].id;
-  let row = "";
-  nodes.forEach((node, i) => {
-    const next = nodes[i+1];
-    const linkedToNext = next && node.next === next.id && !node.detached && !next.detached;
-    const names = ptrNamesFor(ptrs, node.id);
-    const isDel = node.state === "deleted";
-    // "floating" = truly not linked in from the left yet — judged from the REAL pointer chain
-    // (previous node's ->next, or `first` for the head), not just a flag the generator set early.
-    const hasIncoming = i === 0 ? ptrs.first === node.id : nodes[i-1].next === node.id;
-    const floating = node.detached || (node.state === "new" && !hasIncoming);
+  const main = nodes.filter((n) => !n.below);
+  const below = nodes.filter((n) => n.below);
+  const firstId = ptrs.first || (main[0] && main[0].id) || (nodes[0] && nodes[0].id);
+  const showTwo = below.length > 0 && main.length > 0;
 
-    if (floating){
-      row += `<div class="join-gap"><div class="gap-x">&#10005;</div><div class="gap-lab">${isDel ? "unlinked" : "not joined"}</div></div>`;
-    }
+  const colHTML = (n) => joinColHTML(n, type, firstId, hit, ptrs);
+  const belowBlock = (b) => {
+    const pointed = nodes.some((n) => n.id !== b.id && (n.next === b.id || n.prev === b.id));
+    const lab = (b.next || pointed) ? "new node — linking in" : "new node — not in the list yet";
+    return `<div class="g-below"><div class="below-lab">${lab}</div>${colHTML(b)}</div>`;
+  };
 
-    row += `<div class="join-col" data-nid="${node.id}">
-        ${isDel ? `<div class="del-cap">removed — will be freed</div>` : ""}
-        ${joinBadgesHTML(names)}
-        ${joinNodeHTML(node, type, firstId, hit)}
-        <div class="join-addr">${addrFor(node.id)}</div>
-      </div>`;
-
-    if (linkedToNext){
+  const gapBetween = (node, next) => {
+    const linkedToNext = node.next === next.id;
+    const viaBelow = below.find((b) => node.next === b.id);
+    const isHop = /slides along|No new link|follow the existing NEXT|follow NEXT|temp is unchanged/i.test(frame.desc || "");
+    const followFwd = isHop && !viaBelow && ptrs.ptr === next.id;
+    if (linkedToNext && node.state !== "deleted" && next.state !== "deleted"){
       const isNewFwd = !linkExistedBefore(prevFrame, node.id, next.id);
+      const numFwd = isNewFwd ? linkNumFor(frame, node.id, next.id, "next") : 0;
       if (isDLL){
         const linkedBack = next.prev === node.id;
         const isNewBack = linkedBack && !linkExistedBefore(prevFrame, next.id, node.id, true);
-        row += linkedBack ? joinBothHTML(isNewFwd, isNewBack) : joinLinkHTML(isNewFwd, "next");
-      } else {
-        row += joinLinkHTML(isNewFwd, "next");
+        const numBack = isNewBack ? linkNumFor(frame, next.id, node.id, "prev") : 0;
+        const followBack = isHop && linkedBack && !isNewBack && ptrs.ptr === node.id;
+        return linkedBack ? joinBothHTML(isNewFwd, isNewBack, numFwd, numBack, followFwd, followBack) : joinLinkHTML(isNewFwd, "next", numFwd, followFwd);
+      }
+      return joinLinkHTML(isNewFwd, "next", numFwd, followFwd);
+    }
+    if (viaBelow) return `<div class="g-skip" title="NEXT now points to the new node below"></div>`;
+    if (node.state === "deleted") return `<div class="g-skip" title="this node is skipped"></div>`;
+    if (next.state === "deleted" && node.next && node.next !== next.id){
+      return `<div class="g-skip jump-over" title="NEXT jumps over the deleted node"></div>`;
+    }
+    const isDelGap = node.state === "deleted" || next.state === "deleted";
+    return `<div class="join-gap"><div class="gap-x">&#10005;</div><div class="gap-lab">${isDelGap ? "unlinked" : "not joined"}</div></div>`;
+  };
+
+  let col = 1;
+  let cells = "";
+  const place = (html, c, r) => { cells += `<div style="grid-column:${c};grid-row:${r}">${html}</div>`; };
+
+  if (!showTwo){
+    let row = "";
+    const chain = main.length ? main : nodes;
+    chain.forEach((node, i) => {
+      const next = chain[i + 1];
+      row += colHTML(node);
+      if (!next) return;
+      row += gapBetween(node, next);
+    });
+    const last = chain[chain.length - 1];
+    if (last && last.next === null && !last.detached && !isCirc){
+      row += `<div class="tail-null"><div class="tn-box">NULL</div><div class="tn-lab">end</div></div>`;
+    }
+    let circNote = "";
+    if (isCirc){
+      const live = chain.filter((n) => !n.detached && n.next !== undefined);
+      const closed = live.length && live[live.length - 1].next === firstId;
+      if (live.length){
+        circNote = `${closed ? `<div class="circ-uwrap"><div class="circ-u" title="last->next = first"></div></div>` : ""}
+            <div class="circ-back"><div class="gap-lab">circular link</div>
+            <p>Last node <b>${live[live.length - 1].value}</b> &mdash; NEXT ${closed ? "curves back to" : "will curve back to"} <b>first</b></p>
+            <div class="loop">${live.map((n) => n.value).join(" &rarr; ")} &rarr; first</div></div>`;
+      }
+    }
+    container.innerHTML = `<div class="join-stage"><div class="join-row">${row}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
+    layoutSpliceArrows(container.querySelector(".join-stage"), frame, prevFrame);
+    return;
+  }
+
+  const lead = below.find((b) => b.anchorId == null);
+  if (lead){
+    place(`<div class="g-skip"></div>`, col, 1);
+    place(belowBlock(lead), col, 2);
+    col++;
+  }
+  main.forEach((node, i) => {
+    const next = main[i + 1];
+    place(colHTML(node), col, 1);
+    const slot = below.find((b) => b.anchorId === node.id);
+    if (next){
+      col++;
+      place(gapBetween(node, next), col, 1);
+      if (slot) place(belowBlock(slot), col, 2);
+      col++;
+    } else {
+      col++;
+      const tail = (last => {
+        if (last.next === null && !isCirc) return `<div class="tail-null"><div class="tn-box">NULL</div><div class="tn-lab">end</div></div>`;
+        if (below.some((b) => last.next === b.id)) return `<div class="g-skip"></div>`;
+        return `<div class="g-skip"></div>`;
+      })(node);
+      if (slot || (node.next === null && !isCirc)){
+        place(tail, col, 1);
+        if (slot) place(belowBlock(slot), col, 2);
+        col++;
       }
     }
   });
 
   let circNote = "";
   if (isCirc){
-    const live = nodes.filter((n) => !n.detached && n.next !== undefined);
+    const live = main.filter((n) => !n.detached && n.next !== undefined);
     const closed = live.length && live[live.length - 1].next === firstId;
     if (live.length){
       circNote = `${closed ? `<div class="circ-uwrap"><div class="circ-u" title="last->next = first"></div></div>` : ""}
@@ -2385,7 +2815,8 @@ function renderChain(container, frame, prevFrame, type){
     }
   }
 
-  container.innerHTML = `<div class="join-stage"><div class="join-row">${row}</div></div>${circNote}`;
+  container.innerHTML = `<div class="join-stage"><div class="join-grid has-below">${cells}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
+  layoutSpliceArrows(container.querySelector(".join-stage"), frame, prevFrame);
 }
 
 function renderPtrBankHTML(frame){
@@ -2487,6 +2918,12 @@ function animateCanvasUpdate(container, updateFn, frame, prevFrame){
         setTimeout(() => { el.classList.remove("flip-move"); el.style.transition = ""; }, 420);
       });
     });
+    const stage = container.querySelector(".join-stage");
+    if (stage && frame){
+      const relayout = () => layoutSpliceArrows(stage, frame, prevFrame);
+      requestAnimationFrame(relayout);
+      setTimeout(relayout, 430);
+    }
 
     // 2) flying pointer badges: for every tracked pointer whose target node changed, spawn a little
     //    pill that travels from where it used to be to where it points now.
@@ -2523,9 +2960,9 @@ function animateCanvasUpdate(container, updateFn, frame, prevFrame){
 }
 
 /* ===================== FULL C PROGRAMS (Programs tab) ===================== */
-const SLL_PROGRAM = "/* ============================================================\n * File   : sll.c\n * Topic  : Singly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : Each function matches the class PPT algorithm.\n * Compile: gcc sll.c -o sll && ./sll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL)\n            first = temp;\n        else {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    printf(\"List: \");\n    while (ptr != NULL) {\n        printf(\"%d -> \", ptr->data);\n        ptr = ptr->next;\n    }\n    printf(\"NULL\\n\");\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    temp->next = first;\n    first = temp;\n    return first;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode(), *ptr;\n    if (first == NULL) return temp;\n    ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    ptr->next = temp;\n    return first;\n}\n\nstruct Node* search(struct Node *first, int val) {\n    struct Node *ptr = first;\n    while (ptr != NULL) {\n        if (ptr->data == val) return ptr;\n        ptr = ptr->next;\n    }\n    return NULL;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *temp = search(first, val), *ptr;\n    if (temp) {\n        ptr = getNode();\n        ptr->next = temp->next;\n        temp->next = ptr;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    first = first->next;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == NULL) { free(first); return NULL; }\n    struct Node *ptr = first;\n    while (ptr->next->next != NULL) ptr = ptr->next;\n    free(ptr->next);\n    ptr->next = NULL;\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = first, *prev = NULL;\n    while (ptr != NULL && ptr->data != val) { prev = ptr; ptr = ptr->next; }\n    if (ptr == NULL) { printf(\"Node not found\\n\"); return first; }\n    if (prev == NULL) first = ptr->next;\n    else prev->next = ptr->next;\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.insertbeg 4.insertend 5.insertbet 6.search 7.deletebeg 8.deleteend 9.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) first = insertbeg(first);\n        else if (ch == 4) first = insertend(first);\n        else if (ch == 5) first = insertbet(first);\n        else if (ch == 6) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 7) first = deletebeg(first);\n        else if (ch == 8) first = deleteend(first);\n        else if (ch == 9) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
-const DLL_PROGRAM = "/* ============================================================\n * File   : dll.c\n * Topic  : Doubly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : Node has prev + data + next. Matches class PPT.\n * Compile: gcc dll.c -o dll && ./dll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *prev;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->prev = NULL;\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) first = temp;\n        else {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n            temp->prev = ptr;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    printf(\"Forward: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->next; }\n    printf(\"NULL\\n\");\n}\n\nvoid displayReverse(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    while (ptr->next != NULL) ptr = ptr->next;\n    printf(\"Reverse: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->prev; }\n    printf(\"NULL\\n\");\n}\n\nstruct Node* search(struct Node *first, int val) {\n    struct Node *ptr = first;\n    while (ptr != NULL) { if (ptr->data == val) return ptr; ptr = ptr->next; }\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    temp->next = first;\n    if (first != NULL) first->prev = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode(), *ptr;\n    if (first == NULL) return temp;\n    ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    ptr->next = temp;\n    temp->prev = ptr;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *temp = search(first, val), *ptr;\n    if (temp) {\n        ptr = getNode();\n        ptr->next = temp->next;\n        ptr->prev = temp;\n        if (temp->next != NULL) temp->next->prev = ptr;\n        temp->next = ptr;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    first = first->next;\n    if (first != NULL) first->prev = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    if (ptr->prev != NULL) ptr->prev->next = NULL;\n    else first = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr == NULL) { printf(\"Node not found\\n\"); return first; }\n    if (ptr->prev == NULL) { first = ptr->next; if (first) first->prev = NULL; }\n    else { ptr->prev->next = ptr->next; if (ptr->next) ptr->next->prev = ptr->prev; }\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.displayReverse 4.insertbeg 5.insertend 6.insertbet 7.search 8.deletebeg 9.deleteend 10.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) displayReverse(first);\n        else if (ch == 4) first = insertbeg(first);\n        else if (ch == 5) first = insertend(first);\n        else if (ch == 6) first = insertbet(first);\n        else if (ch == 7) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 8) first = deletebeg(first);\n        else if (ch == 9) first = deleteend(first);\n        else if (ch == 10) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
-const CLL_PROGRAM = "/* ============================================================\n * File   : csll.c\n * Topic  : Circular Singly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : last->next = first (ring). Matches class PPT.\n * Compile: gcc csll.c -o csll && ./csll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) { first = temp; temp->next = first; }\n        else {\n            ptr = first;\n            while (ptr->next != first) ptr = ptr->next;\n            ptr->next = temp;\n            temp->next = first;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    if (first == NULL) { printf(\"List is empty\\n\"); return; }\n    struct Node *ptr = first;\n    printf(\"Ring: \");\n    do { printf(\"%d -> \", ptr->data); ptr = ptr->next; } while (ptr != first);\n    printf(\"(back to %d)\\n\", first->data);\n}\n\nstruct Node* search(struct Node *first, int val) {\n    if (first == NULL) return NULL;\n    struct Node *ptr = first;\n    do { if (ptr->data == val) return ptr; ptr = ptr->next; } while (ptr != first);\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    temp->next = first;\n    ptr->next = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    ptr->next = temp;\n    temp->next = first;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *temp = search(first, val), *nn;\n    if (temp) { nn = getNode(); nn->next = temp->next; temp->next = nn; }\n    else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *last = first;\n    while (last->next != first) last = last->next;\n    struct Node *temp = first;\n    first = first->next;\n    last->next = first;\n    free(temp);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *ptr = first, *prev = NULL;\n    while (ptr->next != first) { prev = ptr; ptr = ptr->next; }\n    prev->next = first;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = first, *prev = NULL;\n    do { if (ptr->data == val) break; prev = ptr; ptr = ptr->next; } while (ptr != first);\n    if (ptr->data != val) { printf(\"Node not found\\n\"); return first; }\n    if (ptr == first && ptr->next == first) { free(ptr); return NULL; }\n    if (ptr == first) return deletebeg(first);\n    prev->next = ptr->next;\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.insertbeg 4.insertend 5.insertbet 6.search 7.deletebeg 8.deleteend 9.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) first = insertbeg(first);\n        else if (ch == 4) first = insertend(first);\n        else if (ch == 5) first = insertbet(first);\n        else if (ch == 6) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 7) first = deletebeg(first);\n        else if (ch == 8) first = deleteend(first);\n        else if (ch == 9) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
+const SLL_PROGRAM = "/* ============================================================\n * File   : sll.c\n * Topic  : Singly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : Each function matches the class PPT algorithm.\n * Compile: gcc sll.c -o sll && ./sll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL)\n            first = temp;\n        else {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    printf(\"List: \");\n    while (ptr != NULL) {\n        printf(\"%d -> \", ptr->data);\n        ptr = ptr->next;\n    }\n    printf(\"NULL\\n\");\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    temp->next = first;\n    first = temp;\n    return first;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode(), *ptr;\n    if (first == NULL) return temp;\n    ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    ptr->next = temp;\n    return first;\n}\n\nstruct Node* search(struct Node *first, int val) {\n    struct Node *ptr = first;\n    while (ptr != NULL) {\n        if (ptr->data == val) return ptr;\n        ptr = ptr->next;\n    }\n    return NULL;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr) {\n        struct Node *temp = getNode();\n        temp->next = ptr->next;\n        ptr->next = temp;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    first = first->next;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == NULL) { free(first); return NULL; }\n    struct Node *ptr = first;\n    while (ptr->next->next != NULL) ptr = ptr->next;\n    free(ptr->next);\n    ptr->next = NULL;\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = first, *prev = NULL;\n    while (ptr != NULL && ptr->data != val) { prev = ptr; ptr = ptr->next; }\n    if (ptr == NULL) { printf(\"Node not found\\n\"); return first; }\n    if (prev == NULL) first = ptr->next;\n    else prev->next = ptr->next;\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.insertbeg 4.insertend 5.insertbet 6.search 7.deletebeg 8.deleteend 9.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) first = insertbeg(first);\n        else if (ch == 4) first = insertend(first);\n        else if (ch == 5) first = insertbet(first);\n        else if (ch == 6) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 7) first = deletebeg(first);\n        else if (ch == 8) first = deleteend(first);\n        else if (ch == 9) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
+const DLL_PROGRAM = "/* ============================================================\n * File   : dll.c\n * Topic  : Doubly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : Node has prev + data + next. Matches class PPT.\n * Compile: gcc dll.c -o dll && ./dll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *prev;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->prev = NULL;\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) first = temp;\n        else {\n            for (ptr = first; ptr->next != NULL; ptr = ptr->next);\n            ptr->next = temp;\n            temp->prev = ptr;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    printf(\"Forward: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->next; }\n    printf(\"NULL\\n\");\n}\n\nvoid displayReverse(struct Node *first) {\n    struct Node *ptr = first;\n    if (ptr == NULL) { printf(\"List is empty\\n\"); return; }\n    while (ptr->next != NULL) ptr = ptr->next;\n    printf(\"Reverse: \");\n    while (ptr != NULL) { printf(\"%d <-> \", ptr->data); ptr = ptr->prev; }\n    printf(\"NULL\\n\");\n}\n\nstruct Node* search(struct Node *first, int val) {\n    struct Node *ptr = first;\n    while (ptr != NULL) { if (ptr->data == val) return ptr; ptr = ptr->next; }\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    temp->next = first;\n    if (first != NULL) first->prev = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode(), *ptr;\n    if (first == NULL) return temp;\n    ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    ptr->next = temp;\n    temp->prev = ptr;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr) {\n        struct Node *temp = getNode();\n        temp->next = ptr->next;\n        temp->prev = ptr;\n        if (ptr->next != NULL) ptr->next->prev = temp;\n        ptr->next = temp;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    first = first->next;\n    if (first != NULL) first->prev = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    struct Node *ptr = first;\n    while (ptr->next != NULL) ptr = ptr->next;\n    if (ptr->prev != NULL) ptr->prev->next = NULL;\n    else first = NULL;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr == NULL) { printf(\"Node not found\\n\"); return first; }\n    if (ptr->prev == NULL) { first = ptr->next; if (first) first->prev = NULL; }\n    else { ptr->prev->next = ptr->next; if (ptr->next) ptr->next->prev = ptr->prev; }\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.displayReverse 4.insertbeg 5.insertend 6.insertbet 7.search 8.deletebeg 9.deleteend 10.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) displayReverse(first);\n        else if (ch == 4) first = insertbeg(first);\n        else if (ch == 5) first = insertend(first);\n        else if (ch == 6) first = insertbet(first);\n        else if (ch == 7) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 8) first = deletebeg(first);\n        else if (ch == 9) first = deleteend(first);\n        else if (ch == 10) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
+const CLL_PROGRAM = "/* ============================================================\n * File   : csll.c\n * Topic  : Circular Singly Linked List — Menu Driven Program\n * Course : Data Structures, Unit III (Lists)\n * Institute: Walchand Institute of Technology, Solapur\n * Notes  : last->next = first (ring). Matches class PPT.\n * Compile: gcc csll.c -o csll && ./csll\n * ============================================================ */\n#include <stdio.h>\n#include <stdlib.h>\n\nstruct Node {\n    int data;\n    struct Node *next;\n};\n\nstruct Node* getNode() {\n    struct Node *temp = (struct Node*)malloc(sizeof(struct Node));\n    printf(\"Enter data: \");\n    scanf(\"%d\", &temp->data);\n    temp->next = NULL;\n    return temp;\n}\n\nstruct Node* createll() {\n    struct Node *first = NULL, *ptr, *temp;\n    int n, i = 0;\n    printf(\"Enter number of nodes: \");\n    scanf(\"%d\", &n);\n    while (i < n) {\n        temp = getNode();\n        if (first == NULL) { first = temp; temp->next = first; }\n        else {\n            ptr = first;\n            while (ptr->next != first) ptr = ptr->next;\n            ptr->next = temp;\n            temp->next = first;\n        }\n        i++;\n    }\n    return first;\n}\n\nvoid display(struct Node *first) {\n    if (first == NULL) { printf(\"List is empty\\n\"); return; }\n    struct Node *ptr = first;\n    printf(\"Ring: \");\n    do { printf(\"%d -> \", ptr->data); ptr = ptr->next; } while (ptr != first);\n    printf(\"(back to %d)\\n\", first->data);\n}\n\nstruct Node* search(struct Node *first, int val) {\n    if (first == NULL) return NULL;\n    struct Node *ptr = first;\n    do { if (ptr->data == val) return ptr; ptr = ptr->next; } while (ptr != first);\n    return NULL;\n}\n\nstruct Node* insertbeg(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    temp->next = first;\n    ptr->next = temp;\n    return temp;\n}\n\nstruct Node* insertend(struct Node *first) {\n    struct Node *temp = getNode();\n    if (first == NULL) { first = temp; temp->next = first; return first; }\n    struct Node *ptr = first;\n    while (ptr->next != first) ptr = ptr->next;\n    ptr->next = temp;\n    temp->next = first;\n    return first;\n}\n\nstruct Node* insertbet(struct Node *first) {\n    int val;\n    printf(\"Insert after which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = search(first, val);\n    if (ptr) {\n        struct Node *temp = getNode();\n        temp->next = ptr->next;\n        ptr->next = temp;\n    } else printf(\"Value %d not found\\n\", val);\n    return first;\n}\n\nstruct Node* deletebeg(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *last = first;\n    while (last->next != first) last = last->next;\n    struct Node *temp = first;\n    first = first->next;\n    last->next = first;\n    free(temp);\n    return first;\n}\n\nstruct Node* deleteend(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    if (first->next == first) { free(first); return NULL; }\n    struct Node *ptr = first, *prev = NULL;\n    while (ptr->next != first) { prev = ptr; ptr = ptr->next; }\n    prev->next = first;\n    free(ptr);\n    return first;\n}\n\nstruct Node* deletebt(struct Node *first) {\n    if (first == NULL) { printf(\"List empty\\n\"); return NULL; }\n    int val;\n    printf(\"Delete which value: \");\n    scanf(\"%d\", &val);\n    struct Node *ptr = first, *prev = NULL;\n    do { if (ptr->data == val) break; prev = ptr; ptr = ptr->next; } while (ptr != first);\n    if (ptr->data != val) { printf(\"Node not found\\n\"); return first; }\n    if (ptr == first && ptr->next == first) { free(ptr); return NULL; }\n    if (ptr == first) return deletebeg(first);\n    prev->next = ptr->next;\n    free(ptr);\n    return first;\n}\n\nint main() {\n    struct Node *first = NULL;\n    int ch;\n    while (1) {\n        printf(\"\\n1.create 2.display 3.insertbeg 4.insertend 5.insertbet 6.search 7.deletebeg 8.deleteend 9.deletebt 0.exit\\n\");\n        printf(\"Choice: \");\n        if (scanf(\"%d\", &ch) != 1) break;\n        if (ch == 1) first = createll();\n        else if (ch == 2) display(first);\n        else if (ch == 3) first = insertbeg(first);\n        else if (ch == 4) first = insertend(first);\n        else if (ch == 5) first = insertbet(first);\n        else if (ch == 6) { int v; printf(\"Search: \"); scanf(\"%d\", &v);\n            printf(search(first, v) ? \"Found\\n\" : \"Not found\\n\"); }\n        else if (ch == 7) first = deletebeg(first);\n        else if (ch == 8) first = deleteend(first);\n        else if (ch == 9) first = deletebt(first);\n        else if (ch == 0) break;\n        else printf(\"Invalid choice\\n\");\n    }\n    return 0;\n}\n";
 
 function basicsPanelHTML(){
   return `
@@ -2621,12 +3058,12 @@ function labPanelHTML(type){
       <div class="card diagram-card">
         <div class="viz-head">
           <span class="vh-title">Visualizer</span>
-          <span class="struct-mini" style="margin:0;">list remembered between functions</span>
+          <span class="struct-mini" style="margin:0;">starts empty — like a C program, input first then run</span>
         </div>
         <div class="viz-controls">
           <div class="inputs-row" id="${type}-inputs" style="margin:0; padding:0; border:none;"></div>
           <div class="btn-row" style="margin-top:12px; padding-top:12px;">
-            <button class="btn btn-primary" id="${type}-visualise">&#9654; Visualise</button>
+            <button class="btn btn-primary" id="${type}-visualise">&#9654; Run (ask input)</button>
             <button class="btn btn-play" id="${type}-play">&#9654; Auto-play</button>
             <button class="btn" id="${type}-prev">&#8592; Prev</button>
             <button class="btn" id="${type}-next">Next &#8594;</button>
@@ -2658,6 +3095,11 @@ function labPanelHTML(type){
         <div class="op-ref-code" id="${type}-view-code">
           <div class="code-bar">
             <span class="sec-label" style="margin:0;">C function · <b id="${type}-codetitle">createll()</b></span>
+            <div class="fn-zoom">
+              <button type="button" class="btn-copy" id="${type}-fn-out" title="Smaller code">−</button>
+              <span id="${type}-fn-pct">100%</span>
+              <button type="button" class="btn-copy" id="${type}-fn-in" title="Bigger code">+</button>
+            </div>
             <button type="button" class="btn-copy" id="${type}-copycode">Copy</button>
           </div>
           <div class="fncode-wrap" id="${type}-fncode"></div>
@@ -2728,12 +3170,13 @@ class LinkedListLab {
   constructor(type){
     LABS[type] = this;
     this.type = type;
-    this.list = [10, 20, 30];
+    this.list = [];
     this.op = "create";
     this.frames = [];
     this.step = -1;
     this.result = null;
-    this.inputs = { value: 40, afterVal: 20, searchVal: 20, datas: "10, 20, 30" };
+    this.inputs = { value: null, afterVal: null, searchVal: null, datas: [] };
+    this.wizard = null;
     this.view = "algo";
     this.playing = false;
     this.playTimer = null;
@@ -2754,6 +3197,7 @@ class LinkedListLab {
       resetBtn: document.getElementById(`${type}-reset`),
       showAlgoBtn: document.getElementById(`${type}-showalgo`),
     };
+    this.fnZoom = 100;
     this.wire();
     this.selectOp("create");
   }
@@ -2766,7 +3210,9 @@ class LinkedListLab {
       n.prev = i > 0 ? nodes[i-1].id : (circular && nodes.length ? nodes[nodes.length-1].id : null);
     });
     return { nodes, ptrs: { first: (nodes[0] && nodes[0].id) || null, temp: null, ptr: null, prev: null },
-      desc: "This is the current list. Pick an operation on the right, then press Visualise.", algo: -1 };
+      desc: this.list.length
+        ? "Current list is ready. Pick a function, press Run, then type values like scanf — visualization starts only after input."
+        : "List is empty (first = NULL). Press Run on createll() — it will ask number of nodes, then each value one by one.", algo: -1 };
   }
   currentFrame(){ return (this.step >= 0 && this.frames[this.step]) ? this.frames[this.step] : this.buildIdle(); }
   wire(){
@@ -2779,6 +3225,11 @@ class LinkedListLab {
     this.els.nextBtn.addEventListener("click", () => this.next());
     this.els.resetBtn.addEventListener("click", () => this.reset(false));
     if (this.els.showAlgoBtn) this.els.showAlgoBtn.addEventListener("click", () => openAlgoModalFor(this.type));
+    const zin = document.getElementById(`${this.type}-fn-in`);
+    const zout = document.getElementById(`${this.type}-fn-out`);
+    if (zin) zin.addEventListener("click", () => { this.fnZoom = Math.min(160, this.fnZoom + 12); this.applyFnZoom(); });
+    if (zout) zout.addEventListener("click", () => { this.fnZoom = Math.max(85, this.fnZoom - 12); this.applyFnZoom(); });
+    this.applyFnZoom();
     if (this.els.copyBtn){
       this.els.copyBtn.addEventListener("click", async () => {
         const code = (FN_CODE[this.type] && FN_CODE[this.type][this.op]) || "";
@@ -2797,6 +3248,7 @@ class LinkedListLab {
   }
   selectOp(op){
     this.op = op;
+    this.wizard = null;
     this.reset(true);
     this.els.pills.querySelectorAll(".op-pill").forEach((b) => b.classList.toggle("active", b.dataset.op === op));
     const label = opFnLabel(this.type, op);
@@ -2805,33 +3257,142 @@ class LinkedListLab {
     resetAddrMap();
     this.renderAll();
   }
-  renderInputs(){
-    const needed = INPUTS[this.op] || [];
-    let html = "";
-    if (needed.includes("datas")) html += `<div class="field"><label>node values (comma separated)</label><input type="text" class="wide" id="${this.type}-in-datas" value="${this.inputs.datas}"></div>`;
-    if (needed.includes("value")) html += `<div class="field"><label>data (new node)</label><input type="number" id="${this.type}-in-value" value="${this.inputs.value}"></div>`;
-    if (needed.includes("afterVal")) html += `<div class="field"><label>after value</label><input type="number" id="${this.type}-in-after" value="${this.inputs.afterVal}"></div>`;
-    if (needed.includes("searchVal")) html += `<div class="field"><label>value</label><input type="number" id="${this.type}-in-search" value="${this.inputs.searchVal}"></div>`;
-    this.els.inputsRow.innerHTML = html || `<p style="font-size:12.5px; color:var(--muted-2); font-style:italic; margin:0;">No input needed &mdash; this function only walks the existing list.</p>`;
+  needsScanf(){
+    return ["get", "create", "insertbeg", "insertend", "insertbet", "search", "deletebt"].includes(this.op);
   }
-  readInputs(){
-    const g = (id) => document.getElementById(id);
-    const d1 = g(`${this.type}-in-datas`); if (d1) this.inputs.datas = d1.value;
-    const d2 = g(`${this.type}-in-value`); if (d2) this.inputs.value = d2.value;
-    const d3 = g(`${this.type}-in-after`); if (d3) this.inputs.afterVal = d3.value;
-    const d4 = g(`${this.type}-in-search`); if (d4) this.inputs.searchVal = d4.value;
+  renderInputs(){
+    if (this.wizard){
+      this.renderWizard();
+      return;
+    }
+    const needed = this.needsScanf();
+    const fn = opFnLabel(this.type, this.op);
+    this.els.inputsRow.innerHTML = needed
+      ? `<p style="font-size:13.5px; color:var(--muted); margin:0; line-height:1.55;">Press <b>Run</b> — ${fn} will ask for input the same way C does (<code>scanf</code>). Visualization starts only after you finish entering values.</p>`
+      : `<p style="font-size:13.5px; color:var(--muted); margin:0; line-height:1.55;">No extra input. Press <b>Run</b> to walk the current list.</p>`;
+  }
+  renderWizard(){
+    const w = this.wizard;
+    if (!w || !this.els.inputsRow) return;
+    const got = (w.datas && w.datas.length)
+      ? `<div class="scanf-got">Collected so far: <b>${w.datas.join(", ")}</b> &nbsp;(${w.datas.length} / ${w.n})</div>`
+      : "";
+    this.els.inputsRow.innerHTML = `
+      <div class="scanf-box">
+        <div class="scanf-k">scanf &middot; ${opFnLabel(this.type, this.op)}</div>
+        <div class="scanf-q">${w.prompt}</div>
+        <div class="scanf-row">
+          <input type="number" id="${this.type}-scanf" autocomplete="off" placeholder="type a number">
+          <button type="button" class="btn btn-primary" id="${this.type}-scanf-ok">Enter</button>
+        </div>
+        ${got}
+        <div class="scanf-err" id="${this.type}-scanf-err"></div>
+      </div>`;
+    const inp = document.getElementById(`${this.type}-scanf`);
+    const ok = document.getElementById(`${this.type}-scanf-ok`);
+    const send = () => this.feedWizard(inp ? inp.value : "");
+    if (ok) ok.addEventListener("click", send);
+    if (inp){
+      inp.addEventListener("keydown", (e) => { if (e.key === "Enter"){ e.preventDefault(); send(); } });
+      setTimeout(() => inp.focus(), 30);
+    }
+  }
+  wizardError(msg){
+    const el = document.getElementById(`${this.type}-scanf-err`);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add("show");
+  }
+  feedWizard(raw){
+    const n = parseInt(String(raw).trim(), 10);
+    if (!Number.isFinite(n)){ this.wizardError("Enter a valid integer, then press Enter."); return; }
+    const w = this.wizard;
+    if (!w) return;
+    if (w.phase === "n"){
+      if (n < 1 || n > 10){ this.wizardError("Number of nodes must be 1 to 10."); return; }
+      this.wizard = { phase: "data", n, datas: [], i: 0, prompt: "Enter data for node 1:" };
+      this.renderWizard();
+      return;
+    }
+    if (w.phase === "data"){
+      w.datas.push(n);
+      w.i++;
+      if (w.i < w.n){
+        w.prompt = `Enter data for node ${w.i + 1}:`;
+        this.renderWizard();
+        return;
+      }
+      this.finishWizard({ datas: w.datas });
+      return;
+    }
+    if (w.phase === "value"){
+      this.finishWizard({ value: n });
+      return;
+    }
+    if (w.phase === "search"){
+      this.finishWizard({ searchVal: n });
+      return;
+    }
+    if (w.phase === "after"){
+      this.wizard = { phase: "valueAfter", afterVal: n, prompt: "Enter data for the new node:" };
+      this.renderWizard();
+      return;
+    }
+    if (w.phase === "valueAfter"){
+      this.finishWizard({ afterVal: w.afterVal, value: n });
+    }
+  }
+  finishWizard(params){
+    this.wizard = null;
+    this.renderInputs();
+    this.runVisualise(params);
+  }
+  startWizard(){
+    this.stopPlay();
+    this.frames = []; this.step = -1; this.result = null;
+    const op = this.op;
+    if (op === "create"){
+      this.wizard = { phase: "n", prompt: "Enter number of nodes:" };
+      this.renderWizard();
+      if (this.els.stepdesc) this.els.stepdesc.textContent = "Waiting for input — like scanf(\"%d\", &n).";
+      if (this.els.steptag) this.els.steptag.textContent = "Input";
+      return;
+    }
+    if (op === "get" || op === "insertbeg" || op === "insertend"){
+      this.wizard = { phase: "value", prompt: "Enter data for the node:" };
+      this.renderWizard();
+      if (this.els.stepdesc) this.els.stepdesc.textContent = "Waiting for input — like scanf(\"%d\", &temp->data).";
+      if (this.els.steptag) this.els.steptag.textContent = "Input";
+      return;
+    }
+    if (op === "insertbet"){
+      this.wizard = { phase: "after", prompt: "Insert after which value:" };
+      this.renderWizard();
+      if (this.els.stepdesc) this.els.stepdesc.textContent = "Waiting for input — first the existing value, then the new node data.";
+      if (this.els.steptag) this.els.steptag.textContent = "Input";
+      return;
+    }
+    if (op === "search" || op === "deletebt"){
+      this.wizard = { phase: "search", prompt: op === "search" ? "Enter value to search:" : "Enter node value to be deleted:" };
+      this.renderWizard();
+      if (this.els.stepdesc) this.els.stepdesc.textContent = "Waiting for input — like scanf(\"%d\", &val).";
+      if (this.els.steptag) this.els.steptag.textContent = "Input";
+      return;
+    }
+    this.runVisualise({});
   }
   visualise(){
+    if (this.wizard){
+      const inp = document.getElementById(`${this.type}-scanf`);
+      this.feedWizard(inp ? inp.value : "");
+      return;
+    }
+    this.startWizard();
+  }
+  runVisualise(params){
     this.stopPlay();
-    this.readInputs();
-    const num = (x) => { const n = parseInt(x, 10); return Number.isFinite(n) ? n : 0; };
-    const parseDatas = (s, fallback) => {
-      const arr = String(s).split(",").map((x) => parseInt(x.trim(), 10)).filter((x) => Number.isFinite(x));
-      return arr.length ? arr.slice(0, 8) : fallback;
-    };
-    const params = { value: num(this.inputs.value), afterVal: num(this.inputs.afterVal), searchVal: num(this.inputs.searchVal), datas: parseDatas(this.inputs.datas, this.list) };
     resetAddrMap();
-    const out = generate(this.type, this.op, this.list, params);
+    const out = generate(this.type, this.op, this.list, params || {});
     this.frames = out.frames; this.result = out.result; this.step = 0;
     this.renderAll();
   }
@@ -2845,7 +3406,7 @@ class LinkedListLab {
   }
   prev(){ if (this.step > 0){ this.step--; this.renderAll(); } }
   goto(i){ if (i >= 0 && i < this.frames.length){ this.step = i; this.renderAll(); } }
-  reset(silent){ this.stopPlay(); this.frames = []; this.step = -1; this.result = null; if (!silent){ resetAddrMap(); this.renderAll(); } }
+  reset(silent){ this.stopPlay(); this.frames = []; this.step = -1; this.result = null; this.wizard = null; if (!silent){ this.list = []; this.renderInputs(); resetAddrMap(); this.renderAll(); } }
   stopPlay(){
     this.playing = false;
     if (this.playTimer){ clearTimeout(this.playTimer); this.playTimer = null; }
@@ -2853,7 +3414,7 @@ class LinkedListLab {
   }
   togglePlay(){
     if (this.playing){ this.stopPlay(); return; }
-    if (this.step < 0) this.visualise();
+    if (this.step < 0) this.startWizard();
     if (!this.frames.length) return;
     this.playing = true;
     if (this.els.playBtn){ this.els.playBtn.classList.add("playing"); this.els.playBtn.textContent = "Pause"; }
@@ -2881,6 +3442,31 @@ class LinkedListLab {
     this.els.prevBtn.disabled = this.step <= 0;
     this.els.nextBtn.disabled = this.step < 0;
     if (ALGO_MODAL_TYPE === this.type) renderAlgoModal(this.type);
+    this.focusStep();
+  }
+  applyFnZoom(){
+    if (this.els.fncode) this.els.fncode.style.setProperty("--fn-fs", (16.5 * this.fnZoom / 100) + "px");
+    const lab = document.getElementById(`${this.type}-fn-pct`);
+    if (lab) lab.textContent = this.fnZoom + "%";
+  }
+  focusStep(){
+    const codeWrap = this.els.fncode;
+    const on = codeWrap && codeWrap.querySelector(".code-line.on");
+    if (on && codeWrap){
+      const wr = codeWrap.getBoundingClientRect();
+      const nr = on.getBoundingClientRect();
+      codeWrap.scrollTop += (nr.top + nr.height / 2) - (wr.top + wr.height / 2);
+    }
+    const wrap = this.els.canvas;
+    if (!wrap) return;
+    const focusEl = wrap.querySelector(".join-node.state-active") || wrap.querySelector(".join-node.state-new") || wrap.querySelector(".join-node.state-deleted");
+    const col = focusEl && focusEl.closest(".join-col");
+    if (!col) return;
+    const wr = wrap.getBoundingClientRect();
+    const nr = col.getBoundingClientRect();
+    if (nr.right > wr.right - 28 || nr.left < wr.left + 28){
+      wrap.scrollLeft += (nr.left + nr.width / 2) - (wr.left + wr.width / 2);
+    }
   }
 }
 
@@ -2912,6 +3498,11 @@ function programsPanelHTML(){
     <div class="card code-card">
       <div class="code-toolbar">
         <span class="code-title" id="prog-title">sll.c &mdash; Singly Linked List (menu driven)</span>
+        <div class="zoom-btns">
+          <button type="button" class="btn-copy" id="prog-zoom-out" title="Zoom out">−</button>
+          <span id="prog-zoom-pct">100%</span>
+          <button type="button" class="btn-copy" id="prog-zoom-in" title="Zoom in">+</button>
+        </div>
         <button class="btn btn-ghost" id="prog-copy">&#128203; Copy code</button>
       </div>
       <div class="code-block" id="prog-code"></div>
@@ -2961,6 +3552,17 @@ function initProgramsTab(){
     setTimeout(() => { btn.innerHTML = "&#128203; Copy code"; }, 1500);
   });
   show("sll");
+  let progZoom = 100;
+  const applyProgZoom = () => {
+    const el = document.getElementById("prog-code");
+    const lab = document.getElementById("prog-zoom-pct");
+    if (el) el.style.setProperty("--prog-fs", (12.8 * progZoom / 100) + "px");
+    if (lab) lab.textContent = progZoom + "%";
+  };
+  const zin = document.getElementById("prog-zoom-in");
+  const zout = document.getElementById("prog-zoom-out");
+  if (zin) zin.addEventListener("click", () => { progZoom = Math.min(180, progZoom + 15); applyProgZoom(); });
+  if (zout) zout.addEventListener("click", () => { progZoom = Math.max(70, progZoom - 15); applyProgZoom(); });
   LIVE_RUN = new MenuRuntime();
   const rst = document.getElementById("run-restart");
   if (rst) rst.addEventListener("click", () => { if (LIVE_RUN) LIVE_RUN.setType(LIVE_RUN.type); });
