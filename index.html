@@ -342,7 +342,7 @@ body{font-size:15.5px;}
 
 /* ---------- node canvas — "join stage": one long row, scrolls instead of wrapping,
    so an arrow can never get stranded on its own line the way a wrapping flex row would. ---------- */
-.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:40px 14px 18px; overflow:visible; animation:framein .28s ease; position:relative;}
+.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:44px 14px 56px; overflow:visible; animation:framein .28s ease; position:relative;}
 @keyframes framein{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:none;}}
 .join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; min-width:100%; box-sizing:border-box;}
 .join-grid{display:grid; grid-template-rows:auto auto; width:max-content; min-width:100%; column-gap:0; row-gap:18px; align-items:end; min-height:220px;}
@@ -1380,14 +1380,16 @@ const ALGO = {
       "If not found return first",
       "temp = getNode()",
       "temp->next = ptr->next; temp->prev = ptr",
-      "If ptr->next != NULL: ptr->next->prev = temp",
+      "if (ptr->next != NULL)",
+      "ptr->next->prev = temp",
       "ptr->next = temp; return first"
     ],
     "deletebeg": [
       "If first == NULL return NULL",
       "ptr = first",
       "first = first->next",
-      "If first != NULL: first->prev = NULL",
+      "if (first != NULL)",
+      "first->prev = NULL",
       "free(ptr); return first"
     ],
     "deleteend": [
@@ -1403,7 +1405,8 @@ const ALGO = {
       "If ptr == NULL: Node not found, return first",
       "If ptr->prev == NULL: first = ptr->next; first->prev = NULL",
       "Else: ptr->prev->next = ptr->next",
-      "If ptr->next != NULL: ptr->next->prev = ptr->prev",
+      "if (ptr->next != NULL)",
+      "ptr->next->prev = ptr->prev",
       "free(ptr); return first"
     ]
   },
@@ -1549,10 +1552,10 @@ const CODE_HL = {
     "search":     [6, 10, 11, 13],
     "insertbeg":  [7, 8, 10, 11, 12],
     "insertend":  [7, 9, 13, 15, 16, 18],
-    "insertbet":  [7, 9, 10, 12, 13, 16, 17],
-    "deletebeg":  [6, 11, 12, 14, 15],
+    "insertbet":  [7, 9, 10, 12, 13, 15, 16, 17],
+    "deletebeg":  [6, 11, 12, 13, 14, 15],
     "deleteend":  [6, 11, 17, 19, 20],
-    "deletebt":   [7, 9, 10, 15, 23, 25, 27]
+    "deletebt":   [7, 9, 10, 15, 23, 24, 25, 27]
   },
   "cll": {
     "get":        [8, 9, 10, 11, 12],
@@ -2133,15 +2136,19 @@ function generate(type, op, list, params){
         push(`temp->prev = ptr — link ②. temp is still below.`, 4);
         if (oldNextId != null){
           const on = nodes.find((n) => n.id === oldNextId);
+          push(`if (ptr->next != NULL) — TRUE. ptr->next is ${on ? on.value : "a node"}. Enter the if body.`, 5);
           if (on){ notePrev(on, t.id, "ptr→next→prev = temp"); }
-          push(`ptr->next != NULL, so ptr->next->prev = temp — link ③.`, 5);
+          st(t.id, "new"); st(ptrNode.id, "active");
+          push(`ptr->next->prev = temp — link ③. PREV of ${on ? on.value : "next"} now points to temp.`, 6);
+        } else {
+          push(`if (ptr->next != NULL) — FALSE (ptr->next is NULL). No PREV to rewrite. Skip to ptr->next = temp.`, 5);
         }
         noteNext(ptrNode, t.id, "ptr→next = temp");
         st(t.id, "new"); st(ptrNode.id, "active");
-        push(`ptr->next = temp — link ④. The old NEXT arrow is gone; the path now goes through temp below.`, 6);
+        push(`ptr->next = temp — link ④. The old NEXT arrow is gone; the path now goes through temp below.`, 7);
         liftTemp(t);
         st(t.id, "new");
-        push(`Both links are done — temp now sits in the list between the two nodes.`, 6);
+        push(`Both links are done — temp now sits in the list between the two nodes.`, 7);
         const r = list.slice(); r.splice(idx + 1, 0, p.value); result = r;
       } else if (type === "cll"){
         push(`Enter val = ${av}; ptr = search(first, val).`, 0);
@@ -2194,14 +2201,17 @@ function generate(type, op, list, params){
         ptrs.first = nodes[1]?.id ?? null;
         push(`first = first->next. The old head stays in place until free.`, 2);
         if (nodes.length > 1){
+          push(`if (first != NULL) — TRUE. first now sits on ${nodes[1].value}. Enter the if body.`, 3);
           nodes[1].prev = null;
-          push(`first != NULL, so first->prev = NULL. The old head stays in place.`, 3);
+          push(`first->prev = NULL. The old head stays in place.`, 4);
+        } else {
+          push(`if (first != NULL) — FALSE (first is NULL). No PREV to clear.`, 3);
         }
         st(nodes[0].id, "deleted");
-        push(`free(ptr) — now the old head is given back to the heap.`, 4);
+        push(`free(ptr) — now the old head is given back to the heap.`, 5);
         nodes = nodes.slice(1); relink(nodes, circular); ptrs.ptr = null;
         clear();
-        push(`return first.`, 4);
+        push(`return first.`, 5);
         result = list.slice(1);
       } else if (type === "cll"){
         if (!nodes.length){ push(`first == NULL — return NULL, nothing to delete.`, 0); break; }
@@ -2316,24 +2326,32 @@ function generate(type, op, list, params){
         if (idx === 0){
           ptrs.first = nextId ?? null;
           push(`ptr->prev == NULL, so first = ptr->next. ${nodes[idx].value} stays in place until free.`, 3);
-          if (nextId != null){ const nn = nodes.find((n) => n.id === nextId); if (nn) nn.prev = null; }
-          if (nextId != null) push(`first != NULL, so first->prev = NULL.`, 3);
+          if (nextId != null){
+            push(`if (first != NULL) — TRUE. first now sits on the next node.`, 3);
+            const nn = nodes.find((n) => n.id === nextId); if (nn) nn.prev = null;
+            push(`first->prev = NULL.`, 3);
+          } else {
+            push(`if (first != NULL) — FALSE (first is NULL). No PREV to clear.`, 3);
+          }
         } else {
           prevNode.next = nextId;
           noteNext(prevNode, nextId, "ptr→prev→next = ptr→next");
           push(`ptr->prev->next = ptr->next — the NEXT arrow jumps over ${nodes[idx].value}. The node stays where it is.`, 4);
           if (nextId != null){
             const nn = nodes.find((n) => n.id === nextId);
+            push(`if (ptr->next != NULL) — TRUE. ptr->next is ${nn ? nn.value : "a node"}. Enter the if body.`, 5);
             if (nn){ nn.prev = prevNode.id; notePrev(nn, prevNode.id, "ptr→next→prev = ptr→prev"); }
-            push(`ptr->next != NULL, so ptr->next->prev = ptr->prev.`, 5);
+            push(`ptr->next->prev = ptr->prev — PREV of ${nn ? nn.value : "next"} now jumps back to ${prevNode.value}.`, 6);
+          } else {
+            push(`if (ptr->next != NULL) — FALSE (ptr->next is NULL). No PREV to rewrite. Skip to free(ptr).`, 5);
           }
         }
         st(nodes[idx].id, "deleted");
-        push(`free(ptr) — now the skipped node is given back to the heap.`, 6);
+        push(`free(ptr) — now the skipped node is given back to the heap.`, 7);
         nodes = nodes.filter((n) => n.id !== deletedIdD); relink(nodes, circular);
         ptrs.ptr = null;
         clear();
-        push(`return first.`, 6);
+        push(`return first.`, 7);
         const r = list.slice(); r.splice(idx, 1); result = r;
       } else if (type === "cll"){
         push(`Enter val = ${val}; walk the ring with ptr and prev.`, 0);
@@ -2627,12 +2645,16 @@ function layoutSpliceArrows(stage, frame, prevFrame){
     const i = main.findIndex((n) => n.id === id);
     return i >= 0 && main[i + 1] ? main[i + 1].id : null;
   };
-  /* High skip-arc when NEXT does not go to the visual neighbour — e.g. jump over a
-     deleted node, or last→new first after deletebeg. Do NOT treat the normal circular
-     close (last → main[0]) as a skip; the U-wrap already draws that. */
+  const prevAdjOf = (id) => {
+    const i = main.findIndex((n) => n.id === id);
+    return i > 0 ? main[i - 1].id : null;
+  };
+  /* High skip-arc when NEXT/PREV does not go to the visual neighbour — e.g. jump over a
+     deleted node. Do NOT treat the normal circular close (last → main[0]) as a skip. */
   const isNormalCircWrap = (n) => !adjOf(n.id) && main[0] && n.next === main[0].id;
-  const hasSkip = main.some((n) => n.next && n.next !== adjOf(n.id) && !isNormalCircWrap(n) && main.some((m) => m.id === n.next));
-  if (!below.length && !hasSkip){ svg.innerHTML = ""; return; }
+  const hasNextSkip = main.some((n) => n.next && n.next !== adjOf(n.id) && !isNormalCircWrap(n) && main.some((m) => m.id === n.next));
+  const hasPrevSkip = main.some((n) => n.prev && n.prev !== prevAdjOf(n.id) && main.some((m) => m.id === n.prev));
+  if (!below.length && !hasNextSkip && !hasPrevSkip){ svg.innerHTML = ""; return; }
   const w = Math.max(stage.scrollWidth, stage.clientWidth, 1);
   const h = Math.max(stage.scrollHeight, stage.clientHeight, 1);
   svg.setAttribute("width", String(w));
@@ -2652,13 +2674,19 @@ function layoutSpliceArrows(stage, frame, prevFrame){
     if (!aEl || !bEl) return;
     const fromSel = kind === "prev" ? ".jp" : ".jn";
     const aBox = rel(aEl.querySelector(fromSel) || aEl);
-    const bBox = rel(bEl.querySelector(".jd") || bEl);
+    const bNode = bEl.querySelector(".join-node") || bEl;
+    const bBox = rel(isBelow(toId) ? (bEl.querySelector(".jd") || bEl) : bNode);
     const x1 = kind === "prev" ? aBox.x : aBox.x + aBox.w;
     const y1 = aBox.y + aBox.h / 2;
-    const x2 = isBelow(toId) ? bBox.x + bBox.w / 2 : bBox.x + 6;
+    const x2 = isBelow(toId)
+      ? bBox.x + bBox.w / 2
+      : (kind === "prev" ? bBox.x + bBox.w - 8 : bBox.x + 6);
     const y2 = isBelow(toId) ? bBox.y + 2 : bBox.y + bBox.h / 2;
     const cx = (x1 + x2) / 2;
-    const cy = highArc ? (Math.min(y1, y2) - 40) : ((y1 + y2) / 2);
+    const goBelow = highArc && kind === "prev";
+    const cy = highArc
+      ? (goBelow ? (Math.max(y1, y2) + 38) : (Math.min(y1, y2) - 40))
+      : ((y1 + y2) / 2);
     const qy = highArc ? cy : y1;
     const isNew = !linkExistedBefore(prevFrame, fromId, toId, kind === "prev");
     const num = isNew ? linkNumFor(frame, fromId, toId, kind === "prev" ? "prev" : "next") : 0;
@@ -2677,6 +2705,7 @@ function layoutSpliceArrows(stage, frame, prevFrame){
     }
     if (n.prev){
       if (isBelow(n.id) || isBelow(n.prev)) draw(n.id, n.prev, "prev", false);
+      else if (n.prev !== prevAdjOf(n.id) && main.some((m) => m.id === n.prev)) draw(n.id, n.prev, "prev", true);
     }
   });
   svg.innerHTML = paths;
@@ -2733,6 +2762,11 @@ function renderChain(container, frame, prevFrame, type){
     }
     if (viaBelow) return `<div class="g-skip" title="NEXT now points to the new node below"></div>`;
     if (node.state === "deleted") return `<div class="g-skip" title="this node is skipped"></div>`;
+    /* Jump-over: live NEXT already points past this neighbour (deletebet / deleteend).
+       Empty gap + skip-arc — never a red X, the link is not missing, it jumped. */
+    if (node.next && node.next !== next.id && nodes.some((m) => m.id === node.next && !m.below)){
+      return `<div class="g-skip jump-over" title="NEXT jumps over this node"></div>`;
+    }
     if (next.state === "deleted" && node.next && node.next !== next.id){
       return `<div class="g-skip jump-over" title="NEXT jumps over the deleted node"></div>`;
     }
