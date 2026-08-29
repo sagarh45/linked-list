@@ -343,9 +343,10 @@ body{font-size:15.5px;}
 /* ---------- node canvas — "join stage": one long row, scrolls instead of wrapping,
    so an arrow can never get stranded on its own line the way a wrapping flex row would. ---------- */
 .join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:44px 14px 56px; overflow:visible; animation:framein .28s ease; position:relative;}
+.join-stage.is-circ{padding:52px 40px 92px;}
 @keyframes framein{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:none;}}
-.join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; min-width:100%; box-sizing:border-box;}
-.join-grid{display:grid; grid-template-rows:auto auto; width:max-content; min-width:100%; column-gap:0; row-gap:18px; align-items:end; min-height:220px;}
+.join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; min-width:100%; box-sizing:border-box; overflow:visible;}
+.join-grid{display:grid; grid-template-rows:auto auto; width:max-content; min-width:100%; column-gap:0; row-gap:18px; align-items:end; min-height:220px; overflow:visible;}
 .join-grid.has-below{grid-template-rows:auto auto;}
 .g-skip{min-width:72px; height:24px; align-self:center; margin-bottom:26px;}
 .g-below{display:flex; flex-direction:column; align-items:center; padding:4px 10px 0; animation:popin .35s ease;}
@@ -355,7 +356,15 @@ body{font-size:15.5px;}
 .splice-svg .spl-line.new{stroke-dasharray:80; stroke-dashoffset:80; animation:drawlink .6s ease forwards;}
 .splice-svg .spl-num{font-family:var(--disp); font-weight:800; font-size:12px; fill:#fff;}
 .splice-svg .spl-num-bg{fill:#111;}
-.join-col{display:flex; flex-direction:column; align-items:center; flex-shrink:0; position:relative; padding:0 10px;}
+.splice-svg .spl-line.circ-wrap{
+  stroke:#0f766e; stroke-width:3.5; fill:none; stroke-linejoin:round; stroke-linecap:round;
+}
+.splice-svg .spl-line.circ-wrap.new{stroke-dasharray:520; stroke-dashoffset:520; animation:drawlink .75s ease forwards;}
+.splice-svg .spl-line.circ-wrap.follow{stroke:#c2410c; stroke-width:4.5;}
+.splice-svg .circ-lab-bg{fill:#0f766e;}
+.splice-svg .circ-lab{font-family:var(--mono); font-weight:700; font-size:10px; fill:#fff;}
+.splice-svg .circ-lab-bg.follow{fill:#c2410c;}
+.join-col{display:flex; flex-direction:column; align-items:center; flex-shrink:0; position:relative; padding:0;}
 .join-badges{display:flex; gap:4px; margin-bottom:5px; flex-wrap:wrap; justify-content:center; max-width:150px; min-height:22px; align-items:flex-end;}
 .badge{font-family:var(--mono); font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid; white-space:nowrap;}
 .badge-first{color:var(--accent-dark); background:var(--accent-soft); border-color:#b9cdfb;}
@@ -388,7 +397,7 @@ body{font-size:15.5px;}
 
 /* the join arrow — drawn with a dash-offset animation so a brand new link visibly "connects"
    instead of simply appearing, exactly like the sample's JOIN arrow. */
-.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin-bottom:26px; min-width:64px; flex-shrink:0; position:relative;}
+.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin-bottom:26px; min-width:72px; width:72px; flex-shrink:0; position:relative; z-index:5; overflow:visible;}
 .link-circ{
   width:22px; height:22px; border-radius:50%; background:#111; color:#fff;
   font-family:var(--disp); font-weight:800; font-size:12px;
@@ -405,10 +414,10 @@ body{font-size:15.5px;}
 .link-step-line .link-circ{box-shadow:none;}
 .link-step-line code{font-family:var(--mono); font-size:13.5px; background:#fdefc8; padding:1px 6px; border-radius:4px;}
 .join-link .gap-lab{font-family:var(--mono); font-size:9.5px; font-weight:700; color:#fff; background:var(--green); padding:2px 9px; border-radius:999px; margin-bottom:3px; white-space:nowrap;}
-.join-link svg{width:64px; height:26px; display:block;}
-.join-link .arrow-line{stroke:var(--green); stroke-width:3; fill:none;}
+.join-link svg{width:100%; height:24px; display:block; overflow:visible;}
+.join-link .arrow-line{stroke:var(--green); stroke-width:3; fill:none; stroke-linecap:butt;}
 .join-link .arrow-head{fill:var(--green);}
-.join-link.new .arrow-line{stroke-dasharray:70; stroke-dashoffset:70; animation:drawlink .6s ease forwards;}
+.join-link.new .arrow-line{stroke-dasharray:100; stroke-dashoffset:100; animation:drawlink .6s ease forwards;}
 .join-link.new .arrow-head{opacity:0; animation:fadehead .2s ease .5s forwards;}
 @keyframes drawlink{to{stroke-dashoffset:0;}}
 @keyframes fadehead{to{opacity:1;}}
@@ -419,8 +428,8 @@ body{font-size:15.5px;}
 .join-link.follow .arrow-line{stroke:#c2410c; stroke-width:4;}
 .join-link.follow .arrow-head{fill:#c2410c;}
 .join-link.follow{filter:drop-shadow(0 0 6px rgba(194,65,12,.45));}
-.join-both{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:76px; flex-shrink:0; gap:3px;}
-.join-both .join-link{margin-bottom:0; min-width:76px;}
+.join-both{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:80px; flex-shrink:0; gap:3px; overflow:visible;}
+.join-both .join-link{margin-bottom:0; min-width:80px; width:80px;}
 
 /* the "not joined yet" gap — an actual dashed block sitting in the row, not a caption you have to notice */
 .join-gap{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:80px; flex-shrink:0;}
@@ -442,11 +451,15 @@ body{font-size:15.5px;}
 .es-caption{text-align:center; margin-top:16px; font-size:13px; color:var(--muted); line-height:1.7;}
 .es-caption b{color:var(--fg); font-family:var(--mono);}
 
-/* circular list: last node's NEXT literally reads "first" — no ring diagram, just this summary */
-.circ-back{margin-top:14px; padding:11px 16px; border:2px dashed var(--teal, #0d9488); border-radius:12px; background:#f0fdfa; text-align:center;}
-.circ-back .gap-lab{display:inline-block; background:#0f766e; color:#fff; font-family:var(--mono); font-size:10px; font-weight:700; padding:3px 10px; border-radius:999px; margin-bottom:5px;}
+/* circular list: last NEXT curves back to first — the SVG wrap is the real arrow; this is the caption */
+.circ-back{margin-top:10px; padding:8px 14px; border:2px dashed #99f6e4; border-radius:12px; background:#f0fdfa; text-align:center;}
+.circ-back .gap-lab{display:inline-block; background:#0f766e; color:#fff; font-family:var(--mono); font-size:10px; font-weight:700; padding:3px 10px; border-radius:999px; margin-bottom:4px;}
 .circ-back p{margin:0; font-weight:600; color:#0f766e; font-size:13px;}
-.circ-back .loop{font-family:var(--mono); font-weight:700; color:var(--red); font-size:12.5px; margin-top:5px;}
+.circ-back .loop{font-family:var(--mono); font-weight:700; color:#0f766e; font-size:12.5px; margin-top:4px;}
+.circ-caption{
+  margin:8px 4px 0; text-align:center; font-size:12.5px; color:#0f766e; font-weight:600;
+}
+.circ-caption code{font-family:var(--mono); font-size:12px; background:#ccfbf1; padding:1px 6px; border-radius:4px;}
 
 /* ---------- pointer-move strip ---------- */
 .move-strip{display:flex; flex-wrap:wrap; gap:8px; padding:0 16px; background:#fff;}
@@ -967,7 +980,7 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
 
 /* ---------- lab theater: stack + chain + heap ---------- */
 .viz-theater{width:100%; display:flex; flex-direction:column; gap:10px; align-self:stretch;}
-.chain-host{width:100%;}
+.chain-host{width:100%; overflow:visible;}
 .stack-bank{display:flex; flex-wrap:nowrap; gap:8px; justify-content:flex-start; overflow-x:auto; padding-bottom:4px;}
 .ptr-reg{
   min-width:96px; border:1.5px solid var(--border-strong); background:#fff; border-radius:10px; padding:7px 8px; text-align:center; flex:none;
@@ -999,13 +1012,6 @@ footer{border-top:1px solid var(--border); padding:26px 24px 50px; text-align:ce
   box-shadow:inset 0 0 0 4px #111; filter:brightness(1.15); animation:fieldhit .7s ease;
 }
 @keyframes fieldhit{0%{filter:brightness(1.35);} 100%{filter:none;}}
-.circ-uwrap{margin-top:2px; padding:0 24px 6px;}
-.circ-u{
-  height:22px; border:2.5px solid #0f766e; border-top:none; border-radius:0 0 16px 16px; position:relative;
-}
-.circ-u::after{
-  content:""; position:absolute; left:-2px; top:-6px; border:6px solid transparent; border-bottom-color:#0f766e;
-}
 .btn-play{background:var(--green); border-color:var(--green); color:#fff;}
 .btn-play:hover{background:#0b6e3f; border-color:#0b6e3f;}
 .btn-play.playing{background:var(--amber); border-color:var(--amber); color:#fff;}
@@ -2605,9 +2611,10 @@ function joinLinkHTML(justLinked, kind, num, following){
   const cls = `join-link${justLinked ? " new" : ""}${isPrev ? " prev-link" : ""}${following ? " follow" : ""}`;
   const label = isPrev ? "PREV" : "NEXT";
   const circ = num ? `<span class="link-circ">${num}</span>` : "";
+  /* Tip sits on the destination node's outer border — shaft spans the full gap, never enters the box. */
   return isPrev
-    ? `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 100 28"><line class="arrow-line" x1="98" y1="14" x2="16" y2="14"/><polygon class="arrow-head" points="16,14 28,7 28,21"/></svg></div>`
-    : `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 72 28"><line class="arrow-line" x1="2" y1="14" x2="58" y2="14"/><polygon class="arrow-head" points="58,14 48,8 48,20"/></svg></div>`;
+    ? `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 80 24" preserveAspectRatio="none"><line class="arrow-line" x1="80" y1="12" x2="14" y2="12"/><polygon class="arrow-head" points="0,12 14,4.5 14,19.5"/></svg></div>`
+    : `<div class="${cls}">${circ}<div class="gap-lab">${label}</div><svg viewBox="0 0 80 24" preserveAspectRatio="none"><line class="arrow-line" x1="0" y1="12" x2="66" y2="12"/><polygon class="arrow-head" points="80,12 66,4.5 66,19.5"/></svg></div>`;
 }
 function joinBothHTML(nextNew, prevNew, numNext, numPrev, followNext, followPrev){
   return `<div class="join-both">${joinLinkHTML(nextNew, "next", numNext, followNext)}${joinLinkHTML(prevNew, "prev", numPrev, followPrev)}</div>`;
@@ -2650,38 +2657,52 @@ function layoutSpliceArrows(stage, frame, prevFrame){
     return i > 0 ? main[i - 1].id : null;
   };
   /* High skip-arc when NEXT/PREV does not go to the visual neighbour — e.g. jump over a
-     deleted node. Do NOT treat the normal circular close (last → main[0]) as a skip. */
-  const isNormalCircWrap = (n) => !adjOf(n.id) && main[0] && n.next === main[0].id;
+     deleted node. The circular close (last → first) is drawn as its own U-wrap, not a skip. */
+  const firstId = (frame.ptrs && frame.ptrs.first)
+    || ((main.find((n) => n.state !== "deleted") || main[0] || {}).id);
+  const wrapFrom = [...main].filter((n) => n.state !== "deleted" && !n.detached && n.next === firstId).pop();
+  const hasCircWrap = !!(wrapFrom && firstId);
+  const isNormalCircWrap = (n) => !!(firstId && n.next === firstId);
   const hasNextSkip = main.some((n) => n.next && n.next !== adjOf(n.id) && !isNormalCircWrap(n) && main.some((m) => m.id === n.next));
   const hasPrevSkip = main.some((n) => n.prev && n.prev !== prevAdjOf(n.id) && main.some((m) => m.id === n.prev));
-  if (!below.length && !hasNextSkip && !hasPrevSkip){ svg.innerHTML = ""; return; }
+  if (!below.length && !hasNextSkip && !hasPrevSkip && !hasCircWrap){ svg.innerHTML = ""; return; }
   const w = Math.max(stage.scrollWidth, stage.clientWidth, 1);
   const h = Math.max(stage.scrollHeight, stage.clientHeight, 1);
   svg.setAttribute("width", String(w));
   svg.setAttribute("height", String(h));
   svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
   const sr = stage.getBoundingClientRect();
+  /* Absolute SVG is positioned against the padding box — subtract the 1px border so
+     endpoints land on the node's outer edge, not a few pixels inside it. */
   const rel = (el) => {
     const r = el.getBoundingClientRect();
-    return { x: r.left - sr.left, y: r.top - sr.top, w: r.width, h: r.height };
+    return {
+      x: r.left - sr.left - stage.clientLeft + stage.scrollLeft,
+      y: r.top - sr.top - stage.clientTop + stage.scrollTop,
+      w: r.width,
+      h: r.height
+    };
   };
   const col = (id) => stage.querySelector(`[data-nid="${id}"]`);
   const isBelow = (id) => below.some((b) => b.id === id);
-  let paths = `<defs><marker id="spl-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker><marker id="spl-ah-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1"/></marker></defs>`;
+  const nodeBox = (el) => {
+    if (!el) return null;
+    const n = el.querySelector(".join-node") || el;
+    return rel(n);
+  };
+  /* refX=10 puts the triangle TIP on the path endpoint (the node border), not inside the box. */
+  let paths = `<defs><marker id="spl-ah" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker><marker id="spl-ah-p" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1"/></marker><marker id="spl-ah-c" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#0f766e"/></marker><marker id="spl-ah-cf" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto" markerUnits="userSpaceOnUse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c2410c"/></marker></defs>`;
   const draw = (fromId, toId, kind, highArc) => {
     if (!fromId || !toId) return;
     const aEl = col(fromId), bEl = col(toId);
-    if (!aEl || !bEl) return;
-    const fromSel = kind === "prev" ? ".jp" : ".jn";
-    const aBox = rel(aEl.querySelector(fromSel) || aEl);
-    const bNode = bEl.querySelector(".join-node") || bEl;
-    const bBox = rel(isBelow(toId) ? (bEl.querySelector(".jd") || bEl) : bNode);
+    const aBox = nodeBox(aEl), bBox = nodeBox(bEl);
+    if (!aBox || !bBox) return;
     const x1 = kind === "prev" ? aBox.x : aBox.x + aBox.w;
     const y1 = aBox.y + aBox.h / 2;
     const x2 = isBelow(toId)
       ? bBox.x + bBox.w / 2
-      : (kind === "prev" ? bBox.x + bBox.w - 8 : bBox.x + 6);
-    const y2 = isBelow(toId) ? bBox.y + 2 : bBox.y + bBox.h / 2;
+      : (kind === "prev" ? bBox.x + bBox.w : bBox.x);
+    const y2 = isBelow(toId) ? bBox.y : bBox.y + bBox.h / 2;
     const cx = (x1 + x2) / 2;
     const goBelow = highArc && kind === "prev";
     const cy = highArc
@@ -2708,6 +2729,58 @@ function layoutSpliceArrows(stage, frame, prevFrame){
       else if (n.prev !== prevAdjOf(n.id) && main.some((m) => m.id === n.prev)) draw(n.id, n.prev, "prev", true);
     }
   });
+
+  /* last → first: U-arrow from last node's OUTER right edge to first node's OUTER left edge. */
+  if (hasCircWrap){
+    const aEl = col(wrapFrom.id), bEl = col(firstId);
+    const aBox = nodeBox(aEl), bBox = nodeBox(bEl);
+    if (aBox && bBox){
+      const addrBottom = (el) => {
+        const a = el.querySelector(".join-addr");
+        if (!a) return rel(el).y + rel(el).h;
+        const box = rel(a);
+        return box.y + box.h;
+      };
+      const x1 = aBox.x + aBox.w;
+      const y1 = aBox.y + aBox.h / 2;
+      const x2 = bBox.x;
+      const y2 = bBox.y + bBox.h / 2;
+      const goAbove = below.length > 0;
+      const rad = 16;
+      const stub = 28;
+      const xr = x1 + stub;
+      const xl = Math.min(Math.max(8, x2 - stub), x2 - rad - 12);
+      const yRail = goAbove
+        ? Math.max(8, Math.min(aBox.y, bBox.y) - 38)
+        : Math.max(addrBottom(aEl), addrBottom(bEl)) + 26;
+      const f = (n) => n.toFixed(1);
+      const d = goAbove
+        ? `M ${f(x1)} ${f(y1)} L ${f(xr - rad)} ${f(y1)} Q ${f(xr)} ${f(y1)} ${f(xr)} ${f(y1 - rad)} L ${f(xr)} ${f(yRail + rad)} Q ${f(xr)} ${f(yRail)} ${f(xr - rad)} ${f(yRail)} L ${f(xl + rad)} ${f(yRail)} Q ${f(xl)} ${f(yRail)} ${f(xl)} ${f(yRail + rad)} L ${f(xl)} ${f(y2 - rad)} Q ${f(xl)} ${f(y2)} ${f(xl + rad)} ${f(y2)} L ${f(x2)} ${f(y2)}`
+        : `M ${f(x1)} ${f(y1)} L ${f(xr - rad)} ${f(y1)} Q ${f(xr)} ${f(y1)} ${f(xr)} ${f(y1 + rad)} L ${f(xr)} ${f(yRail - rad)} Q ${f(xr)} ${f(yRail)} ${f(xr - rad)} ${f(yRail)} L ${f(xl + rad)} ${f(yRail)} Q ${f(xl)} ${f(yRail)} ${f(xl)} ${f(yRail - rad)} L ${f(xl)} ${f(y2 + rad)} Q ${f(xl)} ${f(y2)} ${f(xl + rad)} ${f(y2)} L ${f(x2)} ${f(y2)}`;
+      const isNew = !linkExistedBefore(prevFrame, wrapFrom.id, firstId);
+      const isHop = /slides along|No new link|follow the existing NEXT|follow NEXT|temp is unchanged/i.test(frame.desc || "");
+      const followCirc = isHop && frame.ptrs && frame.ptrs.ptr === firstId;
+      const num = isNew ? linkNumFor(frame, wrapFrom.id, firstId, "next") : 0;
+      const mk = followCirc ? "spl-ah-cf" : "spl-ah-c";
+      paths += `<path class="spl-line circ-wrap${isNew ? " new" : ""}${followCirc ? " follow" : ""}" marker-end="url(#${mk})" d="${d}"/>`;
+      const mx = (xl + xr) / 2;
+      const lab = wrapFrom.id === firstId ? "next = first" : "last → first";
+      const labW = wrapFrom.id === firstId ? 92 : 96;
+      paths += `<rect class="circ-lab-bg${followCirc ? " follow" : ""}" x="${f(mx - labW / 2)}" y="${f(yRail - 10)}" width="${labW}" height="20" rx="10"/>`;
+      paths += `<text class="circ-lab" x="${f(mx)}" y="${f(yRail)}" text-anchor="middle" dominant-baseline="central">${lab}</text>`;
+      if (num){
+        paths += `<circle class="spl-num-bg" cx="${f(mx)}" cy="${f(yRail - 22)}" r="10"/>`;
+        paths += `<text class="spl-num" x="${f(mx)}" y="${f(yRail - 22)}" text-anchor="middle" dominant-baseline="central">${num}</text>`;
+      }
+      const extraW = Math.max(w, xr + 16);
+      const extraH = Math.max(h, goAbove ? h : yRail + 18);
+      if (extraW > w || extraH > h){
+        svg.setAttribute("width", String(extraW));
+        svg.setAttribute("height", String(extraH));
+        svg.setAttribute("viewBox", `0 0 ${extraW} ${extraH}`);
+      }
+    }
+  }
   svg.innerHTML = paths;
 }
 
@@ -2793,16 +2866,15 @@ function renderChain(container, frame, prevFrame, type){
     }
     let circNote = "";
     if (isCirc){
-      const live = chain.filter((n) => !n.detached && n.next !== undefined);
+      const live = chain.filter((n) => !n.detached && n.state !== "deleted" && n.next !== undefined);
       const closed = live.length && live[live.length - 1].next === firstId;
       if (live.length){
-        circNote = `${closed ? `<div class="circ-uwrap"><div class="circ-u" title="last->next = first"></div></div>` : ""}
-            <div class="circ-back"><div class="gap-lab">circular link</div>
-            <p>Last node <b>${live[live.length - 1].value}</b> &mdash; NEXT ${closed ? "curves back to" : "will curve back to"} <b>first</b></p>
-            <div class="loop">${live.map((n) => n.value).join(" &rarr; ")} &rarr; first</div></div>`;
+        circNote = closed
+          ? `<p class="circ-caption"><code>last-&gt;next = first</code> — the teal arrow is that NEXT pointer closing the ring.</p>`
+          : `<p class="circ-caption">Ring is open — last NEXT is not yet bent back to <b>first</b>.</p>`;
       }
     }
-    container.innerHTML = `<div class="join-stage"><div class="join-row">${row}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
+    container.innerHTML = `<div class="join-stage${isCirc ? " is-circ" : ""}"><div class="join-row">${row}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
     layoutSpliceArrows(container.querySelector(".join-stage"), frame, prevFrame);
     return;
   }
@@ -2839,17 +2911,16 @@ function renderChain(container, frame, prevFrame, type){
 
   let circNote = "";
   if (isCirc){
-    const live = main.filter((n) => !n.detached && n.next !== undefined);
+    const live = main.filter((n) => !n.detached && n.state !== "deleted" && n.next !== undefined);
     const closed = live.length && live[live.length - 1].next === firstId;
     if (live.length){
-      circNote = `${closed ? `<div class="circ-uwrap"><div class="circ-u" title="last->next = first"></div></div>` : ""}
-          <div class="circ-back"><div class="gap-lab">circular link</div>
-          <p>Last node <b>${live[live.length - 1].value}</b> &mdash; NEXT ${closed ? "curves back to" : "will curve back to"} <b>first</b></p>
-          <div class="loop">${live.map((n) => n.value).join(" &rarr; ")} &rarr; first</div></div>`;
+      circNote = closed
+        ? `<p class="circ-caption"><code>last-&gt;next = first</code> — the teal arrow is that NEXT pointer closing the ring.</p>`
+        : `<p class="circ-caption">Ring is open — last NEXT is not yet bent back to <b>first</b>.</p>`;
     }
   }
 
-  container.innerHTML = `<div class="join-stage"><div class="join-grid has-below">${cells}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
+  container.innerHTML = `<div class="join-stage${isCirc ? " is-circ" : ""}"><div class="join-grid has-below">${cells}</div><svg class="splice-svg"></svg></div>${circNote}${linkCaptionHTML(frame, prevFrame)}`;
   layoutSpliceArrows(container.querySelector(".join-stage"), frame, prevFrame);
 }
 
