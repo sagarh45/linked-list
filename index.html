@@ -342,13 +342,15 @@ body{font-size:15.5px;}
 
 /* ---------- node canvas — "join stage": one long row, scrolls instead of wrapping,
    so an arrow can never get stranded on its own line the way a wrapping flex row would. ---------- */
-.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:44px 14px 56px; overflow:visible; animation:framein .28s ease; position:relative;}
-.join-stage.is-circ{padding:52px 40px 110px;}
+.join-stage{background:linear-gradient(180deg,var(--bg-soft),#fff); border:1px solid var(--border); border-radius:14px; padding:44px 14px 56px; overflow:visible; animation:framein .28s ease; position:relative; display:flex; flex-direction:column; align-items:flex-start;}
+.join-stage.is-circ{padding:60px 40px 110px;}
 @keyframes framein{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:none;}}
-.join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; min-width:100%; box-sizing:border-box; overflow:visible;}
-.join-grid{display:grid; grid-template-rows:auto auto; width:max-content; min-width:100%; column-gap:0; row-gap:18px; align-items:end; min-height:220px; overflow:visible;}
+.join-row{display:flex; align-items:flex-end; gap:0; min-height:150px; width:max-content; box-sizing:border-box; overflow:visible; justify-content:flex-start;}
+.join-grid{display:grid; grid-template-rows:auto auto; width:max-content; column-gap:0; row-gap:18px; align-items:end; min-height:220px; overflow:visible; justify-content:start; grid-auto-columns:max-content;}
 .join-grid.has-below{grid-template-rows:auto auto;}
-.g-skip{min-width:72px; height:24px; align-self:center; margin-bottom:26px;}
+.g-cell{display:flex; align-items:flex-end; justify-content:stretch; min-width:0;}
+.g-cell .join-link, .g-cell .join-both, .g-cell .g-skip, .g-cell .join-gap{width:100%;}
+.g-skip{min-width:52px; height:24px; align-self:center; margin-bottom:26px;}
 .g-below{display:flex; flex-direction:column; align-items:center; padding:4px 10px 0; animation:popin .35s ease;}
 .below-lab{font-family:var(--mono); font-size:9.5px; font-weight:800; color:var(--amber); background:var(--amber-soft); border:1px solid #f0d59a; padding:2px 8px; border-radius:999px; margin-bottom:6px; white-space:nowrap;}
 .splice-svg{position:absolute; left:0; top:0; pointer-events:none; overflow:visible; z-index:4;}
@@ -397,7 +399,7 @@ body{font-size:15.5px;}
 
 /* the join arrow — drawn with a dash-offset animation so a brand new link visibly "connects"
    instead of simply appearing, exactly like the sample's JOIN arrow. */
-.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin-bottom:26px; min-width:72px; width:72px; flex-shrink:0; position:relative; z-index:5; overflow:visible;}
+.join-link{display:flex; flex-direction:column; align-items:center; align-self:center; margin:0 -4px 26px; min-width:52px; width:52px; flex-shrink:0; position:relative; z-index:5; overflow:visible;}
 .link-circ{
   width:22px; height:22px; border-radius:50%; background:#111; color:#fff;
   font-family:var(--disp); font-weight:800; font-size:12px;
@@ -428,8 +430,8 @@ body{font-size:15.5px;}
 .join-link.follow .arrow-line{stroke:#c2410c; stroke-width:4;}
 .join-link.follow .arrow-head{fill:#c2410c;}
 .join-link.follow{filter:drop-shadow(0 0 6px rgba(194,65,12,.45));}
-.join-both{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:80px; flex-shrink:0; gap:3px; overflow:visible;}
-.join-both .join-link{margin-bottom:0; min-width:80px; width:80px;}
+.join-both{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin:0 -4px 26px; min-width:56px; width:56px; flex-shrink:0; gap:3px; overflow:visible;}
+.join-both .join-link{margin:0; min-width:0; width:100%;}
 
 /* the "not joined yet" gap — an actual dashed block sitting in the row, not a caption you have to notice */
 .join-gap{display:flex; flex-direction:column; align-items:center; justify-content:center; align-self:center; margin-bottom:26px; min-width:80px; flex-shrink:0;}
@@ -2735,33 +2737,42 @@ function layoutSpliceArrows(stage, frame, prevFrame){
     const aEl = col(wrapFrom.id), bEl = col(firstId);
     const aBox = nodeBox(aEl), bBox = nodeBox(bEl);
     if (aBox && bBox){
-      const x1 = aBox.x + aBox.w;
-      const y1 = aBox.y + aBox.h / 2;
-      const x2 = bBox.x;
-      const y2 = bBox.y + bBox.h / 2;
       const goAbove = below.length > 0;
       const rad = 16;
       const stub = 28;
-      const xr = x1 + stub;
-      const xl = Math.min(Math.max(8, x2 - stub), x2 - rad - 12);
-      let floorY = Math.max(aBox.y + aBox.h, bBox.y + bBox.h);
-      main.forEach((n) => {
-        const el = col(n.id);
-        const b = nodeBox(el);
-        if (b) floorY = Math.max(floorY, b.y + b.h);
-        const addr = el && el.querySelector(".join-addr");
-        if (addr){
-          const ab = rel(addr);
-          floorY = Math.max(floorY, ab.y + ab.h);
-        }
-      });
-      const yRail = goAbove
-        ? Math.max(8, Math.min(aBox.y, bBox.y) - 38)
-        : floorY + 34;
       const f = (n) => n.toFixed(1);
-      const d = goAbove
-        ? `M ${f(x1)} ${f(y1)} L ${f(xr - rad)} ${f(y1)} Q ${f(xr)} ${f(y1)} ${f(xr)} ${f(y1 - rad)} L ${f(xr)} ${f(yRail + rad)} Q ${f(xr)} ${f(yRail)} ${f(xr - rad)} ${f(yRail)} L ${f(xl + rad)} ${f(yRail)} Q ${f(xl)} ${f(yRail)} ${f(xl)} ${f(yRail + rad)} L ${f(xl)} ${f(y2 - rad)} Q ${f(xl)} ${f(y2)} ${f(xl + rad)} ${f(y2)} L ${f(x2)} ${f(y2)}`
-        : `M ${f(x1)} ${f(y1)} L ${f(xr - rad)} ${f(y1)} Q ${f(xr)} ${f(y1)} ${f(xr)} ${f(y1 + rad)} L ${f(xr)} ${f(yRail - rad)} Q ${f(xr)} ${f(yRail)} ${f(xr - rad)} ${f(yRail)} L ${f(xl + rad)} ${f(yRail)} Q ${f(xl)} ${f(yRail)} ${f(xl)} ${f(yRail - rad)} L ${f(xl)} ${f(y2 + rad)} Q ${f(xl)} ${f(y2)} ${f(xl + rad)} ${f(y2)} L ${f(x2)} ${f(y2)}`;
+      let x1, y1, x2, y2, xl, xr, yRail, d;
+      if (goAbove){
+        /* Parked temp below: wrap over the tops so it never cuts through a node. */
+        x1 = aBox.x + aBox.w / 2;
+        y1 = aBox.y;
+        x2 = bBox.x + bBox.w / 2;
+        y2 = bBox.y;
+        yRail = Math.max(8, Math.min(aBox.y, bBox.y) - 48);
+        xr = Math.max(x1, x2);
+        xl = Math.min(x1, x2);
+        d = `M ${f(x1)} ${f(y1)} L ${f(x1)} ${f(yRail + rad)} Q ${f(x1)} ${f(yRail)} ${f(x1 - rad)} ${f(yRail)} L ${f(x2 + rad)} ${f(yRail)} Q ${f(x2)} ${f(yRail)} ${f(x2)} ${f(yRail + rad)} L ${f(x2)} ${f(y2)}`;
+      } else {
+        x1 = aBox.x + aBox.w;
+        y1 = aBox.y + aBox.h / 2;
+        x2 = bBox.x;
+        y2 = bBox.y + bBox.h / 2;
+        xr = x1 + stub;
+        xl = Math.min(Math.max(8, x2 - stub), x2 - rad - 12);
+        let floorY = Math.max(aBox.y + aBox.h, bBox.y + bBox.h);
+        main.forEach((n) => {
+          const el = col(n.id);
+          const b = nodeBox(el);
+          if (b) floorY = Math.max(floorY, b.y + b.h);
+          const addr = el && el.querySelector(".join-addr");
+          if (addr){
+            const ab = rel(addr);
+            floorY = Math.max(floorY, ab.y + ab.h);
+          }
+        });
+        yRail = floorY + 34;
+        d = `M ${f(x1)} ${f(y1)} L ${f(xr - rad)} ${f(y1)} Q ${f(xr)} ${f(y1)} ${f(xr)} ${f(y1 + rad)} L ${f(xr)} ${f(yRail - rad)} Q ${f(xr)} ${f(yRail)} ${f(xr - rad)} ${f(yRail)} L ${f(xl + rad)} ${f(yRail)} Q ${f(xl)} ${f(yRail)} ${f(xl)} ${f(yRail - rad)} L ${f(xl)} ${f(y2 + rad)} Q ${f(xl)} ${f(y2)} ${f(xl + rad)} ${f(y2)} L ${f(x2)} ${f(y2)}`;
+      }
       const isNew = !linkExistedBefore(prevFrame, wrapFrom.id, firstId);
       const isHop = /slides along|No new link|follow the existing NEXT|follow NEXT|temp is unchanged/i.test(frame.desc || "");
       const followCirc = isHop && frame.ptrs && frame.ptrs.ptr === firstId;
@@ -2854,7 +2865,7 @@ function renderChain(container, frame, prevFrame, type){
 
   let col = 1;
   let cells = "";
-  const place = (html, c, r) => { cells += `<div style="grid-column:${c};grid-row:${r}">${html}</div>`; };
+  const place = (html, c, r) => { cells += `<div class="g-cell" style="grid-column:${c};grid-row:${r}">${html}</div>`; };
 
   if (!showTwo){
     let row = "";
